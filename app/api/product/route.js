@@ -1,10 +1,11 @@
 import { Product } from "@/app/models/product-model";
-import { dbConnect } from "@/utils/mongo";
+import connectMongo from "@/services/mongo";
+
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    await dbConnect();
+    await connectMongo();
     const productObj = await req.json();
     const product = await Product.create(productObj);
     return NextResponse.json(
@@ -18,7 +19,7 @@ export async function POST(req) {
 
 export async function GET(req) {
   try {
-    const db = await dbConnect();
+    const db = await connectMongo();
 
     const products = await Product.find();
 
