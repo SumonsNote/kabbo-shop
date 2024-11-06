@@ -1,7 +1,5 @@
-import { CustomerProfile } from "@/app/models/customer-profile-model";
 import { User } from "@/app/models/user-model";
 import { dbConnect } from "@/utils/mongo";
-import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
