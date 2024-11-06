@@ -18,7 +18,7 @@ export default function Component() {
   };
 
   return (
-    <div className="container mx-auto p-6 max-w-6xl bg-white shadow-lg rounded-lg">
+    <div className="container p-6 bg-white shadow-lg rounded-lg md:w-[40vw] lg:w-[60vw]">
       <h2 className="text-2xl font-bold text-gray-800 mb-6">Add New Product</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="form-group">
