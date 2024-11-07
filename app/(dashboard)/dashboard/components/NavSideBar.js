@@ -1,18 +1,21 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   AiOutlineApple,
-  AiOutlineBarChart,
   AiOutlineDollarCircle,
   AiOutlineQuestionCircle,
   AiOutlineSetting,
 } from "react-icons/ai";
-import { FaDashcube, FaRegCircleUser, FaShopify } from "react-icons/fa6";
-import { MdOutlinePhoneIphone } from "react-icons/md";
 import { DiSmashingMagazine } from "react-icons/di";
-import { useState } from "react";
+import {
+  FaDashcube,
+  FaRegCircleUser,
+  FaShopify,
+  FaStore,
+} from "react-icons/fa6";
+import { IoLogOut } from "react-icons/io5";
+import { MdCategory, MdOutlinePhoneIphone } from "react-icons/md";
 
 export default function NavSideBar({ setIsCollapsed, isCollapsed }) {
   const pathname = usePathname();
@@ -25,6 +28,17 @@ export default function NavSideBar({ setIsCollapsed, isCollapsed }) {
       label: "Dashboard",
     },
     {
+      href: "/dashboard/category",
+      icon: <MdCategory className="w-6 h-6" />,
+      label: "Category",
+    },
+    {
+      href: "/dashboard/brands",
+      icon: <AiOutlineApple className="w-6 h-6" />,
+      label: "Brands",
+    },
+
+    {
       href: "/dashboard/products",
       icon: <MdOutlinePhoneIphone className="w-6 h-6" />,
       label: "Products",
@@ -35,9 +49,9 @@ export default function NavSideBar({ setIsCollapsed, isCollapsed }) {
       label: "Orders",
     },
     {
-      href: "/dashboard/brands",
-      icon: <AiOutlineApple className="w-6 h-6" />,
-      label: "Brands",
+      href: "/dashboard/stock",
+      icon: <FaStore className="w-6 h-6" />,
+      label: "Stock",
     },
     {
       href: "/dashboard/customers",
@@ -45,24 +59,19 @@ export default function NavSideBar({ setIsCollapsed, isCollapsed }) {
       label: "Customers",
     },
     {
+      href: "/dashboard/finance",
+      icon: <AiOutlineDollarCircle className="w-6 h-6" />,
+      label: "Finance",
+    },
+    {
       href: "/dashboard/settings",
       icon: <AiOutlineSetting className="w-6 h-6" />,
       label: "Settings",
     },
     {
-      href: "/dashboard/analytics",
-      icon: <AiOutlineBarChart className="w-6 h-6" />,
-      label: "Analytics",
-    },
-    {
       href: "/dashboard/support",
       icon: <AiOutlineQuestionCircle className="w-6 h-6" />,
       label: "Support",
-    },
-    {
-      href: "/dashboard/finance",
-      icon: <AiOutlineDollarCircle className="w-6 h-6" />,
-      label: "Finance",
     },
   ];
 
@@ -104,10 +113,11 @@ export default function NavSideBar({ setIsCollapsed, isCollapsed }) {
         </nav>
       </div>
       <button
-        className="bg-blue-500 hover:bg-blue-600 text-white py-3 px-6 rounded-md transition duration-200"
+        className="bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-md transition duration-200 flex items-center overflow-hidden"
         onClick={() => router.push("/logout")}
       >
-        Logout
+        <IoLogOut className="w-6 h-6" />
+        {!isCollapsed && <span className="ml-4">Logout</span>}
       </button>
     </div>
   );
