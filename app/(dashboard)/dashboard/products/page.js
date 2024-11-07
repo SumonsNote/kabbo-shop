@@ -48,13 +48,12 @@ const ProductDashboard = () => {
     return 0;
   });
 
-
   useEffect(() => {
     // Reset sorting when filters change
     async function fetchProducts() {
-      const response = await fetch("/api/products");
+      const response = await fetch("http://localhost:3000/api/product");
       const data = await response.json();
-      setProducts(data);
+      setProducts(data.products);
     }
   }, [categoryFilter, statusFilter]);
   // Handle sort
