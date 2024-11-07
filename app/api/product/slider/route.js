@@ -6,7 +6,7 @@ export async function POST(req) {
   try {
     await dbConnect();
     const sliderObj = await req.json();
-    console.log(sliderObj);
+
     const slider = await ProductSlider.create(sliderObj);
     return NextResponse.json(
       { slider, message: "Successfully created slider" },

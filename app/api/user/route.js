@@ -25,7 +25,7 @@ export async function PUT(req) {
   try {
     await dbConnect();
     const reqObj = await req.json();
-    console.log(reqObj);
+
     const customerProfile = await User.findOneAndUpdate(
       { _id: reqObj._id },
       reqObj,
@@ -39,7 +39,6 @@ export async function PUT(req) {
       { status: 200 }
     );
   } catch (error) {
-    console.log(error);
     return NextResponse.json(
       { status: "fail", error: error.message },
       { status: 500 }

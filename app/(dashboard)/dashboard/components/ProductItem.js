@@ -1,13 +1,12 @@
 // ProductItem.js
-import React from "react";
 
 const ProductItem = ({ product }) => {
   return (
-    <tr key={product.id} className="hover:bg-gray-50">
-      <td className="px-6 py-4 whitespace-nowrap">{product.name}</td>
-      <td className="px-6 py-4 whitespace-nowrap">{product.category}</td>
+    <tr key={product._id} className="hover:bg-gray-50">
+      <td className="px-6 py-4 whitespace-nowrap">{product.product_name}</td>
+      <td className="px-6 py-4 whitespace-nowrap">Smarphone</td>
       <td className="px-6 py-4 whitespace-nowrap">${product.price}</td>
-      <td className="px-6 py-4 whitespace-nowrap">{product.stock}</td>
+      <td className="px-6 py-4 whitespace-nowrap">In Stock</td>
       <td className="px-6 py-4 whitespace-nowrap">
         <span
           className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
