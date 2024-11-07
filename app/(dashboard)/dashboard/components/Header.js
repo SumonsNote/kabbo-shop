@@ -1,9 +1,17 @@
 import Image from "next/image";
 import React from "react";
-
-export default function Header() {
+import { CgMenuMotion } from "react-icons/cg";
+import { RiMenu5Line } from "react-icons/ri";
+export default function Header({ setIsCollapsed, isCollapsed }) {
   return (
     <div className="bg-gray-800 text-white px-6 py-4 flex justify-between items-center ">
+      <button onClick={() => setIsCollapsed(!isCollapsed)}>
+        {!isCollapsed ? (
+          <CgMenuMotion className="w-6 h-6" />
+        ) : (
+          <RiMenu5Line className="w-6 h-6" />
+        )}
+      </button>
       <h2 className="text-2xl font-bold">{"Dashboard"}</h2>
       <div className="flex items-center">
         <div className="flex items-center">
