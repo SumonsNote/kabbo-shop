@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { useForm } from "react-hook-form";
 import CloudinaryUploader from "./ImageUpload";
 
@@ -13,7 +12,6 @@ export default function Component() {
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
     reset(); // reset form after submission
   };
 

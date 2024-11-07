@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 
-const MONGO_URI = process.env.MONGO_URI;
+const MONGODB_CONNECTION_STRING = process.env.MONGODB_CONNECTION_STRING;
 const cached = {};
 async function connectMongo() {
-  if (!MONGO_URI) {
+  if (!MONGODB_CONNECTION_STRING) {
     throw new Error(
-      "Please define the MONGO_URI environment variable inside .env.local"
+      "Please define the MONGODB_CONNECTION_STRING environment variable inside .env.local"
     );
   }
   if (cached.connection) {
@@ -15,7 +15,7 @@ async function connectMongo() {
     const opts = {
       bufferCommands: false,
     };
-    cached.promise = mongoose.connect(MONGO_URI, opts);
+    cached.promise = mongoose.connect(MONGODB_CONNECTION_STRING, opts);
   }
   try {
     cached.connection = await cached.promise;

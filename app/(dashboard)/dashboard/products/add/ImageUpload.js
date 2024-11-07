@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 // import { Button } from "@/components/ui/button";
 // import { Progress } from "@/components/ui/progress";
-import { X, Upload, CheckCircle, AlertCircle } from "lucide-react";
+import { AlertCircle, CheckCircle, Upload, X } from "lucide-react";
 import Image from "next/image";
 
 // You would typically store this in an environment variable
@@ -57,7 +57,6 @@ export default function CloudinaryUploader() {
           i === index ? { ...f, progress: 100, uploaded: true } : f
         )
       );
-      console.log("Upload successful:", data);
     } catch (error) {
       console.error("Upload error:", error);
       setFiles((prevFiles) =>

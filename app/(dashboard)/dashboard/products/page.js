@@ -1,55 +1,24 @@
 "use client";
-import React, { useEffect, useState } from "react";
+
+import Link from "next/link";
+import { useEffect, useState } from "react";
+
 import Filters from "../components/Filters";
 import ProductItem from "../components/ProductItem";
-import Link from "next/link";
 
 const ProductDashboard = () => {
-  // Sample product data
-  const [products] = useState([
-    {
-      id: 1,
-      name: "Wireless Headphones",
-      category: "Electronics",
-      price: 99.99,
-      stock: 45,
-      status: "In Stock",
-    },
-    {
-      id: 2,
-      name: "Smart Watch",
-      category: "Electronics",
-      price: 199.99,
-      stock: 30,
-      status: "Low Stock",
-    },
-    {
-      id: 3,
-      name: "Running Shoes",
-      category: "Sports",
-      price: 79.99,
-      stock: 0,
-      status: "Out of Stock",
-    },
-    {
-      id: 4,
-      name: "Coffee Maker",
-      category: "Home",
-      price: 149.99,
-      stock: 15,
-      status: "In Stock",
-    },
-    {
-      id: 5,
-      name: "Backpack",
-      category: "Fashion",
-      price: 49.99,
-      stock: 60,
-      status: "In Stock",
-    },
-  ]);
+  const [products, setProducts] = useState([]);
 
-  // State for search, filters, and sorting
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const response = await fetch("http://localhost:3000/api/product");
+      const data = await response.json();
+
+      setProducts(data);
+    };
+    fetchProducts();
+  }, []);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [statusFilter, setStatusFilter] = useState("All");
@@ -58,19 +27,17 @@ const ProductDashboard = () => {
     direction: "asc",
   });
 
-  // Filter products based on search term and filters
   const filteredProducts = products.filter((product) => {
-    const matchesSearch = product.name
+    const matchesSearch = product.product_name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
     const matchesCategory =
-      categoryFilter === "All" || product.category === categoryFilter;
+      categoryFilter === "All" || product.brand === categoryFilter;
     const matchesStatus =
       statusFilter === "All" || product.status === statusFilter;
     return matchesSearch && matchesCategory && matchesStatus;
   });
 
-  // Sort products
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     if (a[sortConfig.key] < b[sortConfig.key]) {
       return sortConfig.direction === "asc" ? -1 : 1;
@@ -81,6 +48,7 @@ const ProductDashboard = () => {
     return 0;
   });
 
+
   useEffect(() => {
     // Reset sorting when filters change
     async function fetchProducts() {
@@ -90,6 +58,7 @@ const ProductDashboard = () => {
     }
   }, [categoryFilter, statusFilter]);
   // Handle sort
+
   const handleSort = (key) => {
     setSortConfig({
       key,
@@ -197,7 +166,7 @@ const ProductDashboard = () => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {sortedProducts.map((product) => (
-              <ProductItem key={product.id} product={product} />
+              <ProductItem key={product._id} product={product} />
             ))}
           </tbody>
         </table>

@@ -16,7 +16,6 @@ export async function POST(req) {
     }).populate("productId");
     return NextResponse.json({ status: "success", data: invoiceProduct });
   } catch (error) {
-    console.log(error);
     return NextResponse.json({ status: "fail", data: error.message });
   }
 }

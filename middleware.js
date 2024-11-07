@@ -6,7 +6,10 @@ export function middleware(request) {
   const searchParams = request.nextUrl.searchParams;
 
   const allCookies = request.cookies.getAll();
+
+
   // console.log(allCookies);
+
   const isLoggedIn = allCookies[2]?.value;
   if (isLoggedIn) {
   }

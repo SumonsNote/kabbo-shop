@@ -1,5 +1,4 @@
 // Filters.js
-import React from "react";
 
 const Filters = ({
   searchTerm,
