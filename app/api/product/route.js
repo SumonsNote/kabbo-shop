@@ -1,6 +1,5 @@
 import { Product } from "@/app/models/product-model";
 import connectMongo from "@/services/mongo";
-
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
@@ -8,6 +7,7 @@ export async function POST(req) {
     await connectMongo();
     const productObj = await req.json();
     const product = await Product.create(productObj);
+    console.log(product);
     return NextResponse.json(
       { product, message: "Successfully created product" },
       { status: 201 }
@@ -19,10 +19,8 @@ export async function POST(req) {
 
 export async function GET(req) {
   try {
-    const db = await connectMongo();
-
+    await connectMongo();
     const products = await Product.find();
-
     return NextResponse.json({ products }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

@@ -1,10 +1,9 @@
 import mongoose, { Schema } from "mongoose";
 
 const brandSchema = new Schema({
-  brandName: String,
-  brandImg: String,
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
+  name: { type: String, required: true, unique: true },
+  logo: String,
+  timestamps: true,
 });
 
 export const Brand =
