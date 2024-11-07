@@ -1,5 +1,4 @@
 import { CustomerProfile } from "@/app/models/customer-profile-model";
-import { User } from "@/app/models/user-model";
 import connectMongo from "@/services/mongo";
 
 import { NextResponse } from "next/server";
@@ -18,10 +17,7 @@ export async function POST(req) {
 export async function GET(req) {
   try {
     await connectMongo();
-    const customerProfiles = await CustomerProfile.find().populate({
-      path: "userId",
-      model: User,
-    });
+    const customerProfiles = await CustomerProfile.find();
     return NextResponse.json({ customerProfiles }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

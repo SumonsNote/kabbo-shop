@@ -14,7 +14,7 @@ const ProductDashboard = () => {
       const response = await fetch("http://localhost:3000/api/product");
       const data = await response.json();
 
-      setProducts(data);
+      setProducts(data.products);
     };
     fetchProducts();
   }, []);
@@ -47,15 +47,6 @@ const ProductDashboard = () => {
     }
     return 0;
   });
-
-  useEffect(() => {
-    // Reset sorting when filters change
-    async function fetchProducts() {
-      const response = await fetch("http://localhost:3000/api/product");
-      const data = await response.json();
-      setProducts(data.products);
-    }
-  }, [categoryFilter, statusFilter]);
   // Handle sort
 
   const handleSort = (key) => {
@@ -69,7 +60,7 @@ const ProductDashboard = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 text-black">
       {/* Header Section */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Products</h1>
