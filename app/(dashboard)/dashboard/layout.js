@@ -9,6 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const RootLayout = ({ children, params }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  // console.log(modal);
   return (
     <html lang="en">
       <body>
@@ -31,7 +32,7 @@ const RootLayout = ({ children, params }) => {
               />
 
               {/* Dashboard Content */}
-              <div className="p-2 h-[93vh] overflow-x-auto flex justify-center items-start min-w-full relative">
+              <div className="p-2 h-[93vh] dark:bg-gray-950/95 overflow-x-auto flex justify-center items-start min-w-full relative">
                 {children}
               </div>
             </div>

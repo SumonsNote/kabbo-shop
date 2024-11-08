@@ -1,16 +1,21 @@
 import Image from "next/image";
-import React from "react";
+import Link from "next/link";
+import { AiFillEdit } from "react-icons/ai";
+import EditButton from "./EditButton";
 
 export default function SingeBrand({ brand, i }) {
   return (
-    <tr key={brand.id} className="hover:bg-gray-50 capitalize">
+    <tr
+      key={brand.id}
+      className="dark:hover:bg-gray-900 hover:bg-gray-200 duration-100 capitalize"
+    >
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
         {i + 1}
       </td>
-      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
         <Image src={brand.logo} width={50} height={50} alt="Logo" />
       </td>{" "}
-      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
         {brand.title}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -28,9 +33,7 @@ export default function SingeBrand({ brand, i }) {
         </span>
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
-        <button className="inline-flex items-center px-3 py-1.5 border border-gray-300 text-sm font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-          Edit
-        </button>
+        <EditButton brand={brand} />
       </td>
     </tr>
   );

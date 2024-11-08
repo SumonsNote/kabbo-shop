@@ -13,7 +13,7 @@ export default function RelativeModal({ setShowForm, title, children }) {
         className="w-[40rem] bg-background/50 animate-scale rounded-md shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <header className="modal-header flex justify-between rounded-md items-center p-4 bg-[#9096ff] text-white">
+        <header className="modal-header flex justify-between rounded-t-md items-center p-4 bg-[#9096ff] text-white">
           <h5 className="text-lg font-semibold">{title}</h5>
           <span
             className="cursor-pointer text-2xl"
@@ -24,7 +24,9 @@ export default function RelativeModal({ setShowForm, title, children }) {
           </span>
         </header>
 
-        <div className="modal-body p-6">{children}</div>
+        <div className="modal-body p-6  rounded-b-md backdrop-blur-xl dark:bg-gray-900/60">
+          {children}
+        </div>
       </div>
     </div>
   );

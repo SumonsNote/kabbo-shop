@@ -2,10 +2,11 @@ import Image from "next/image";
 import { AiOutlineSearch } from "react-icons/ai";
 import { CgMenuMotion } from "react-icons/cg";
 import { RiMenu5Line } from "react-icons/ri";
+import DarkMood from "./ui/DarkMood";
 
 export default function Header({ setIsCollapsed, isCollapsed }) {
   return (
-    <div className="bg-gray-800 text-white px-6 py-4 flex justify-between items-center ">
+    <div className="bg-gray-900 text-white px-6 py-4 flex justify-between items-center ">
       <button onClick={() => setIsCollapsed(!isCollapsed)}>
         {!isCollapsed ? (
           <CgMenuMotion className="w-6 h-6" />
@@ -13,18 +14,18 @@ export default function Header({ setIsCollapsed, isCollapsed }) {
           <RiMenu5Line className="w-6 h-6" />
         )}
       </button>
-      <div>
-        <div className="flex items-center bg-background text-foreground   px-4 rounded-lg w-96">
+      <div className="hidden sm:block">
+        <div className="flex items-center bg-inherit px-4 rounded-full w-full border border-gray-400">
           {/* search */}
           <AiOutlineSearch className="w-6 h-6 text-gray-400" />
           <input
-            type="text"
+            type="search"
             placeholder="Search.."
-            className="w-full px-4 py-2 rounded-md outline-none "
+            className="w-full px-5 py-2 rounded-md outline-none bg-inherit text-gray-400 min-w-96"
           />
         </div>
       </div>
-      <div className="flex items-center">
+      <div className="flex items-center gap-8 sm:pr-20">
         <div className="flex items-center">
           <Image
             src="/profile-pic.jpg"

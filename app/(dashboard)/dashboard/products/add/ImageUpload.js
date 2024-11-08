@@ -4,16 +4,20 @@ import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 // import { Button } from "@/components/ui/button";
 // import { Progress } from "@/components/ui/progress";
-import { AlertCircle, CheckCircle, Upload, X } from "lucide-react";
 import Image from "next/image";
-
-// You would typically store this in an environment variable
-const CLOUDINARY_UPLOAD_PRESET = "your_upload_preset";
-const CLOUDINARY_CLOUD_NAME = "your_cloud_name";
+import { AiFillCloseCircle } from "react-icons/ai";
+import { BiCloudUpload } from "react-icons/bi";
+import { FcCheckmark, FcHighPriority } from "react-icons/fc";
+import { FcUpload } from "react-icons/fc";
+import ProgressBar from "../../components/ui/ProgressBar";
+import { CgSpinner } from "react-icons/cg";
 
 export default function CloudinaryUploader() {
   const [files, setFiles] = useState([]);
-
+  const [isUploading, setIsUploading] = useState({
+    index: "",
+    isUploading: false,
+  });
   const onDrop = useCallback((acceptedFiles) => {
     setFiles((prevFiles) => [
       ...prevFiles,
@@ -23,6 +27,7 @@ export default function CloudinaryUploader() {
         progress: 0,
         uploaded: false,
         error: false,
+        file: file,
       })),
     ]);
   }, []);
@@ -35,19 +40,17 @@ export default function CloudinaryUploader() {
     multiple: true,
   });
 
-  const uploadFile = async (file, index) => {
+  const uploadFile = async (file, index, e) => {
+    e.preventDefault();
+    setIsUploading({ index, isUploading: true });
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
 
     try {
-      const response = await fetch(
-        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const response = await fetch(`/api/cloudinary`, {
+        method: "POST",
+        body: formData,
+      });
 
       if (!response.ok) throw new Error("Upload failed");
 
@@ -57,6 +60,9 @@ export default function CloudinaryUploader() {
           i === index ? { ...f, progress: 100, uploaded: true } : f
         )
       );
+      if (data.uploaded) {
+        setIsUploading({ index, isUploading: false });
+      }
     } catch (error) {
       console.error("Upload error:", error);
       setFiles((prevFiles) =>
@@ -80,7 +86,7 @@ export default function CloudinaryUploader() {
         }`}
       >
         <input {...getInputProps()} />
-        <Upload className="mx-auto h-12 w-12 text-gray-400" />
+        <BiCloudUpload className="w-16 h-16 mx-auto" />
         <p className="mt-2 text-sm text-gray-600">
           Drag &apos;n&apos; drop some images here, or click to select files
         </p>
@@ -101,22 +107,33 @@ export default function CloudinaryUploader() {
                 className="h-16 w-16 object-cover rounded"
               />
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate">
+                {/* <p className="text-sm font-medium text-gray-900 truncate">
                   {file.name}
-                </p>
-                {/* <Progress value={file.progress} className="w-full mt-2" /> */}
+                </p> */}
+                <ProgressBar
+                  value={file.progress}
+                  label={file.name}
+                  className="w-full mt-2"
+                />
               </div>
               {file.uploaded ? (
-                <CheckCircle className="h-5 w-5 text-green-500" />
+                <FcCheckmark className="h-5 w-5 text-green-500" />
               ) : file.error ? (
-                <AlertCircle className="h-5 w-5 text-red-500" />
+                <FcHighPriority className="h-5 w-5 text-red-500" />
               ) : (
                 <button
-                  onClick={() => uploadFile(new File([], file.name), index)}
+                  onClick={(e) => uploadFile(file.file, index, e)}
                   size="sm"
-                  className="ml-2"
+                  className="ml-2 text-xs bg-green-200 p-1 rounded-full"
+                  disabled={
+                    isUploading.index === index && isUploading.isUploading
+                  }
                 >
-                  Upload
+                  {isUploading.index === index && isUploading.isUploading ? (
+                    <CgSpinner className="animate-spin" />
+                  ) : (
+                    <FcUpload />
+                  )}
                 </button>
               )}
               <button
@@ -125,7 +142,7 @@ export default function CloudinaryUploader() {
                 size="icon"
                 className="ml-2"
               >
-                <X className="h-4 w-4" />
+                <AiFillCloseCircle className="h-4 w-4 text-red-400" />
                 <span className="sr-only">Remove file</span>
               </button>
             </li>
