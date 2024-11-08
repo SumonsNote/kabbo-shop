@@ -11,6 +11,7 @@ export const config = {
 export async function POST(request) {
   try {
     const formData = await request.formData();
+    console.log(formData);
     const file = formData.get("file");
 
     if (!file) {

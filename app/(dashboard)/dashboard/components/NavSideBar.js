@@ -16,6 +16,7 @@ import {
 } from "react-icons/fa6";
 import { IoLogOut } from "react-icons/io5";
 import { MdCategory, MdOutlinePhoneIphone } from "react-icons/md";
+import DarkMood from "./ui/DarkMood";
 
 export default function NavSideBar({ setIsCollapsed, isCollapsed }) {
   const pathname = usePathname();
@@ -80,8 +81,8 @@ export default function NavSideBar({ setIsCollapsed, isCollapsed }) {
   return (
     <div
       className={`bg-gray-900 text-white ${
-        isCollapsed ? "w-28" : "w-64"
-      } 4 px-6 py-8 flex flex-col justify-between duration-300`}
+        isCollapsed ? "xl:w-20 w-0 hidden sm:flex px-2" : "xl:w-64 px-6"
+      } 4  py-8 flex flex-col justify-between duration-300`}
     >
       <div>
         <div
@@ -89,15 +90,19 @@ export default function NavSideBar({ setIsCollapsed, isCollapsed }) {
           onClick={() => setIsCollapsed(!isCollapsed)}
         >
           <DiSmashingMagazine className="w-10 h-10 mr-3 text-sky-300" />
-          {!isCollapsed && <h1 className="text-2xl font-bold">Ecommerce</h1>}
+          {!isCollapsed && (
+            <h1 className="text-2xl font-bold dark:text-gray-500">Ecommerce</h1>
+          )}
         </div>
         <nav>
           {navItems.map(({ href, icon, label }) => (
             <Link
               key={href}
               href={href}
-              className={`flex items-center py-3 px-4 rounded-md transition duration-200 ${
-                isActive(href) ? "bg-gray-800" : "hover:bg-gray-800"
+              className={`flex items-center py-3 px-4 rounded-md transition duration-200 dark:text-gray-500 ${
+                isActive(href)
+                  ? "bg-gray-800 dark:bg-gray-950 "
+                  : " hover:bg-gray-800 dark:hover:bg-gray-950"
               }`}
             >
               <div
@@ -112,13 +117,16 @@ export default function NavSideBar({ setIsCollapsed, isCollapsed }) {
           ))}
         </nav>
       </div>
-      <button
-        className="bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded-md transition duration-200 flex items-center overflow-hidden"
-        onClick={() => router.push("/logout")}
-      >
-        <IoLogOut className="w-6 h-6" />
-        {!isCollapsed && <span className="ml-4">Logout</span>}
-      </button>
+      <div className="space-y-4">
+        <DarkMood isCollapsed={isCollapsed} />
+        <button
+          className="bg-blue-500 dark:bg-blue-900 hover:bg-blue-600 text-white dark:text-gray-400 py-3 px-4 rounded-md transition duration-200 flex items-center overflow-hidden"
+          onClick={() => router.push("/logout")}
+        >
+          <IoLogOut className="w-6 h-6 " />
+          {!isCollapsed && <span className="ml-4">Logout</span>}
+        </button>
+      </div>
     </div>
   );
 }
