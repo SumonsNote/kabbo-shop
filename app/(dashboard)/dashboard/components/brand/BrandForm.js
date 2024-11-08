@@ -1,9 +1,30 @@
+"use client";
+import {
+  useAddBrandMutation,
+  useUpdateBrandMutation,
+} from "@/store/slices/brandApi";
 import Image from "next/image";
-import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiFillCloseCircle } from "react-icons/ai";
+import { BiCloudUpload } from "react-icons/bi";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
-const BrandForm = () => {
+const BrandForm = ({ brand, isEdit, setShowForm }) => {
+  const [
+    addBrand,
+    { isLoading: addLoading, isSuccess: addSuccess, isError: addError },
+  ] = useAddBrandMutation();
+  const [
+    updateBrand,
+    {
+      isLoading: updateLoading,
+      isSuccess: updateSuccess,
+      isError: updateError,
+    },
+  ] = useUpdateBrandMutation();
   const {
     register,
     handleSubmit,
@@ -11,16 +32,37 @@ const BrandForm = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      title: "",
-      logo: "",
-      category: "smartphone",
-      status: "active",
+      title: brand?.title || "",
+      logo: brand?.logo || null,
+      category: brand?.category || "smartphone",
+      status: brand?.status || "active",
     },
   });
-  const [logoPreview, setLogoPreview] = useState(null);
+  const [logoPreview, setLogoPreview] = useState(brand?.logo);
+
+  useEffect(() => {
+    if (addSuccess) {
+      toast.success("Brand added successfully!");
+      setShowForm(false);
+    } else if (updateSuccess) {
+      toast.success("Brand updated successfully!");
+      setShowForm(false);
+    }
+
+    if (addError) {
+      toast.error(
+        `Failed to add brand: ${addError.message || "Unknown error occurred"}`
+      );
+    } else if (updateError) {
+      toast.error(
+        `Failed to update brand: ${
+          updateError.message || "Unknown error occurred"
+        }`
+      );
+    }
+  }, [addSuccess, updateSuccess, addError, updateError]);
 
   const onSubmit = async (data) => {
-    console.log(data);
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("category", data.category);
@@ -28,32 +70,26 @@ const BrandForm = () => {
 
     if (data.logo) {
       if (data.logo.size > 2000000) {
-        alert("File size should be less than 2MB.");
+        toast.error("File size should be less than 2MB.");
         return;
       }
       formData.append("file", data.logo);
     }
 
-    try {
-      const response = await fetch("/api/product/brand", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (response.ok) {
-        const responseData = await response.json();
-        console.log(responseData);
-      } else {
-        console.error("Failed to submit data. Status:", response.status);
-      }
-    } catch (error) {
-      console.error("Error during form submission:", error);
+    if (isEdit) {
+      formData.append("id", brand._id);
+      updateBrand(formData);
+    } else {
+      addBrand(formData);
     }
   };
 
   const handleLogoChange = (e) => {
-    e.preventDefault();
     const file = e.target.files[0];
+    if (file.size > 2000000) {
+      toast.error("File size should be less than 2MB.");
+      return;
+    }
     setLogoPreview(URL.createObjectURL(file));
     setValue("logo", file);
   };
@@ -65,11 +101,15 @@ const BrandForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 p-10 w-full">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="space-y-4 p-10 text-left rounded-md min-w-[30rem] dark:text-gray-400"
+    >
+      {/* Title Input */}
       <div>
         <label
           htmlFor="title"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-bold text-gray-700"
         >
           Title
         </label>
@@ -78,26 +118,42 @@ const BrandForm = () => {
           type="text"
           placeholder="Apple"
           {...register("title", { required: "Title is required" })}
-          className="mt-1 h-8 px-4 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          className="mt-1 h-8 px-4 w-full border border-gray-300 rounded-md shadow-sm bg-inherit placeholder:text-gray-600 dark:placeholder:text-gray-500 sm:text-sm"
         />
         {errors.title && (
           <span className="text-red-500">{errors.title.message}</span>
         )}
       </div>
 
+      {/* Logo Upload */}
       <div>
-        <label
-          htmlFor="logo"
-          className="block text-sm font-medium text-gray-700"
-        >
+        <label htmlFor="logo" className="block text-sm font-bold text-gray-700">
           Logo
         </label>
-        <div className="flex items-center">
+        <div className="flex items-center justify-center">
           <label
             htmlFor="logo-input"
-            className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md cursor-pointer w-1/2"
+            className="relative border overflow-hidden border-dashed border-gray-600 dark:text-gray-400 px-4 py-2 rounded-md cursor-pointer w-48 h-48 text-sm flex items-center justify-center flex-col gap-2"
           >
-            Upload Logo
+            <BiCloudUpload className="text-3xl" /> Upload Logo
+            {logoPreview && (
+              <div className="absolute top-0 left-0 right-0">
+                <Image
+                  src={logoPreview}
+                  alt="Logo Preview"
+                  className="object-cover w-48 h-48"
+                  width={150}
+                  height={150}
+                />
+                <button
+                  onClick={handleRemoveLogo}
+                  className="absolute top-0 right-0 ring-1 rounded-full bg-red-500 hover:bg-red-600 p-1"
+                  aria-label="Remove Logo"
+                >
+                  <AiFillCloseCircle />
+                </button>
+              </div>
+            )}
           </label>
           <input
             id="logo-input"
@@ -106,31 +162,14 @@ const BrandForm = () => {
             className="hidden"
             onChange={handleLogoChange}
           />
-          {logoPreview && (
-            <div className="ml-4 relative">
-              <Image
-                src={logoPreview}
-                alt="Logo Preview"
-                className="object-contain"
-                width={150}
-                height={150}
-              />
-              <button
-                onClick={handleRemoveLogo}
-                className="absolute top-0 right-0 ring-1 rounded-full bg-red-500 hover:bg-red-600"
-                aria-label="Remove Logo"
-              >
-                <AiFillCloseCircle />
-              </button>
-            </div>
-          )}
         </div>
       </div>
 
+      {/* Category Input */}
       <div>
         <label
           htmlFor="category"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-bold text-gray-700"
         >
           Category
         </label>
@@ -139,14 +178,15 @@ const BrandForm = () => {
           type="text"
           disabled
           {...register("category")}
-          className="mt-1 capitalize h-8 px-4 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          className="mt-1 capitalize h-8 px-4 w-full border-gray-300 rounded-md shadow-sm sm:text-sm"
         />
       </div>
 
+      {/* Status Select */}
       <div>
         <label
           htmlFor="status"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-bold text-gray-700"
         >
           Status
         </label>
@@ -154,19 +194,20 @@ const BrandForm = () => {
           id="status"
           {...register("status")}
           defaultValue="active"
-          className="mt-1 h-8 px-4 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          className="mt-1 h-8 px-4 w-full border border-gray-300 bg-inherit rounded-md shadow-sm sm:text-sm"
         >
           <option value="active">Active</option>
           <option value="inactive">Inactive</option>
         </select>
       </div>
 
+      {/* Submit Button */}
       <button
         type="submit"
-        disabled={Object.keys(errors).length > 0}
-        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        disabled={Object.keys(errors).length > 0 || addLoading || updateLoading}
+        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white dark:text-gray-400 bg-indigo-600 dark:bg-indigo-800 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
       >
-        Submit
+        {addLoading || updateLoading ? "Submitting..." : "Submit"}
       </button>
     </form>
   );
