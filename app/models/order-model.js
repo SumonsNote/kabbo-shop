@@ -33,6 +33,7 @@ const orderSchema = new Schema(
     },
     payment_info: {
       method: { type: String, required: true },
+      status: { type: String, required: true },
       transaction_id: { type: String },
     },
   },

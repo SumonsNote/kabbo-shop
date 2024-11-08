@@ -1,53 +1,21 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import Filters from "../components/Filters";
 import ProductItem from "../components/ProductItem";
-import Link from "next/link";
 
 const ProductDashboard = () => {
   // Sample product data
-  const [products] = useState([
-    {
-      id: 1,
-      name: "Wireless Headphones",
-      category: "Electronics",
-      price: 99.99,
-      stock: 45,
-      status: "In Stock",
-    },
-    {
-      id: 2,
-      name: "Smart Watch",
-      category: "Electronics",
-      price: 199.99,
-      stock: 30,
-      status: "Low Stock",
-    },
-    {
-      id: 3,
-      name: "Running Shoes",
-      category: "Sports",
-      price: 79.99,
-      stock: 0,
-      status: "Out of Stock",
-    },
-    {
-      id: 4,
-      name: "Coffee Maker",
-      category: "Home",
-      price: 149.99,
-      stock: 15,
-      status: "In Stock",
-    },
-    {
-      id: 5,
-      name: "Backpack",
-      category: "Fashion",
-      price: 49.99,
-      stock: 60,
-      status: "In Stock",
-    },
-  ]);
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const stock = async () => {
+      const response = await fetch("/api/stock");
+      const data = await response.json();
+      setProducts(data.stocks);
+    };
+    stock();
+  }, []);
 
   // State for search, filters, and sorting
   const [searchTerm, setSearchTerm] = useState("");
@@ -60,7 +28,7 @@ const ProductDashboard = () => {
 
   // Filter products based on search term and filters
   const filteredProducts = products.filter((product) => {
-    const matchesSearch = product.name
+    const matchesSearch = product.productId.product_name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
     const matchesCategory =
@@ -80,15 +48,6 @@ const ProductDashboard = () => {
     }
     return 0;
   });
-
-  useEffect(() => {
-    // Reset sorting when filters change
-    async function fetchProducts() {
-      const response = await fetch("/api/products");
-      const data = await response.json();
-      setProducts(data);
-    }
-  }, [categoryFilter, statusFilter]);
   // Handle sort
   const handleSort = (key) => {
     setSortConfig({
@@ -169,7 +128,7 @@ const ProductDashboard = () => {
                 onClick={() => handleSort("stock")}
               >
                 <div className="flex items-center">
-                  Stock
+                  Quantity
                   {sortConfig.key === "stock" && (
                     <span className="ml-2">
                       {sortConfig.direction === "asc" ? "↑" : "↓"}

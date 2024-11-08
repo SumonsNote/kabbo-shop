@@ -96,8 +96,6 @@ const OrderDashboard = () => {
       ) : (
         <NoDataFound title="Orders" />
       )}
-
-      {/* Orders Table */}
     </div>
   );
 };

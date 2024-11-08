@@ -2,10 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 const categorySchema = new Schema(
   {
-    name: String,
-    image: String,
-    slug: String,
-    parent_category: String,
+    brandId: { type: Schema.Types.ObjectId, ref: "Brand" },
   },
   {
     timestamps: true,

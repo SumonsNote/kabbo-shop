@@ -1,16 +1,17 @@
 import { Brand } from "@/app/models/brand-model";
 import { Product } from "@/app/models/product-model";
+import { Stock } from "@/app/models/stock-model";
 import connectMongo from "@/services/mongo";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
-  try {
-    await connectMongo();
-    const productObj = await req.json();
-    const product = await Product.create(productObj);
+  await connectMongo();
 
+  try {
+    const stockObj = await req.json();
+    const stock = await Stock.create(stockObj);
     return NextResponse.json(
-      { product, message: "Successfully created product" },
+      { message: "Stock created successfully", stock },
       { status: 201 }
     );
   } catch (error) {
@@ -19,13 +20,17 @@ export async function POST(req) {
 }
 
 export async function GET(req) {
+  await connectMongo();
   try {
-    await connectMongo();
-    const products = await Product.find().populate({
-      path: "brandId",
-      model: Brand,
+    const stocks = await Stock.find().populate({
+      path: "productId",
+      model: Product,
+      populate: {
+        path: "brandId",
+        model: Brand,
+      },
     });
-    return NextResponse.json({ products }, { status: 200 });
+    return NextResponse.json({ stocks }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
