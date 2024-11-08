@@ -1,56 +1,32 @@
 "use client";
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 
 const CustomersAdminPanel = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
-  const [customers] = useState([
-    {
-      id: 1,
-      name: "John Smith",
-      email: "john.smith@example.com",
-      status: "active",
-      joinDate: "2024-01-15",
-      orders: 12,
-      totalSpent: 1250.0,
-    },
-    {
-      id: 2,
-      name: "Sarah Johnson",
-      email: "sarah.j@example.com",
-      status: "inactive",
-      joinDate: "2024-02-20",
-      orders: 5,
-      totalSpent: 450.0,
-    },
-    {
-      id: 3,
-      name: "Michael Brown",
-      email: "m.brown@example.com",
-      status: "active",
-      joinDate: "2023-12-10",
-      orders: 28,
-      totalSpent: 3420.0,
-    },
-    {
-      id: 4,
-      name: "Emma Wilson",
-      email: "emma.w@example.com",
-      status: "active",
-      joinDate: "2024-03-01",
-      orders: 3,
-      totalSpent: 280.0,
-    },
-  ]);
+  const [customers, setCustomers] = useState([]);
+
+  useEffect(() => {
+    const customer = async () => {
+      const response = await fetch("/api/customer");
+      const data = await response.json();
+      setCustomers(data.customerProfiles);
+    };
+    customer();
+  }, []);
 
   const filteredCustomers = customers.filter(
     (customer) =>
-      customer.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      customer.email.toLowerCase().includes(searchQuery.toLowerCase())
+      customer.userId.first_name
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      customer.userId.last_name
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase())
   );
 
   return (
-    <div className="p-6 space-y-6 bg-gray-50 min-h-screen w-full">
+    <div className="p-6 space-y-6 bg-gray-50 min-h-screen w-full text-black">
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
@@ -172,13 +148,15 @@ const CustomersAdminPanel = () => {
                       <div className="flex-shrink-0 h-10 w-10">
                         <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
                           <span className="text-lg font-medium text-gray-600">
-                            {customer.name.charAt(0)}
+                            {customer.userId.first_name.charAt(0)}
+                            {customer.userId.last_name.charAt(0)}
                           </span>
                         </div>
                       </div>
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900">
-                          {customer.name}
+                          {customer.userId.first_name}{" "}
+                          {customer.userId.last_name}
                         </div>
                         <div className="text-sm text-gray-500">
                           {customer.email}
@@ -187,25 +165,34 @@ const CustomersAdminPanel = () => {
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span
-                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        customer.status === "active"
-                          ? "bg-green-100 text-green-800"
-                          : "bg-gray-100 text-gray-800"
-                      }`}
-                    >
-                      {customer.status}
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
+                      Active
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {new Date(customer.joinDate).toLocaleDateString()}
+                    {new Date(customer.userId.createdAt).toLocaleDateString(
+                      "en-US",
+                      {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      }
+                    )}
                   </td>
+
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {customer.orders}
+                    {customer.orderId.length}
                   </td>
+
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    ${customer.totalSpent.toLocaleString()}
+                    $
+                    {customer.orderId
+                      .reduce((total, order) => {
+                        return total + parseFloat(order.total_amount || 0);
+                      }, 0)
+                      .toFixed(2)}
                   </td>
+
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <button className="text-blue-600 hover:text-blue-900 mr-4">
                       View
