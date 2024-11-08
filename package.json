@@ -16,6 +16,7 @@
     "chart.js": "^4.4.6",
     "cloudinary": "^2.5.1",
     "clsx": "^2.1.1",
+    "formidable": "^3.5.2",
     "jose": "^5.9.4",
     "mongoose": "^8.7.2",
     "next": "14.2.15",
@@ -30,6 +31,7 @@
     "react-toastify": "^10.0.6",
     "resend": "^4.0.0",
     "rimraf": "^6.0.1",
+    "streamifier": "^0.1.1",
     "tailwind-merge": "^2.5.4"
   },
   "devDependencies": {

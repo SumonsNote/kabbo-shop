@@ -11,10 +11,10 @@ const ProductDashboard = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const response = await fetch("http://localhost:3000/api/product");
+      const response = await fetch("/api/product");
       const data = await response.json();
-
-      setProducts(data);
+      console.log(data.products);
+      setProducts(data.products);
     };
     fetchProducts();
   }, []);
@@ -47,17 +47,6 @@ const ProductDashboard = () => {
     }
     return 0;
   });
-
-
-  useEffect(() => {
-    // Reset sorting when filters change
-    async function fetchProducts() {
-      const response = await fetch("/api/products");
-      const data = await response.json();
-      setProducts(data);
-    }
-  }, [categoryFilter, statusFilter]);
-  // Handle sort
 
   const handleSort = (key) => {
     setSortConfig({
