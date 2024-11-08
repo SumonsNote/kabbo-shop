@@ -280,7 +280,7 @@ const OrderDashboard = () => {
                   )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {order.payment_info.method}
+                  {order.payment_info.status}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">{order.status}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
