@@ -11,8 +11,10 @@ const ProductDashboard = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const response = await fetch("http://localhost:3000/api/product");
+      const response = await fetch("/api/product");
       const data = await response.json();
+
+      console.log(data.products);
 
       setProducts(data.products);
     };
@@ -47,7 +49,6 @@ const ProductDashboard = () => {
     }
     return 0;
   });
-  // Handle sort
 
   const handleSort = (key) => {
     setSortConfig({

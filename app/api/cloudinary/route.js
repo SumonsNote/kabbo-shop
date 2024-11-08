@@ -1,45 +1,47 @@
 import { cloudinary } from "@/lib/utils"; // your config path
 import { NextResponse } from "next/server";
 
-export async function POST(req) {
-  // your auth check here if required
-
-  const formData = await req.formData();
-  const file = formData.get("file");
-
-  const fileBuffer = await file.arrayBuffer();
-
-  const mimeType = file.type;
-  const encoding = "base64";
-  const base64Data = Buffer.from(fileBuffer).toString("base64");
-
-  // this will be used to upload the file
-  const fileUri = "data:" + mimeType + ";" + encoding + "," + base64Data;
-
-  const res = await uploadToCloudinary(fileUri, file.name);
-
-  if (res.success && res.result) {
-    return NextResponse.json({
-      message: "success",
-      imgUrl: res.result.secure_url,
-    });
-  } else return NextResponse.json({ message: "failure" });
-}
-const uploadToCloudinary = (fileUri, fileName) => {
-  return new Promise((resolve, reject) => {
-    cloudinary.uploader
-      .upload(fileUri, {
-        invalidate: true,
-        resource_type: "auto",
-        filename_override: fileName,
-        folder: "ecom", // any sub-folder name in your cloud
-        use_filename: true,
-      })
-      .then((result) => {
-        resolve({ success: true, result });
-      })
-      .catch((error) => {
-        reject({ success: false, error });
-      });
-  });
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "5mb", // Adjust the limit as needed
+    },
+  },
 };
+export async function POST(request) {
+  try {
+    const formData = await request.formData();
+    const file = formData.get("file");
+
+    if (!file) {
+      return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
+    }
+
+    // Convert the file to a buffer
+    const fileBuffer = await file.arrayBuffer();
+
+    // Upload the file to Cloudinary
+    const result = await new Promise((resolve, reject) => {
+      cloudinary.uploader
+        .upload_stream(
+          {
+            resource_type: "auto", // automatically detect the resource type
+          },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        )
+        .end(Buffer.from(fileBuffer));
+    });
+
+    // Return the Cloudinary response
+    return NextResponse.json(result);
+  } catch (error) {
+    console.error("Error uploading to Cloudinary:", error);
+    return NextResponse.json(
+      { error: "Error uploading file" },
+      { status: 500 }
+    );
+  }
+}
