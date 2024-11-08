@@ -13,44 +13,59 @@ const BrandForm = () => {
     defaultValues: {
       title: "",
       logo: "",
-      category: "mobile",
+      category: "smartphone",
       status: "active",
     },
   });
   const [logoPreview, setLogoPreview] = useState(null);
 
   const onSubmit = async (data) => {
-    if (!file) return;
-
+    console.log(data);
     const formData = new FormData();
-    formData.append("file", data.file);
+    formData.append("title", data.title);
+    formData.append("category", data.category);
+    formData.append("status", data.status);
+
+    if (data.logo) {
+      if (data.logo.size > 2000000) {
+        alert("File size should be less than 2MB.");
+        return;
+      }
+      formData.append("file", data.logo);
+    }
 
     try {
-      const response = fetch("/api/cloudinary", {
+      const response = await fetch("/api/product/brand", {
         method: "POST",
         body: formData,
       });
 
-      const { secure_url } = await response.json();
-      setValue("logo", secure_url);
+      if (response.ok) {
+        const responseData = await response.json();
+        console.log(responseData);
+      } else {
+        console.error("Failed to submit data. Status:", response.status);
+      }
     } catch (error) {
-      console.error(error);
+      console.error("Error during form submission:", error);
     }
   };
+
   const handleLogoChange = (e) => {
+    e.preventDefault();
     const file = e.target.files[0];
-    console.log(URL.createObjectURL(file));
     setLogoPreview(URL.createObjectURL(file));
+    setValue("logo", file);
   };
+
   const handleRemoveLogo = (e) => {
-    console.log("remove log");
+    e.preventDefault();
     setValue("logo", null);
     setLogoPreview(null);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 p-10 w-full">
-      {/* Title Field */}
       <div>
         <label
           htmlFor="title"
@@ -61,7 +76,7 @@ const BrandForm = () => {
         <input
           id="title"
           type="text"
-          placeholder="Apple "
+          placeholder="Apple"
           {...register("title", { required: "Title is required" })}
           className="mt-1 h-8 px-4 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
         />
@@ -70,7 +85,6 @@ const BrandForm = () => {
         )}
       </div>
 
-      {/* Logo Field */}
       <div>
         <label
           htmlFor="logo"
@@ -97,13 +111,14 @@ const BrandForm = () => {
               <Image
                 src={logoPreview}
                 alt="Logo Preview"
-                className=" object-contain"
+                className="object-contain"
                 width={150}
                 height={150}
               />
               <button
                 onClick={handleRemoveLogo}
-                className="absolute top-0 right-0 ring-1  rounded-full   bg-red-500 hover:bg-red-600"
+                className="absolute top-0 right-0 ring-1 rounded-full bg-red-500 hover:bg-red-600"
+                aria-label="Remove Logo"
               >
                 <AiFillCloseCircle />
               </button>
@@ -112,7 +127,6 @@ const BrandForm = () => {
         </div>
       </div>
 
-      {/* Category Field */}
       <div>
         <label
           htmlFor="category"
@@ -124,15 +138,11 @@ const BrandForm = () => {
           id="category"
           type="text"
           disabled
-          {...register("category", { required: "Category is required" })}
+          {...register("category")}
           className="mt-1 capitalize h-8 px-4 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
         />
-        {errors.category && (
-          <span className="text-red-500">{errors.category.message}</span>
-        )}
       </div>
 
-      {/* Status Field */}
       <div>
         <label
           htmlFor="status"
@@ -151,9 +161,9 @@ const BrandForm = () => {
         </select>
       </div>
 
-      {/* Submit Button */}
       <button
         type="submit"
+        disabled={Object.keys(errors).length > 0}
         className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
       >
         Submit
