@@ -4,29 +4,23 @@ const ProductItem = ({ product }) => {
   console.log(product);
   return (
     <tr key={product._id} className="hover:bg-gray-50 text-black">
+      <td className="px-6 py-4 whitespace-nowrap">{product.product_name}</td>
       <td className="px-6 py-4 whitespace-nowrap">
-        {product.productId.product_name}
+        {product.brandId.category}
       </td>
-      <td className="px-6 py-4 whitespace-nowrap">
-        {product.productId.brandId.category}
-      </td>
-      <td className="px-6 py-4 whitespace-nowrap">
-        ${product.productId.price}
-      </td>
-      <td className="px-6 py-4 whitespace-nowrap">
-        {product.productId.quantity}
-      </td>
+      <td className="px-6 py-4 whitespace-nowrap">${product.price}</td>
+      <td className="px-6 py-4 whitespace-nowrap">{product.quantity}</td>
       <td className="px-6 py-4 whitespace-nowrap">
         <span
           className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-            product.productId.status === "in stock"
+            product.status === "in stock"
               ? "bg-green-100 text-green-800"
-              : product.productId.status === "low stock"
+              : product.status === "low stock"
               ? "bg-yellow-100 text-yellow-800"
               : "bg-red-100 text-red-800"
           }`}
         >
-          {product.productId.status}
+          {product.status}
         </span>
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
