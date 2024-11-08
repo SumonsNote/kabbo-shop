@@ -13,7 +13,9 @@ const ProductDashboard = () => {
     const fetchProducts = async () => {
       const response = await fetch("/api/product");
       const data = await response.json();
+
       console.log(data.products);
+
       setProducts(data.products);
     };
     fetchProducts();
@@ -59,7 +61,7 @@ const ProductDashboard = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 text-black">
       {/* Header Section */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Products</h1>

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AiOutlinePlus, AiOutlineSearch } from "react-icons/ai";
 import BrandForm from "../components/brand/BrandForm";
 import SingeBrand from "../components/brand/SingeBrand";
@@ -18,6 +18,8 @@ const CategoryAdminPanel = () => {
   const toggleModal = () => {
     setIsOpen(!isOpen);
   };
+
+  // coming soon...
   // useEffect(() => {
   //   async function fetchCategories() {
   //     setLoading(true);

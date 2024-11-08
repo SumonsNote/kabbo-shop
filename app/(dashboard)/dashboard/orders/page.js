@@ -1,55 +1,20 @@
 "use client";
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 
 const OrderDashboard = () => {
   // Sample order data
-  const [orders] = useState([
-    {
-      id: "#ORD-2024-001",
-      customer: "John Smith",
-      date: "2024-03-07",
-      total: 299.99,
-      items: 3,
-      payment: "Credit Card",
-      status: "Delivered",
-    },
-    {
-      id: "#ORD-2024-002",
-      customer: "Emma Wilson",
-      date: "2024-03-07",
-      total: 149.5,
-      items: 2,
-      payment: "PayPal",
-      status: "Processing",
-    },
-    {
-      id: "#ORD-2024-003",
-      customer: "Michael Brown",
-      date: "2024-03-06",
-      total: 599.99,
-      items: 4,
-      payment: "Credit Card",
-      status: "Pending",
-    },
-    {
-      id: "#ORD-2024-004",
-      customer: "Sarah Davis",
-      date: "2024-03-06",
-      total: 79.99,
-      items: 1,
-      payment: "PayPal",
-      status: "Shipped",
-    },
-    {
-      id: "#ORD-2024-005",
-      customer: "James Wilson",
-      date: "2024-03-05",
-      total: 199.99,
-      items: 2,
-      payment: "Credit Card",
-      status: "Cancelled",
-    },
-  ]);
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    const order = async () => {
+      const response = await fetch("/api/order");
+      const data = await response.json();
+      setOrders(data.orders);
+    };
+    order();
+  }, []);
+
+  console.log(orders);
 
   // States for search, filters, and sorting
   const [searchTerm, setSearchTerm] = useState("");
@@ -64,8 +29,10 @@ const OrderDashboard = () => {
   // Filter orders
   const filteredOrders = orders.filter((order) => {
     const matchesSearch =
-      order.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.customer.toLowerCase().includes(searchTerm.toLowerCase());
+      order.order_number.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order.customer.userId.name
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
     const matchesStatus =
       statusFilter === "All" || order.status === statusFilter;
     const matchesPayment =
@@ -107,7 +74,7 @@ const OrderDashboard = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 text-black">
       {/* Header Section */}
       <div className="flex justify-between items-center mb-6">
         <div>
@@ -289,28 +256,33 @@ const OrderDashboard = () => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {sortedOrders.map((order) => (
-              <tr key={order.id} className="hover:bg-gray-50">
+              <tr key={order._id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap font-medium">
-                  {order.id}
+                  {order.order_number}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {order.customer}
+                  {order.customer.userId.name}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">{order.date}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  ${order.total.toFixed(2)}
+                  {new Date(order.createdAt).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">{order.items}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{order.payment}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span
-                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusStyle(
-                      order.status
-                    )}`}
-                  >
-                    {order.status}
-                  </span>
+                  ${order.total_amount}
                 </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {order.items.reduce(
+                    (total, item) => total + item.quantity,
+                    0
+                  )}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {order.payment_info.method}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">{order.status}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <button className="text-blue-600 hover:text-blue-900 mr-4">
                     View
