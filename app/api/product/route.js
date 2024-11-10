@@ -1,4 +1,3 @@
-import { Brand } from "@/app/models/brand-model";
 import { Product } from "@/app/models/product-model";
 import connectMongo from "@/services/mongo";
 import { NextResponse } from "next/server";
@@ -21,10 +20,7 @@ export async function POST(req) {
 export async function GET(req) {
   try {
     await connectMongo();
-    const products = await Product.find().populate({
-      path: "brandId",
-      model: Brand,
-    });
+    const products = await Product.find();
     return NextResponse.json({ products }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

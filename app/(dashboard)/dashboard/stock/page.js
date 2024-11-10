@@ -2,11 +2,13 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Filters from "../components/Filters";
-import ProductItem from "../components/ProductItem";
+import StockProductItem from "../components/StockProductItem";
 
 const ProductDashboard = () => {
   // Sample product data
   const [products, setProducts] = useState([]);
+
+  console.log(products);
 
   useEffect(() => {
     const stock = async () => {
@@ -28,13 +30,13 @@ const ProductDashboard = () => {
 
   // Filter products based on search term and filters
   const filteredProducts = products.filter((product) => {
-    const matchesSearch = product.productId.product_name
+    const matchesSearch = product.product.product_name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
     const matchesCategory =
-      categoryFilter === "All" || product.category === categoryFilter;
+      categoryFilter === "All" || product.product.category === categoryFilter;
     const matchesStatus =
-      statusFilter === "All" || product.status === statusFilter;
+      statusFilter === "All" || product.product.status === statusFilter;
     return matchesSearch && matchesCategory && matchesStatus;
   });
 
@@ -128,7 +130,7 @@ const ProductDashboard = () => {
                 onClick={() => handleSort("stock")}
               >
                 <div className="flex items-center">
-                  Quantity
+                  Stock
                   {sortConfig.key === "stock" && (
                     <span className="ml-2">
                       {sortConfig.direction === "asc" ? "↑" : "↓"}
@@ -141,7 +143,7 @@ const ProductDashboard = () => {
                 onClick={() => handleSort("status")}
               >
                 <div className="flex items-center">
-                  Status
+                  Brand
                   {sortConfig.key === "status" && (
                     <span className="ml-2">
                       {sortConfig.direction === "asc" ? "↑" : "↓"}
@@ -156,7 +158,7 @@ const ProductDashboard = () => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {sortedProducts.map((product) => (
-              <ProductItem key={product.id} product={product} />
+              <StockProductItem key={product.id} product={product} />
             ))}
           </tbody>
         </table>

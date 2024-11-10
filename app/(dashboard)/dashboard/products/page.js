@@ -14,8 +14,6 @@ const ProductDashboard = () => {
       const response = await fetch("/api/product");
       const data = await response.json();
 
-      console.log(data.products);
-
       setProducts(data.products);
     };
     fetchProducts();
@@ -30,13 +28,13 @@ const ProductDashboard = () => {
   });
 
   const filteredProducts = products.filter((product) => {
-    const matchesSearch = product.product_name
+    const matchesSearch = product?.product_name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
     const matchesCategory =
-      categoryFilter === "All" || product.brand === categoryFilter;
+      categoryFilter === "All" || product?.category_name === categoryFilter;
     const matchesStatus =
-      statusFilter === "All" || product.status === statusFilter;
+      statusFilter === "All" || product?.status === statusFilter;
     return matchesSearch && matchesCategory && matchesStatus;
   });
 
@@ -113,24 +111,11 @@ const ProductDashboard = () => {
               </th>
               <th
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
-                onClick={() => handleSort("price")}
+                onClick={() => handleSort("brand")}
               >
                 <div className="flex items-center">
-                  Price
-                  {sortConfig.key === "price" && (
-                    <span className="ml-2">
-                      {sortConfig.direction === "asc" ? "↑" : "↓"}
-                    </span>
-                  )}
-                </div>
-              </th>
-              <th
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
-                onClick={() => handleSort("stock")}
-              >
-                <div className="flex items-center">
-                  Stock
-                  {sortConfig.key === "stock" && (
+                  Brand
+                  {sortConfig.key === "brand" && (
                     <span className="ml-2">
                       {sortConfig.direction === "asc" ? "↑" : "↓"}
                     </span>
