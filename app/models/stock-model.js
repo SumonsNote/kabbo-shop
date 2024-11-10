@@ -46,6 +46,7 @@ const stockSchema = new Schema(
       enum: ["active", "inactive"],
       default: "active",
     },
+
   },
   { timestamps: true }
 );

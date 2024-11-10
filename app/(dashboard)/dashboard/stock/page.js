@@ -11,7 +11,6 @@ import NoDataFound from "../components/NoDataFound";
 const ProductDashboard = () => {
   const { data, isLoading } = useFetchStocksQuery();
   const products = data?.stocks || [];
-
   // State for search, filters, and sorting
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All");
@@ -22,6 +21,7 @@ const ProductDashboard = () => {
   });
 
   // Filter products based on search term and filters
+
   const filteredProducts = products.filter((stock) => {
     const matchesSearch = stock.product.product_name
       .toLowerCase()
@@ -31,6 +31,7 @@ const ProductDashboard = () => {
       stock.product.category_name === categoryFilter;
     const matchesStatus =
       statusFilter === "All" || stock.status === statusFilter;
+
     return matchesSearch && matchesCategory && matchesStatus;
   });
 
@@ -80,6 +81,7 @@ const ProductDashboard = () => {
       />
 
       {/* Products Table */}
+
       {sortedProducts.length === 0 ? (
         <NoDataFound title={"Stock"} />
       ) : (

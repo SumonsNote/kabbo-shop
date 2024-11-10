@@ -1,4 +1,3 @@
-import { Brand } from "@/app/models/brand-model";
 import { Product } from "@/app/models/product-model";
 import { Stock } from "@/app/models/stock-model";
 import connectMongo from "@/services/mongo";

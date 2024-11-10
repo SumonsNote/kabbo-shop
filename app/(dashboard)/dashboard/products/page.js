@@ -14,7 +14,9 @@ import ProductsFilters from "./_components/ProductsFilters";
 const ProductDashboard = () => {
   const { data, isLoading, isError, error } = useFetchProductsQuery();
 
+
   const products = data?.products || [];
+
 
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All");
@@ -27,13 +29,16 @@ const ProductDashboard = () => {
     return <Loading />;
   }
   const filteredProducts = products.filter((product) => {
-    const matchesSearch = product.product_name
+    const matchesSearch = product?.product_name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
     const matchesCategory =
-      categoryFilter === "All" || product.brand === categoryFilter;
+      categoryFilter === "All" || product?.category_name === categoryFilter;
     const matchesStatus =
+
       statusFilter === "All" || product.status == statusFilter;
+
+
     return matchesSearch && matchesCategory && matchesStatus;
   });
 
@@ -58,11 +63,13 @@ const ProductDashboard = () => {
       />
 
       {/* Products Table */}
+
       {filteredProducts.length === 0 ? (
         <NoDataFound title="Products" />
       ) : (
         <ProductTable sortedProducts={filteredProducts} />
       )}
+
     </div>
   );
 };
