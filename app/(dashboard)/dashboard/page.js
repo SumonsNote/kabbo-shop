@@ -81,7 +81,9 @@ export default function Dashboard() {
           <h1 className="text-2xl font-semibold text-gray-800">
             Welcome to Your Dashboard
           </h1>
-          <p className="text-gray-600">Overview of your store's performance</p>
+          <p className="text-gray-600">
+            Overview of your store&apos;s performance
+          </p>
         </div>
 
         {/* Summary Cards */}

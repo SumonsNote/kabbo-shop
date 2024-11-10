@@ -2,38 +2,45 @@
 
 import Link from "next/link";
 
-const ProductItem = ({ product, index }) => {
-  console.log(product);
+const StockProductsItem = ({ stock, index }) => {
+  console.log(stock);
   return (
     <tr
-      key={product._id}
-      className="hover:bg-gray-50 dark:hover:bg-gray-700 text-black dark:text-gray-500"
+      key={stock?._id}
+      className="hover:bg-gray-50 dark:hover:bg-gray-700 text-black dark:text-gray-500 capitalize"
     >
       <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
 
       <td className="px-6 py-4 whitespace-nowrap">
-        <img src={product?.image} alt="" />
+        <img src={stock?.product?.image} alt="" />
       </td>
-      <td className="px-6 py-4 whitespace-nowrap">{product?.product_name}</td>
-      <td className="px-6 py-4 whitespace-nowrap">{product?.brand_name}</td>
-      <td className="px-6 py-4 whitespace-nowrap">{product?.category_name}</td>
-
+      <td className="px-6 py-4 whitespace-nowrap">
+        {stock?.product?.product_name}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        {stock?.product?.brand_name}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        {stock?.product?.category_name}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">{stock?.purchase_price}</td>
+      <td className="px-6 py-4 whitespace-nowrap">{stock?.stock}</td>
       <td className="px-6 py-4 whitespace-nowrap">
         <span
           className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-            product.status === "in stock"
+            stock?.status === "in stock"
               ? "bg-green-100 text-green-800"
-              : product.status === "low stock"
+              : stock?.status === "low stock"
               ? "bg-yellow-100 text-yellow-800"
               : "bg-red-100 text-red-800"
           }`}
         >
-          {product.status}
+          {stock?.status}
         </span>
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
         <Link
-          href={`/dashboard/products/${product._id}`}
+          href={`/dashboard/stocks/${stock?._id}`}
           className="text-green-600 hover:text-green-500 mr-4"
         >
           Details
@@ -45,4 +52,4 @@ const ProductItem = ({ product, index }) => {
   );
 };
 
-export default ProductItem;
+export default StockProductsItem;
