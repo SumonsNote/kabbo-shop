@@ -58,7 +58,7 @@ export default function TestPage() {
       {isDragActive ? (
         <p>Drop the file here ...</p>
       ) : (
-        <p>Drag 'n' drop a file here, or click to select file</p>
+        <p>Drag &apos;n&apos; drop a file here, or click to select file</p>
       )}
       <div>
         {file && (

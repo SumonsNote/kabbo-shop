@@ -2,7 +2,7 @@
 
 import { AiOutlineSearch } from "react-icons/ai";
 
-const Filters = ({
+const ProductsFilters = ({
   searchTerm,
   setSearchTerm,
   categoryFilter,
@@ -53,4 +53,4 @@ const Filters = ({
   );
 };
 
-export default Filters;
+export default ProductsFilters;

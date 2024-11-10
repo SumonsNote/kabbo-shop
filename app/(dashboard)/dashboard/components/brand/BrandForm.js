@@ -43,10 +43,10 @@ const BrandForm = ({ brand, isEdit, setShowForm }) => {
   useEffect(() => {
     if (addSuccess) {
       toast.success("Brand added successfully!");
-      setShowForm(false);
+      setShowForm();
     } else if (updateSuccess) {
       toast.success("Brand updated successfully!");
-      setShowForm(false);
+      setShowForm();
     }
 
     if (addError) {

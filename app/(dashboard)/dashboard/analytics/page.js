@@ -80,7 +80,7 @@ const EcommFinanceDashboard = () => {
             Financial Overview
           </h1>
           <p className="mt-1 text-sm text-gray-500">
-            Track your store's performance and revenue
+            Track your store&apos;s performance and revenue
           </p>
         </div>
         <div className="flex gap-2">

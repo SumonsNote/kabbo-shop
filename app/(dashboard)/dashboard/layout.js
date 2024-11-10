@@ -7,11 +7,15 @@ import { Provider } from "react-redux";
 import { store } from "@/store/store";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 const RootLayout = ({ children, params }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   // console.log(modal);
   return (
     <html lang="en">
+      <head>
+        <title>Admin Dashboard</title>
+      </head>
       <body>
         <ToastContainer />
         <Provider store={store}>

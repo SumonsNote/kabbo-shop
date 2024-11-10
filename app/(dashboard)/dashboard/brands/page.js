@@ -48,7 +48,7 @@ const BrandsAdminPanel = () => {
         </button>
         {isOpen && (
           <RelativeModal setShowForm={toggleModal} title={"Add Brand"}>
-            <BrandForm />
+            <BrandForm setShowForm={toggleModal} />
           </RelativeModal>
         )}
       </div>
@@ -61,7 +61,7 @@ const BrandsAdminPanel = () => {
             <input
               type="text"
               placeholder="Search brands..."
-              className="pl-10 w-full rounded-lg border dark:bg-inherit border-gray-300 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="pl-10 w-full rounded-lg border dark:bg-inherit dark:text-gray-500 border-gray-300 py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
