@@ -29,8 +29,4 @@ export const productsApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const {
-  useAddProductMutation,
-  useFetchProductsQuery,
-  useUpdateProductMutation,
-} = productsApi;
+export const { useFetchProductsQuery } = productsApi;
