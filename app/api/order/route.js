@@ -33,20 +33,20 @@ export async function GET() {
         path: "customer",
         model: CustomerProfile,
         populate: {
-          path: "userId",
+          path: "user",
           model: User,
         },
       })
       .populate({
         path: "items.product",
         model: Product,
-        select: "image brand_name, category_name, product_name, product_model",
       });
     return NextResponse.json({
       success: true,
       orders,
     });
   } catch (error) {
+    console.log(error);
     return NextResponse.json({
       success: false,
       message: error.message,

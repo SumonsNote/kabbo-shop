@@ -31,4 +31,7 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
+userSchema.virtual("full_name").get(function () {
+  return `${this.first_name} ${this.last_name}`;
+});
 export const User = mongoose.models.User ?? mongoose.model("User", userSchema);

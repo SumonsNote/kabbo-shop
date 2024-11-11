@@ -1,209 +1,258 @@
 "use client";
 import React, { useState } from "react";
+import {
+  Search,
+  MoreVertical,
+  Paperclip,
+  Send,
+  Image,
+  Smile,
+  Phone,
+  Video,
+  Info,
+} from "lucide-react";
+import ChatWidget from "./chat2/page";
 
-export default function Support() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
-  const [errors, setErrors] = useState({});
-  const [successMessage, setSuccessMessage] = useState("");
+const ChatApp = () => {
+  const [message, setMessage] = useState("");
+  const [activeChat, setActiveChat] = useState("1");
 
-  // FAQ Toggle State
-  const [activeFAQ, setActiveFAQ] = useState(null);
+  // Sample chat list data
+  const chats = [
+    {
+      id: "1",
+      name: "Emma Thompson",
+      lastMessage: "Thank you for the quick response!",
+      time: "12:45 PM",
+      unread: 2,
+      online: true,
+      avatar: "https://api.multiavatar.com/emma.svg",
+    },
+    {
+      id: "2",
+      name: "James Wilson",
+      lastMessage: "When will my order arrive?",
+      time: "11:30 AM",
+      unread: 0,
+      online: true,
+      avatar: "https://api.multiavatar.com/james.svg",
+    },
+    {
+      id: "3",
+      name: "Sarah Chen",
+      lastMessage: "Is this available in red?",
+      time: "9:15 AM",
+      unread: 1,
+      online: false,
+      avatar: "https://api.multiavatar.com/sarah.svg",
+    },
+  ];
 
-  // Form validation
-  const validateForm = () => {
-    const errors = {};
-    if (!formData.name) errors.name = "Name is required.";
-    if (!formData.email) errors.email = "Email is required.";
-    if (!formData.subject) errors.subject = "Subject is required.";
-    if (!formData.message) errors.message = "Message is required.";
-    return errors;
-  };
+  // Sample messages for the active chat
+  const messages = [
+    {
+      id: 1,
+      sender: "them",
+      message: "Hi! I have a question about my recent order",
+      time: "12:30 PM",
+    },
+    {
+      id: 2,
+      sender: "me",
+      message:
+        "Hello! Of course, I'd be happy to help. What would you like to know?",
+      time: "12:32 PM",
+    },
+    {
+      id: 3,
+      sender: "them",
+      message:
+        "I ordered the blue jacket yesterday, but I'm wondering if I can change the size",
+      time: "12:35 PM",
+    },
+    {
+      id: 4,
+      sender: "me",
+      message:
+        "I can help you with that! What size would you like to change it to?",
+      time: "12:36 PM",
+    },
+    {
+      id: 5,
+      sender: "them",
+      message: "Thank you for the quick response!",
+      time: "12:45 PM",
+    },
+  ];
 
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    const validationErrors = validateForm();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      setSuccessMessage("");
-    } else {
-      setErrors({});
-      setSuccessMessage(
-        "Your message has been sent. We’ll get back to you shortly."
-      );
-      // Reset form fields
-      setFormData({ name: "", email: "", subject: "", message: "" });
-    }
-  };
-
-  // Toggle FAQ answer visibility
-  const toggleFAQ = (index) => {
-    setActiveFAQ(activeFAQ === index ? null : index);
-  };
+  const activeUser = chats.find((chat) => chat.id === activeChat);
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen w-full">
-      <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
-        <h1 className="text-2xl font-semibold text-gray-800 mb-6">Support</h1>
+    <div className="flex h-full bg-gray-100 w-full">
+      {/* Chat List Sidebar */}
+      <div className="w-80 bg-white border-r border-gray-200 flex flex-col">
+        {/* Search Header */}
+        <div className="p-4 border-b border-gray-200">
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search conversations..."
+              className="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+          </div>
+        </div>
 
-        {/* Support Form */}
-        <section className="mb-8">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">
-            Submit a Support Request
-          </h2>
-          <form onSubmit={handleFormSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-600">
-                Name
-              </label>
-              <input
-                type="text"
-                value={formData.name}
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
-                className={`w-full px-4 py-2 border ${
-                  errors.name ? "border-red-500" : "border-gray-300"
-                } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              />
-              {errors.name && (
-                <p className="text-red-500 text-xs mt-1">{errors.name}</p>
-              )}
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-600">
-                Email
-              </label>
-              <input
-                type="email"
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-                className={`w-full px-4 py-2 border ${
-                  errors.email ? "border-red-500" : "border-gray-300"
-                } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              />
-              {errors.email && (
-                <p className="text-red-500 text-xs mt-1">{errors.email}</p>
-              )}
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-600">
-                Subject
-              </label>
-              <input
-                type="text"
-                value={formData.subject}
-                onChange={(e) =>
-                  setFormData({ ...formData, subject: e.target.value })
-                }
-                className={`w-full px-4 py-2 border ${
-                  errors.subject ? "border-red-500" : "border-gray-300"
-                } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              />
-              {errors.subject && (
-                <p className="text-red-500 text-xs mt-1">{errors.subject}</p>
-              )}
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-600">
-                Message
-              </label>
-              <textarea
-                value={formData.message}
-                onChange={(e) =>
-                  setFormData({ ...formData, message: e.target.value })
-                }
-                className={`w-full px-4 py-2 border ${
-                  errors.message ? "border-red-500" : "border-gray-300"
-                } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 h-32`}
-              />
-              {errors.message && (
-                <p className="text-red-500 text-xs mt-1">{errors.message}</p>
-              )}
-            </div>
-            <button
-              type="submit"
-              className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+        {/* Chat List */}
+        <div className="flex-1 overflow-y-auto">
+          {chats.map((chat) => (
+            <div
+              key={chat.id}
+              onClick={() => setActiveChat(chat.id)}
+              className={`p-4 flex items-center gap-3 hover:bg-gray-50 cursor-pointer ${
+                activeChat === chat.id ? "bg-blue-50" : ""
+              }`}
             >
-              Submit Request
-            </button>
-          </form>
-          {successMessage && (
-            <p className="text-green-500 text-sm mt-4">{successMessage}</p>
-          )}
-        </section>
-
-        {/* FAQ Section */}
-        <section className="mb-8">
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">
-            Frequently Asked Questions
-          </h2>
-          <div className="space-y-4">
-            {[
-              {
-                question: "How do I reset my password?",
-                answer:
-                  "You can reset your password by clicking on 'Forgot Password' at the login screen.",
-              },
-              {
-                question: "How do I update my account information?",
-                answer:
-                  "Go to the 'Account Settings' page to update your information.",
-              },
-              {
-                question: "How do I contact support?",
-                answer:
-                  "You can contact support through this page or by emailing support@example.com.",
-              },
-            ].map((faq, index) => (
-              <div key={index} className="border-b border-gray-200 pb-4">
-                <button
-                  onClick={() => toggleFAQ(index)}
-                  className="flex justify-between items-center w-full text-left text-gray-800 font-medium focus:outline-none"
-                >
-                  <span>{faq.question}</span>
-                  <span
-                    className={`transform transition-transform ${
-                      activeFAQ === index ? "rotate-180" : "rotate-0"
-                    }`}
-                  >
-                    ▼
-                  </span>
-                </button>
-                {activeFAQ === index && (
-                  <p className="text-gray-600 mt-2">{faq.answer}</p>
+              {/* Avatar with online indicator */}
+              <div className="relative">
+                <img
+                  src="/api/placeholder/40/40"
+                  alt={chat.name}
+                  className="w-12 h-12 rounded-full"
+                />
+                {chat.online && (
+                  <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
                 )}
               </div>
-            ))}
-          </div>
-        </section>
 
-        {/* Additional Contact Info */}
-        <section>
-          <h2 className="text-xl font-semibold text-gray-700 mb-4">
-            Need More Help?
-          </h2>
-          <p className="text-gray-600">
-            You can also reach us by phone or email:
-          </p>
-          <p className="mt-2 text-gray-800">
-            <strong>Email:</strong> support@example.com
-          </p>
-          <p className="text-gray-800">
-            <strong>Phone:</strong> +1 (555) 123-4567
-          </p>
-          <p className="mt-4 text-gray-600">
-            We’re here to help! Our support team is available Monday - Friday,
-            9:00 AM - 5:00 PM (PST).
-          </p>
-        </section>
+              {/* Chat preview */}
+              <div className="flex-1 min-w-0">
+                <div className="flex justify-between items-start">
+                  <h3 className="font-medium text-gray-900 truncate">
+                    {chat.name}
+                  </h3>
+                  <span className="text-xs text-gray-500">{chat.time}</span>
+                </div>
+                <p className="text-sm text-gray-500 truncate">
+                  {chat.lastMessage}
+                </p>
+              </div>
+
+              {/* Unread indicator */}
+              {chat.unread > 0 && (
+                <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
+                  <span className="text-xs text-white">{chat.unread}</span>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
+
+      {/* Chat Area */}
+      <div className="flex-1 flex flex-col">
+        {/* Chat Header */}
+        {activeUser && (
+          <div className="h-16 border-b border-gray-200 bg-white px-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <img
+                  src="/api/placeholder/40/40"
+                  alt={activeUser.name}
+                  className="w-10 h-10 rounded-full"
+                />
+                {activeUser.online && (
+                  <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white"></div>
+                )}
+              </div>
+              <div>
+                <h2 className="font-medium text-gray-900">{activeUser.name}</h2>
+                <p className="text-xs text-gray-500">
+                  {activeUser.online ? "Online" : "Offline"}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <button className="p-2 hover:bg-gray-100 rounded-full">
+                <Phone className="h-5 w-5 text-gray-500" />
+              </button>
+              <button className="p-2 hover:bg-gray-100 rounded-full">
+                <Video className="h-5 w-5 text-gray-500" />
+              </button>
+              <button className="p-2 hover:bg-gray-100 rounded-full">
+                <Info className="h-5 w-5 text-gray-500" />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Messages Area */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+          {messages.map((msg) => (
+            <div
+              key={msg.id}
+              className={`flex ${
+                msg.sender === "me" ? "justify-end" : "justify-start"
+              }`}
+            >
+              <div
+                className={`max-w-[70%] ${
+                  msg.sender === "me"
+                    ? "bg-blue-500 text-white rounded-l-lg rounded-tr-lg"
+                    : "bg-white text-gray-800 rounded-r-lg rounded-tl-lg"
+                } px-4 py-2 shadow-sm`}
+              >
+                <p>{msg.message}</p>
+                <p
+                  className={`text-xs mt-1 ${
+                    msg.sender === "me" ? "text-blue-100" : "text-gray-500"
+                  }`}
+                >
+                  {msg.time}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Message Input */}
+        <div className="h-20 border-t border-gray-200 bg-white px-4 flex items-center gap-4">
+          <button className="p-2 hover:bg-gray-100 rounded-full">
+            <Paperclip className="h-5 w-5 text-gray-500" />
+          </button>
+          <button className="p-2 hover:bg-gray-100 rounded-full">
+            <Image className="h-5 w-5 text-gray-500" />
+          </button>
+          <div className="flex-1 relative">
+            <input
+              type="text"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Type a message..."
+              className="w-full px-4 py-2 bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <button className="absolute right-2 top-2 p-1 hover:bg-gray-200 rounded-full">
+              <Smile className="h-5 w-5 text-gray-500" />
+            </button>
+          </div>
+          <button
+            className="p-2 bg-blue-500 hover:bg-blue-600 rounded-full"
+            onClick={() => {
+              if (message.trim()) {
+                // Handle send message
+                setMessage("");
+              }
+            }}
+          >
+            <Send className="h-5 w-5 text-white" />
+          </button>
+        </div>
+      </div>
+
+      {/* demo ChatWidget */}
+      <ChatWidget />
     </div>
   );
-}
+};
+
+export default ChatApp;

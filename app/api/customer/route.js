@@ -21,12 +21,12 @@ export async function GET(req) {
     await connectMongo();
     const customerProfiles = await CustomerProfile.find()
       .populate({
-        path: "userId",
+        path: "user",
         model: User,
         select: "first_name last_name createdAt",
       })
       .populate({
-        path: "orderId",
+        path: "order",
         model: Order,
       });
     return NextResponse.json({ customerProfiles }, { status: 200 });

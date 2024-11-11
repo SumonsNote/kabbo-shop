@@ -74,11 +74,11 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
+    <div className="p-6 bg-gray-100 dark:bg-gray-900 w-full min-h-screen">
       <div className="w-full mx-auto">
         {/* Welcome Section */}
         <div className="mb-8">
-          <h1 className="text-2xl font-semibold text-gray-800">
+          <h1 className="text-2xl font-semibold text-gray-500">
             Welcome to Your Dashboard
           </h1>
           <p className="text-gray-600">
@@ -87,54 +87,68 @@ export default function Dashboard() {
         </div>
 
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 text-gray-500 gap-6 mb-8">
           {/* Sales Card */}
-          <div className="bg-white rounded-lg shadow p-4">
+          <div className="bg-white dark:bg-gray-900  rounded-lg shadow p-4">
             <p className="text-sm text-gray-500">Total Sales</p>
-            <p className="text-2xl font-bold text-gray-900">$320,000</p>
+            <p className="text-2xl font-bold text-gray-900 dark:text-gray-500">
+              $320,000
+            </p>
           </div>
           {/* Customers Card */}
-          <div className="bg-white rounded-lg shadow p-4">
+          <div className="bg-white dark:bg-gray-900 rounded-lg shadow p-4">
             <p className="text-sm text-gray-500">Total Customers</p>
-            <p className="text-2xl font-bold text-gray-900">8,250</p>
+            <p className="text-2xl font-bold text-gray-900 dark:text-gray-500">
+              8,250
+            </p>
           </div>
           {/* Orders Card */}
-          <div className="bg-white rounded-lg shadow p-4">
+          <div className="bg-white dark:bg-gray-900 rounded-lg shadow p-4">
             <p className="text-sm text-gray-500">Total Orders</p>
-            <p className="text-2xl font-bold text-gray-900">15,450</p>
+            <p className="text-2xl font-bold text-gray-900 dark:text-gray-500">
+              15,450
+            </p>
           </div>
         </div>
 
         {/* Main Dashboard Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Chart Section */}
-          <div className="lg:col-span-2 bg-white rounded-lg shadow p-6">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">
+          <div className="lg:col-span-2 bg-white dark:bg-gray-900 rounded-lg shadow p-6">
+            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-500 mb-4">
               Sales Overview
             </h2>
             <Line data={chartData} options={chartOptions} />
           </div>
 
           {/* Recent Activity */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">
+          <div className="bg-white dark:bg-gray-900 rounded-lg shadow p-6">
+            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-500 mb-4">
               Recent Activity
             </h2>
             <ul className="space-y-3">
               <li className="flex justify-between">
-                <span>New order placed by John Doe</span>
+                <span className="dark:text-gray-400">
+                  New order placed by John Doe
+                </span>
                 <span className="text-sm text-gray-500">2 hours ago</span>
               </li>
               <li className="flex justify-between">
-                <span>New product added: Wireless Headphones</span>
+                <span className="dark:text-gray-400">
+                  New product added: Wireless Headphones
+                </span>
                 <span className="text-sm text-gray-500">6 hours ago</span>
               </li>
               <li className="flex justify-between">
-                <span>Received payment for Order #4578</span>
+                <span className="dark:text-gray-400">
+                  Received payment for Order #4578
+                </span>
                 <span className="text-sm text-gray-500">1 day ago</span>
               </li>
               <li className="flex justify-between">
-                <span>Discount campaign launched</span>
+                <span className="dark:text-gray-400">
+                  Discount campaign launched
+                </span>
                 <span className="text-sm text-gray-500">2 days ago</span>
               </li>
             </ul>

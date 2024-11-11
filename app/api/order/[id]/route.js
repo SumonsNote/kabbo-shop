@@ -16,17 +16,24 @@ export async function GET(req, { params }) {
         path: "customer",
         model: CustomerProfile,
         populate: {
-          path: "userId",
+          path: "user",
           model: User,
         },
       })
       .populate({
         path: "items.product",
         model: Product,
+        select: "brand_name category_name product_model product_name image",
       });
+
+    const fullName = order.customer.user.full_name;
     return NextResponse.json({
       success: true,
-      order,
+      order: {
+        ...order.toObject(),
+        fullAddress: order.getFullAddress(),
+        fullName,
+      },
     });
   } catch (error) {
     return NextResponse.json({

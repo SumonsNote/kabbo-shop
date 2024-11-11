@@ -6,28 +6,27 @@ import Loading from "../components/Loading";
 import NoDataFound from "../components/NoDataFound";
 import CustomerTable from "./_components/CustomerTable";
 import SearchCustomer from "./_components/SearchCustomer";
+import CustomerStats from "./_components/CustomerStats";
 
 const CustomersAdminPanel = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const { data, isLoading } = useFetchCustomersQuery();
   const customers = data?.customerProfiles ?? [];
-
+  console.log(customers);
   const filteredCustomers = customers.filter(
     (customer) =>
-      customer.userId.first_name
+      customer.user.first_name
         .toLowerCase()
         .includes(searchQuery.toLowerCase()) ||
-      customer.userId.last_name
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase())
+      customer.user.last_name.toLowerCase().includes(searchQuery.toLowerCase())
   );
   if (isLoading) {
     return <Loading />;
   }
 
   return (
-    <div className="p-6 space-y-6  min-h-screen w-full text-gray-500">
+    <div className="p-6 space-y-6  min-h-screen  text-gray-500">
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
@@ -48,7 +47,8 @@ const CustomersAdminPanel = () => {
         setSearchQuery={setSearchQuery}
         searchQuery={searchQuery}
       />
-
+      {/* Stats Section */}
+      <CustomerStats customers={customers} />
       {/* Customers Table */}
       {filteredCustomers.length === 0 ? (
         <NoDataFound title="Customers" />

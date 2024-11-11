@@ -5,10 +5,11 @@ const productSchema = new Schema(
     product_name: { type: String, required: true },
     status: String,
     product_model: { type: String, unique: true },
+    colors: { type: [String], required: true },
     image: [
       {
         url: { type: String, required: true },
-        color_variant: { type: String, required: true },
+        colors: { type: String, required: true },
       },
     ],
     display: { type: Object },
