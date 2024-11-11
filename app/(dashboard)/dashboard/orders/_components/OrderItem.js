@@ -1,6 +1,4 @@
 import { Package } from "lucide-react";
-import Image from "next/image";
-import React from "react";
 
 export default function OrderItem({ order }) {
   return (
@@ -18,34 +16,23 @@ export default function OrderItem({ order }) {
               <div className="flex items-center gap-4">
                 <div className="h-12 w-12 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center">
                   <Package className="w-6 h-6 text-gray-500" />
-                  {/* <Image
-                    src={item?.product?.image[0]}
-                    width={40}
-                    height={40}
-                    alt="Product Image"
-                  /> */}
                 </div>
                 <div>
                   <h3 className="font-medium">{item?.product?.product_name}</h3>
                   <p className="text-sm text-gray-500">
-                    SKU: {item?.product?.product_code}
+                    SKU: {item?.product?.product_model}
                   </p>
                 </div>
               </div>
               <div className="flex items-center gap-8">
                 <div className="text-right">
                   <p className="font-medium">
-                    ${Number(item.product.price).toFixed(2)}
+                    ${Number(item.price).toFixed(2)}
                   </p>
-                  <p className="text-sm text-gray-500">
-                    Qty: {item.product.quantity}
-                  </p>
+                  <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
                 </div>
                 <p className="font-medium">
-                  $
-                  {(Number(item.product.price) * item.product.quantity).toFixed(
-                    2
-                  )}
+                  ${(Number(item.price) * item.quantity).toFixed(2)}
                 </p>
               </div>
             </div>
@@ -59,17 +46,19 @@ export default function OrderItem({ order }) {
                 {/* <span>
                   ${(order.payment.amount - order.shipping.cost).toFixed(2)}
                 </span> */}
-                <span>$219.98</span>
+                <span>${order?.total_amount}</span>
               </div>
               <div className="flex justify-between text-gray-500">
                 <span>Shipping</span>
-                {/* <span>${order.shipping.cost.toFixed(2)}</span> */}
-                <span>$14.52</span>
+                <span>${order?.shipping_charge}</span>
               </div>
               <div className="flex justify-between font-medium text-lg">
                 <span>Total</span>
-                {/* <span>${order.payment.amount.toFixed(2)}</span> */}
-                <span>${234.5}</span>
+                <span>
+                  $
+                  {parseInt(order?.total_amount) +
+                    parseInt(order?.shipping_charge)}
+                </span>
               </div>
             </div>
           </div>

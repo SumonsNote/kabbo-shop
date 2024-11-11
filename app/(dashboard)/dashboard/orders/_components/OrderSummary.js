@@ -13,11 +13,11 @@ export default function OrderSummary({ order }) {
         </div>
         <div className="p-4">
           <div className="space-y-2">
-            <p className="font-medium">{order?.customer.userId.first_name}</p>
-            <p className="0">{order?.customer.userId.email}</p>
+            <p className="font-medium">{order?.fullName}</p>
+            <p className="0">{order?.customer.user.email}</p>
             <div className="flex items-start gap-2 text-gray-500">
               <MapPin className="w-4 h-4 mt-1 flex-shrink-0" />
-              <span>{order?.shipping_details.address}</span>
+              <span> {order?.fullAddress} </span>
             </div>
           </div>
         </div>
@@ -37,7 +37,7 @@ export default function OrderSummary({ order }) {
             <p className="text-gray-500">{order?.payment_info.method}</p>
             <div className="flex justify-between items-center font-medium">
               <span>Amount Paid</span>
-              <span>${order?.total_amount}</span>
+              <span>${order?.payment_info.amount}</span>
             </div>
           </div>
         </div>
@@ -52,14 +52,14 @@ export default function OrderSummary({ order }) {
           <div className="space-y-2">
             <div className="flex items-center gap-2">
               <Truck className="w-4 h-4" />
-              <span>{order?.shipping?.method || "Express Delivery"}</span>
+              <span>{order?.shipping_method || "Express Delivery"}</span>
             </div>
             <p className="text-gray-500">
-              Tracking: {order?.shipping?.tracking || "1Z999AA1234567890"}
+              Tracking: {order?.tracking_number || "1Z999AA1234567890"}
             </p>
             <div className="flex justify-between items-center">
               <span>Shipping Cost</span>
-              <span>${order?.shipping?.cost || "300"}</span>
+              <span>${order?.shipping_charge || "300"}</span>
             </div>
           </div>
         </div>

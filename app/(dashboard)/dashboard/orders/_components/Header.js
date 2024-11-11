@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 export default function OrderHeader() {
@@ -11,9 +12,12 @@ export default function OrderHeader() {
         <button className="bg-white dark:bg-gray-800 dark:text-gray-500 border border-gray-300 hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-md transition duration-200">
           Export
         </button>
-        <button className="bg-blue-500 dark:bg-blue-700 dark:text-gray-300 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition duration-200">
+        <Link
+          href="/dashboard/orders/add"
+          className="bg-blue-500 dark:bg-blue-700 dark:text-gray-300 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition duration-200"
+        >
           Create Order
-        </button>
+        </Link>
       </div>
     </div>
   );

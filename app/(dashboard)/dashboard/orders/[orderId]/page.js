@@ -1,55 +1,19 @@
 "use client";
-import React from "react";
-import { Package, Truck, Calendar, CreditCard, MapPin } from "lucide-react";
-import OrderSummary from "../_components/OrderSummary";
-import OrderItem from "../_components/OrderItem";
 import { useFetchSingleOrdersQuery } from "@/store/slices/orderApi";
+import { Calendar } from "lucide-react";
+import Loading from "../../components/Loading";
+import OrderItem from "../_components/OrderItem";
+import OrderSummary from "../_components/OrderSummary";
+import { getStatusStyle } from "../_components/OrderTable";
 
 const OrderDetails = ({ params }) => {
-  const { data, isLoading, isError, error, isSuccess } =
-    useFetchSingleOrdersQuery(params.orderId);
-  console.log(data);
-  const { order } = isSuccess && data;
-  //   const order = {
-  //     id: "#ORD-71251",
-  //     date: "November 9, 2024",
-  //     status: "In Transit",
-  //     customer: {
-  //       name: "Sarah Johnson",
-  //       email: "sarah.j@example.com",
-  //       address: "123 Pine Street, Seattle, WA 98101",
-  //     },
-  //     payment: {
-  //       method: "Credit Card",
-  //       last4: "4242",
-  //       amount: 234.5,
-  //       status: "Paid",
-  //     },
-  //     items: [
-  //       {
-  //         id: 1,
-  //         name: "Wireless Headphones",
-  //         sku: "WH-2024",
-  //         price: 129.99,
-  //         quantity: 1,
-  //       },
-  //       {
-  //         id: 2,
-  //         name: "Smart Watch",
-  //         sku: "SW-1001",
-  //         price: 89.99,
-  //         quantity: 1,
-  //       },
-  //     ],
-  //     shipping: {
-  //       method: "Express Delivery",
-  //       tracking: "1Z999AA1234567890",
-  //       cost: 14.52,
-  //     },
-  //   };
+  const { data, isLoading } = useFetchSingleOrdersQuery(params.orderId);
+
+  if (isLoading) return <Loading />;
+  const order = data?.order;
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-6">
+    <div className="p-6 max-w-7xl w-full px-20  space-y-6">
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
@@ -62,7 +26,11 @@ const OrderDetails = ({ params }) => {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <span className="px-3 py-1 rounded-full bg-blue-100 text-blue-800 font-medium">
+          <span
+            className={`${getStatusStyle(
+              order?.status
+            )} px-2 py-1 rounded-full`}
+          >
             {order?.status}
           </span>
         </div>

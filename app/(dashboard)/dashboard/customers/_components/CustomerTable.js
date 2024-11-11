@@ -32,20 +32,23 @@ export default function CustomerTable({ filteredCustomers }) {
           </thead>
           <tbody className="divide-y divide-gray-200">
             {filteredCustomers.map((customer) => (
-              <tr key={customer.id} className="hover:bg-gray-50">
+              <tr
+                key={customer.id}
+                className="hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800"
+              >
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
                     <div className="flex-shrink-0 h-10 w-10">
                       <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
                         <span className="text-lg font-medium text-gray-500">
-                          {customer.userId.first_name.charAt(0)}
-                          {customer.userId.last_name.charAt(0)}
+                          {customer.user.first_name.charAt(0)}
+                          {customer.user.last_name.charAt(0)}
                         </span>
                       </div>
                     </div>
                     <div className="ml-4">
                       <div className="text-sm font-medium text-gray-500">
-                        {customer.userId.first_name} {customer.userId.last_name}
+                        {customer.user.first_name} {customer.user.last_name}
                       </div>
                       <div className="text-sm text-gray-500">
                         {customer.email}
@@ -59,7 +62,7 @@ export default function CustomerTable({ filteredCustomers }) {
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {new Date(customer.userId.createdAt).toLocaleDateString(
+                  {new Date(customer.user.createdAt).toLocaleDateString(
                     "en-US",
                     {
                       year: "numeric",
@@ -70,12 +73,12 @@ export default function CustomerTable({ filteredCustomers }) {
                 </td>
 
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {customer.orderId.length}
+                  {customer.order.length}
                 </td>
 
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   $
-                  {customer.orderId
+                  {customer.order
                     .reduce((total, order) => {
                       return total + parseFloat(order.total_amount || 0);
                     }, 0)

@@ -13,6 +13,7 @@ import {
   FaRegCircleUser,
   FaShopify,
   FaStore,
+  FaUser,
 } from "react-icons/fa6";
 import { IoLogOut } from "react-icons/io5";
 import { MdCategory, MdOutlinePhoneIphone } from "react-icons/md";
@@ -27,6 +28,11 @@ export default function NavSideBar({ setIsCollapsed, isCollapsed }) {
       href: "/dashboard",
       icon: <FaDashcube className="w-6 h-6" />,
       label: "Dashboard",
+    },
+    {
+      href: "/dashboard/user",
+      icon: <FaUser className="w-6 h-6" />,
+      label: "Users",
     },
     {
       href: "/dashboard/category",
@@ -76,7 +82,11 @@ export default function NavSideBar({ setIsCollapsed, isCollapsed }) {
     },
   ];
 
-  const isActive = (path) => pathname === path;
+  const isActive = (path) => {
+    return path === "/dashboard"
+      ? pathname === "/dashboard"
+      : pathname.includes(path);
+  };
 
   return (
     <div
