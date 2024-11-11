@@ -40,6 +40,7 @@ export async function GET() {
       .populate({
         path: "items.product",
         model: Product,
+        select: "image brand_name, category_name, product_name, product_model",
       });
     return NextResponse.json({
       success: true,

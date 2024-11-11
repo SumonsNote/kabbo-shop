@@ -1,10 +1,11 @@
 // ProductItem.js
 
-
+import Image from "next/image";
 import Link from "next/link";
 
 const ProductItem = ({ product, index }) => {
-  console.log(product);
+  const images = product?.image.map((image) => image.url);
+
   return (
     <tr
       key={product._id}
@@ -13,7 +14,12 @@ const ProductItem = ({ product, index }) => {
       <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
 
       <td className="px-6 py-4 whitespace-nowrap">
-        <img src={product?.image} alt="" />
+        <Image
+          src={images[0]}
+          alt={product?.product_name}
+          width={50}
+          height={50}
+        />
       </td>
       <td className="px-6 py-4 whitespace-nowrap">{product?.product_name}</td>
       <td className="px-6 py-4 whitespace-nowrap">{product?.brand_name}</td>
