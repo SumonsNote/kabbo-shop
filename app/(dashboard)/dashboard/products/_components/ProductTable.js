@@ -1,4 +1,4 @@
-import ProductItem from "../../components/ProductItem";
+import ProductItem from "./ProductItem";
 
 export default function ProductTable({ sortedProducts, handleSort }) {
   return (

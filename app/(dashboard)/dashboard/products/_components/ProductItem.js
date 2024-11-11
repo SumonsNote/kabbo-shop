@@ -1,6 +1,5 @@
 // ProductItem.js
 
-
 import Link from "next/link";
 
 const ProductItem = ({ product, index }) => {
@@ -13,7 +12,7 @@ const ProductItem = ({ product, index }) => {
       <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
 
       <td className="px-6 py-4 whitespace-nowrap">
-        <img src={product?.image} alt="" />
+        <img src={product?.image[0].url} alt="" className="h-16 w-16" />
       </td>
       <td className="px-6 py-4 whitespace-nowrap">{product?.product_name}</td>
       <td className="px-6 py-4 whitespace-nowrap">{product?.brand_name}</td>

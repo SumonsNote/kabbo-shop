@@ -2,7 +2,13 @@ import mongoose, { Schema } from "mongoose";
 
 const categorySchema = new Schema(
   {
-    brandId: { type: Schema.Types.ObjectId, ref: "Brand" },
+    categoryName: {
+      type: String,
+      required: true,
+    },
+    categoryImg: {
+      type: String,
+    },
   },
   {
     timestamps: true,

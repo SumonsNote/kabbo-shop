@@ -29,4 +29,4 @@ export const stocksApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useFetchStocksQuery } = stocksApi;
+export const { useFetchStocksQuery, useAddStockMutation } = stocksApi;

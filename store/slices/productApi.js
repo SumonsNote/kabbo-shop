@@ -3,7 +3,8 @@ import { apiSlice } from "../api/apiSlice";
 export const productsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     fetchProducts: builder.query({
-      query: () => "/product",
+      query: (searchTerm) =>
+        `/product?${searchTerm ? `search=${searchTerm}` : ""}`,
       providesTags: ["products"],
     }),
     fetchSingleProducts: builder.query({
@@ -29,4 +30,9 @@ export const productsApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useFetchProductsQuery } = productsApi;
+export const {
+  useFetchProductsQuery,
+  useAddProductMutation,
+  useFetchSingleProductsQuery,
+  useUpdateProductMutation,
+} = productsApi;

@@ -1,9 +1,15 @@
-import { useForm } from "react-hook-form";
+import { useLayoutEffect } from "react";
 import { AiOutlineClose } from "react-icons/ai";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 
 export default function RelativeModal({ setShowForm, title, children }) {
+  // prevent scroll events
+
+  useLayoutEffect(() => {
+    const mainContainer = document.querySelector(".mainContainer");
+    mainContainer.style.overflow = "hidden";
+    return () => (mainContainer.style.overflow = "auto");
+  }, []);
+
   return (
     <div
       className="modal-content absolute top-0 right-0 left-0 z-50 w-full bg-black/20 h-full p-4 backdrop-blur-sm flex justify-center items-center animate-fade"

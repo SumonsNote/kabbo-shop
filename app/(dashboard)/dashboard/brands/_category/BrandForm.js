@@ -3,13 +3,12 @@ import {
   useAddBrandMutation,
   useUpdateBrandMutation,
 } from "@/store/slices/brandApi";
+import { useFetchCategoriesQuery } from "@/store/slices/CategoryApi";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { BiCloudUpload } from "react-icons/bi";
-import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
 const BrandForm = ({ brand, isEdit, setShowForm }) => {
@@ -17,6 +16,7 @@ const BrandForm = ({ brand, isEdit, setShowForm }) => {
     addBrand,
     { isLoading: addLoading, isSuccess: addSuccess, isError: addError },
   ] = useAddBrandMutation();
+  const { data } = useFetchCategoriesQuery();
   const [
     updateBrand,
     {
@@ -173,13 +173,23 @@ const BrandForm = ({ brand, isEdit, setShowForm }) => {
         >
           Category
         </label>
-        <input
+        <select
           id="category"
-          type="text"
-          disabled
           {...register("category")}
-          className="mt-1 capitalize h-8 px-4 w-full border-gray-300 rounded-md shadow-sm sm:text-sm"
-        />
+          className="mt-1 h-8 px-4 w-full border border-gray-300 bg-inherit rounded-md shadow-sm sm:text-sm"
+          defaultValue={"smartphone"}
+          disabled
+        >
+          <option value="">select category</option>
+          {data?.categories?.map((category) => (
+            <option
+              key={category._id}
+              value={category?.categoryName?.toLowerCase()}
+            >
+              {category.categoryName}
+            </option>
+          ))}
+        </select>
       </div>
 
       {/* Status Select */}
