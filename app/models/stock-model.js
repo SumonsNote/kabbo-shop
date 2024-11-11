@@ -1,9 +1,14 @@
 import mongoose, { Schema } from "mongoose";
 
 // Define sub-schema for storage
+
 const StorageSchema = new Schema({
-  size: { type: Number, required: true },
-  unit: { type: String, required: true, enum: ["GB", "TB"] },
+  storageOptions: [
+    {
+      size: { type: Number, required: true },
+      unit: { type: String, required: true, enum: ["GB", "TB"] },
+    },
+  ],
 });
 
 // Define sub-schema for region
@@ -17,6 +22,8 @@ const RegionSchema = new Schema({
 const RegionalPricingSchema = new Schema({
   region: { type: RegionSchema, required: true },
   price: { type: Number, required: true },
+  discount_price: { type: Number, required: true },
+  purchase_price: { type: Number, required: true },
   stock_quantity: { type: Number, required: true },
 });
 
