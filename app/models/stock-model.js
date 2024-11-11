@@ -36,8 +36,6 @@ const stockSchema = new Schema(
     },
     sku: { type: String, required: true, unique: true },
     stock: { type: Number, required: true, min: 0 },
-    sell_price: { type: Number, required: true },
-    purchase_price: { type: Number, required: true },
     dealer: { type: String, required: true },
     sold_out: { type: Number, default: 0, min: 0 },
     variants: [VariantSchema],
@@ -46,7 +44,6 @@ const stockSchema = new Schema(
       enum: ["active", "inactive"],
       default: "active",
     },
-
   },
   { timestamps: true }
 );

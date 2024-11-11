@@ -13,7 +13,13 @@ export default function SingeBrand({ brand, i }) {
         {i + 1}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-        <Image src={brand.logo} width={50} height={50} alt="Logo" />
+        <Image
+          src={brand.logo}
+          width={50}
+          height={50}
+          alt="Logo"
+          className="h-16 w-16 rounded-full bg-gray-200"
+        />
       </td>{" "}
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
         {brand.title}

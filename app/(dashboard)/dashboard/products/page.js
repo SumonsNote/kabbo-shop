@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import Filters from "../components/Filters";
-import ProductItem from "../components/ProductItem";
+import ProductItem from "./_components/ProductItem";
 import { useFetchProductsQuery } from "@/store/slices/productApi";
 import Loading from "../components/Loading";
 import ProductTable from "./_components/ProductTable";
@@ -14,9 +14,7 @@ import ProductsFilters from "./_components/ProductsFilters";
 const ProductDashboard = () => {
   const { data, isLoading, isError, error } = useFetchProductsQuery();
 
-
   const products = data?.products || [];
-
 
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All");
@@ -35,9 +33,7 @@ const ProductDashboard = () => {
     const matchesCategory =
       categoryFilter === "All" || product?.category_name === categoryFilter;
     const matchesStatus =
-
       statusFilter === "All" || product.status == statusFilter;
-
 
     return matchesSearch && matchesCategory && matchesStatus;
   });
@@ -69,7 +65,6 @@ const ProductDashboard = () => {
       ) : (
         <ProductTable sortedProducts={filteredProducts} />
       )}
-
     </div>
   );
 };

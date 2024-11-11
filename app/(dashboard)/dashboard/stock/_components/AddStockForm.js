@@ -1,18 +1,22 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PlusCircle, MinusCircle, Loader2 } from "lucide-react";
+import SearchableDropdown from "../../components/ui/SearchableDropdown";
+import { Trash2 } from "lucide-react";
+import { useAddStockMutation } from "@/store/slices/stockApi";
+import { toast } from "react-toastify";
 
 export default function AddStockForm() {
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
+  const [addStock, { isLoading, isSuccess: addSuccess, isError: addError }] =
+    useAddStockMutation();
   const [stockData, setStockData] = useState({
     product: "",
     sku: "",
-    stock: 0,
-    sell_price: 0,
-    purchase_price: 0,
     dealer: "",
     sold_out: 0,
+    stock: 0,
     variants: [
       {
         storage: { size: 0, unit: "GB" },
@@ -20,6 +24,8 @@ export default function AddStockForm() {
           {
             region: { name: "", currency_code: "", currency_symbol: "" },
             price: 0,
+            purchase_price: 0,
+            discount_price: 0,
             stock_quantity: 0,
           },
         ],
@@ -27,8 +33,45 @@ export default function AddStockForm() {
     ],
     status: "active",
   });
+  const regions = [
+    { code: "SG", name: "Singapore" },
+    { code: "VN", name: "Vietnam" },
+    { code: "AE", name: "United Arab Emirates (Dubai)" },
+    { code: "US", name: "United States" },
+    { code: "UK", name: "United Kingdom" },
+    { code: "CA", name: "Canada" },
+    { code: "AU", name: "Australia" },
+    { code: "IN", name: "India" },
+    { code: "CN", name: "China" },
+    { code: "JP", name: "Japan" },
+    { code: "KR", name: "South Korea" },
+    { code: "DE", name: "Germany" },
+    { code: "FR", name: "France" },
+    { code: "IT", name: "Italy" },
+    { code: "ES", name: "Spain" },
+    { code: "MX", name: "Mexico" },
+    { code: "BR", name: "Brazil" },
+    { code: "RU", name: "Russia" },
+    { code: "SA", name: "Saudi Arabia" },
+    { code: "TR", name: "Turkey" },
+    { code: "TH", name: "Thailand" },
+    { code: "MY", name: "Malaysia" },
+    { code: "ID", name: "Indonesia" },
+    { code: "NL", name: "Netherlands" },
+    { code: "SE", name: "Sweden" },
+    { code: "CH", name: "Switzerland" },
+    { code: "ZA", name: "South Africa" },
+    { code: "NZ", name: "New Zealand" },
+    { code: "PH", name: "Philippines" },
+    { code: "PK", name: "Pakistan" },
+    { code: "BD", name: "Bangladesh" },
+    { code: "EG", name: "Egypt" },
+    { code: "AR", name: "Argentina" },
+    { code: "CO", name: "Colombia" },
+    { code: "NG", name: "Nigeria" },
+  ];
 
-  const handleInputChange = (e) => {
+  const handleinputChange = (e) => {
     const { name, value } = e.target;
     setStockData((prev) => ({ ...prev, [name]: value }));
   };
@@ -100,15 +143,34 @@ export default function AddStockForm() {
     ].regional_pricing.filter((_, i) => i !== priceIndex);
     setStockData((prev) => ({ ...prev, variants: newVariants }));
   };
+  useEffect(() => {
+    if (addSuccess) {
+      toast.success("Brand added successfully!");
+    }
+    // else if (updateSuccess) {
+    //   toast.success("Brand updated successfully!");
+    //   setShowForm();
+    // }
 
+    if (addError) {
+      toast.error(
+        `Failed to add brand: ${addError.message || "Unknown error occurred"}`
+      );
+    }
+    // else if (updateError) {
+    //   toast.error(
+    //     `Failed to update brand: ${
+    //       updateError.message || "Unknown error occurred"
+    //     }`
+    //   );
+    // }
+  }, [addSuccess, addError]);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    // Here you would typically send the stockData to your API
-    console.log(stockData);
-    await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulating API call
-    setIsLoading(false);
-    alert("Stock data submitted successfully!");
+    addStock(stockData);
+  };
+  const handleChange = (option) => {
+    setStockData((prev) => ({ ...prev, product: option._id }));
   };
 
   return (
@@ -129,16 +191,17 @@ export default function AddStockForm() {
                   htmlFor="product"
                   className="block text-sm font-medium text-gray-500 mb-1"
                 >
-                  Product ID
+                  Product
                 </label>
-                <input
-                  type="text"
-                  id="product"
-                  name="product"
+                <SearchableDropdown
                   value={stockData.product}
-                  onChange={handleInputChange}
-                  required
+                  onChange={handleChange}
+                  onBlur={() => console.log("Dropdown blurred")}
+                  placeholder="Search for an option"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                  containerClassName=""
+                  optionClassName=" bg-gray-100 hover:bg-gray-200"
+                  optionActiveClassName="bg-primary-500 text-white"
                 />
               </div>
               <div>
@@ -153,7 +216,7 @@ export default function AddStockForm() {
                   id="sku"
                   name="sku"
                   value={stockData.sku}
-                  onChange={handleInputChange}
+                  onChange={handleinputChange}
                   required
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                 />
@@ -170,50 +233,13 @@ export default function AddStockForm() {
                   id="stock"
                   name="stock"
                   value={stockData.stock}
-                  onChange={handleInputChange}
+                  onChange={handleinputChange}
                   required
                   min="0"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                 />
               </div>
-              <div>
-                <label
-                  htmlFor="sell_price"
-                  className="block text-sm font-medium text-gray-500 mb-1"
-                >
-                  Sell Price
-                </label>
-                <input
-                  type="number"
-                  id="sell_price"
-                  name="sell_price"
-                  value={stockData.sell_price}
-                  onChange={handleInputChange}
-                  required
-                  min="0"
-                  step="0.01"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="purchase_price"
-                  className="block text-sm font-medium text-gray-500 mb-1"
-                >
-                  Purchase Price
-                </label>
-                <input
-                  type="number"
-                  id="purchase_price"
-                  name="purchase_price"
-                  value={stockData.purchase_price}
-                  onChange={handleInputChange}
-                  required
-                  min="0"
-                  step="0.01"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                />
-              </div>
+
               <div>
                 <label
                   htmlFor="dealer"
@@ -226,28 +252,12 @@ export default function AddStockForm() {
                   id="dealer"
                   name="dealer"
                   value={stockData.dealer}
-                  onChange={handleInputChange}
+                  onChange={handleinputChange}
                   required
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                 />
               </div>
-              <div>
-                <label
-                  htmlFor="sold_out"
-                  className="block text-sm font-medium text-gray-500 mb-1"
-                >
-                  Sold Out
-                </label>
-                <input
-                  type="number"
-                  id="sold_out"
-                  name="sold_out"
-                  value={stockData.sold_out}
-                  onChange={handleInputChange}
-                  min="0"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                />
-              </div>
+
               <div>
                 <label
                   htmlFor="status"
@@ -259,7 +269,7 @@ export default function AddStockForm() {
                   id="status"
                   name="status"
                   value={stockData.status}
-                  onChange={handleInputChange}
+                  onChange={handleinputChange}
                   required
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                 >
@@ -290,6 +300,27 @@ export default function AddStockForm() {
                       >
                         Storage Size
                       </label>
+                      <select
+                        id={`storage-size-${variantIndex}`}
+                        value={variant.storage.size}
+                        onChange={(e) =>
+                          handleVariantChange(
+                            variantIndex,
+                            "size",
+                            e.target.value
+                          )
+                        }
+                        required
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                      >
+                        <option value="">Select Size</option>
+                        <option value="64">64</option>
+                        <option value="128">128</option>
+                        <option value="256">256</option>
+                        <option value="512">512</option>
+                        <option value="1024">1024</option>
+                      </select>
+                      {/* 
                       <input
                         type="number"
                         id={`storage-size-${variantIndex}`}
@@ -304,7 +335,7 @@ export default function AddStockForm() {
                         required
                         min="0"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                      />
+                      /> */}
                     </div>
                     <div>
                       <label
@@ -339,20 +370,19 @@ export default function AddStockForm() {
                   {variant.regional_pricing.map((pricing, priceIndex) => (
                     <div
                       key={priceIndex}
-                      className="mb-4 p-3 bg-gray-50 dark:bg-gray-900 rounded-md"
+                      className="mb-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg"
                     >
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2">
-                        <div>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <div className="space-y-2">
                           <label
                             htmlFor={`region-name-${variantIndex}-${priceIndex}`}
-                            className="block text-sm font-medium text-gray-500 mb-1"
                           >
                             Region Name
                           </label>
-                          <input
-                            type="text"
+                          <select
                             id={`region-name-${variantIndex}-${priceIndex}`}
                             value={pricing.region.name}
+                            defaultValue={"bangladesh"}
                             onChange={(e) =>
                               handleRegionalPricingChange(
                                 variantIndex,
@@ -363,17 +393,24 @@ export default function AddStockForm() {
                             }
                             required
                             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                          />
+                          >
+                            <option value="">Select Region</option>
+                            {regions
+                              .sort((a, b) => a.name.localeCompare(b.name))
+                              .map((region) => (
+                                <option key={region.id} value={region.name}>
+                                  {region.name}
+                                </option>
+                              ))}
+                          </select>
                         </div>
-                        <div>
+                        <div className="space-y-2">
                           <label
                             htmlFor={`currency-code-${variantIndex}-${priceIndex}`}
-                            className="block text-sm font-medium text-gray-500 mb-1"
                           >
                             Currency Code
                           </label>
-                          <input
-                            type="text"
+                          <select
                             id={`currency-code-${variantIndex}-${priceIndex}`}
                             value={pricing.region.currency_code}
                             onChange={(e) =>
@@ -386,19 +423,21 @@ export default function AddStockForm() {
                             }
                             required
                             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                          />
+                          >
+                            <option value="USD">USD</option>
+                            <option value="TK">TK</option>
+                          </select>
                         </div>
-                        <div>
+                        <div className="space-y-2">
                           <label
                             htmlFor={`currency-symbol-${variantIndex}-${priceIndex}`}
-                            className="block text-sm font-medium text-gray-500 mb-1"
                           >
                             Currency Symbol
                           </label>
-                          <input
-                            type="text"
+                          <select
                             id={`currency-symbol-${variantIndex}-${priceIndex}`}
                             value={pricing.region.currency_symbol}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                             onChange={(e) =>
                               handleRegionalPricingChange(
                                 variantIndex,
@@ -408,15 +447,16 @@ export default function AddStockForm() {
                               )
                             }
                             required
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                          />
+                          >
+                            <option value="$">$</option>
+                            <option value="৳">৳</option>
+                          </select>
                         </div>
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
+                        <div className="space-y-2">
                           <label
                             htmlFor={`price-${variantIndex}-${priceIndex}`}
-                            className="block text-sm font-medium text-gray-500 mb-1"
                           >
                             Price
                           </label>
@@ -424,6 +464,7 @@ export default function AddStockForm() {
                             type="number"
                             id={`price-${variantIndex}-${priceIndex}`}
                             value={pricing.price}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                             onChange={(e) =>
                               handleRegionalPricingChange(
                                 variantIndex,
@@ -433,15 +474,61 @@ export default function AddStockForm() {
                               )
                             }
                             required
-                            min="0"
-                            step="0.01"
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                            min={0}
+                            step={0.01}
                           />
                         </div>
-                        <div>
+                        <div className="space-y-2">
+                          <label
+                            htmlFor={`discount_price-${variantIndex}-${priceIndex}`}
+                          >
+                            Discount Price
+                          </label>
+                          <input
+                            type="number"
+                            id={`discount_price-${variantIndex}-${priceIndex}`}
+                            value={pricing.discount_price}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                            onChange={(e) =>
+                              handleRegionalPricingChange(
+                                variantIndex,
+                                priceIndex,
+                                "discount_price",
+                                Number(e.target.value)
+                              )
+                            }
+                            required
+                            min={0}
+                            step={0.01}
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label
+                            htmlFor={`purchase-price-${variantIndex}-${priceIndex}`}
+                          >
+                            Purchase Price
+                          </label>
+                          <input
+                            type="number"
+                            id={`purchase-price-${variantIndex}-${priceIndex}`}
+                            value={pricing.purchase_price}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                            onChange={(e) =>
+                              handleRegionalPricingChange(
+                                variantIndex,
+                                priceIndex,
+                                "purchase_price",
+                                Number(e.target.value)
+                              )
+                            }
+                            required
+                            min={0}
+                            step={0.01}
+                          />
+                        </div>
+                        <div className="space-y-2">
                           <label
                             htmlFor={`stock-quantity-${variantIndex}-${priceIndex}`}
-                            className="block text-sm font-medium text-gray-500 mb-1"
                           >
                             Stock Quantity
                           </label>
@@ -449,6 +536,7 @@ export default function AddStockForm() {
                             type="number"
                             id={`stock-quantity-${variantIndex}-${priceIndex}`}
                             value={pricing.stock_quantity}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                             onChange={(e) =>
                               handleRegionalPricingChange(
                                 variantIndex,
@@ -458,19 +546,21 @@ export default function AddStockForm() {
                               )
                             }
                             required
-                            min="0"
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                            min={0}
                           />
                         </div>
                       </div>
                       {variant.regional_pricing.length > 1 && (
                         <button
                           type="button"
+                          variant="destructive"
+                          size="sm"
+                          className="mt-4 flex items-center border px-2 rounded-full bg-red-50 text-red-600 hover:text-red-800"
                           onClick={() =>
                             removeRegionalPricing(variantIndex, priceIndex)
                           }
-                          className="mt-2 text-red-600 hover:text-red-800"
                         >
+                          <Trash2 className="w-4 h-4 mr-2" />
                           Remove Regional Pricing
                         </button>
                       )}

@@ -3,7 +3,6 @@
 import Link from "next/link";
 
 const StockProductsItem = ({ stock, index }) => {
-  console.log(stock);
   return (
     <tr
       key={stock?._id}
@@ -12,7 +11,7 @@ const StockProductsItem = ({ stock, index }) => {
       <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
 
       <td className="px-6 py-4 whitespace-nowrap">
-        <img src={stock?.product?.image} alt="" />
+        <img src={stock?.product?.image[0].url} alt="" className="h-16 w-16" />
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
         {stock?.product?.product_name}
@@ -40,7 +39,7 @@ const StockProductsItem = ({ stock, index }) => {
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
         <Link
-          href={`/dashboard/stocks/${stock?._id}`}
+          href={`/dashboard/stock/${stock?._id}`}
           className="text-green-600 hover:text-green-500 mr-4"
         >
           Details

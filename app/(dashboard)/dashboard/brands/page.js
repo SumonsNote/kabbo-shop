@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { AiOutlinePlus, AiOutlineSearch } from "react-icons/ai";
-import BrandForm from "../components/brand/BrandForm";
-import SingeBrand from "../components/brand/SingeBrand";
+import BrandForm from "./_category/BrandForm";
+import SingeBrand from "./_category/SingeBrand";
 import Error from "../components/Error";
 import Loading from "../components/Loading";
 import NoDataFound from "../components/NoDataFound";
@@ -35,7 +35,7 @@ const BrandsAdminPanel = () => {
   }
 
   return (
-    <div className="p-6 space-y-6  min-h-screen w-full">
+    <div className="p-6 space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h1 className="text-2xl font-bold text-gray-500 ">Brands</h1>

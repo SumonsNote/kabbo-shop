@@ -41,6 +41,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "d61s2hjse0ytn.cloudfront.net",
       },
+      {
+        protocol: "https",
+        hostname: "photo.teamrabbil.com",
+      },
     ],
   },
 };

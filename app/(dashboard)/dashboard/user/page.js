@@ -66,7 +66,7 @@ export default function UserDashboard() {
   }, []);
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
+    <div className="bg-gray-50 dark:bg-gray-900 min-h-screen w-full">
       {/* Header Analytics Section */}
       <header className="bg-white dark:bg-gray-900 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-6">
@@ -106,7 +106,7 @@ export default function UserDashboard() {
         {/* User List Section */}
         <div className="bg-white dark:bg-gray-900 rounded-lg shadow">
           <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-800">User List</h2>
+            <h2 className="text-xl font-semibold text-gray-500">User List</h2>
           </div>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">

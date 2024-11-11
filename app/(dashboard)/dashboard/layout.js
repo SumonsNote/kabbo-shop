@@ -28,7 +28,7 @@ const DashboardLayout = ({ children, params }) => {
             <Header setIsCollapsed={setIsCollapsed} isCollapsed={isCollapsed} />
 
             {/* Dashboard Content */}
-            <div className="p-2 h-[93vh] dark:bg-gray-950/95 overflow-x-auto flex justify-center items-start min-w-full relative">
+            <div className="p-2 h-[93vh] dark:bg-gray-950/95 mainContainer overflow-x-auto flex justify-center items-start min-w-full relative">
               {children}
             </div>
           </div>
