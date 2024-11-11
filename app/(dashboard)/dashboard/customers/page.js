@@ -1,13 +1,11 @@
 "use client";
 import { useFetchCustomersQuery } from "@/store/slices/customerApi";
-import { useFetchProductsQuery } from "@/store/slices/productApi";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { AiOutlineUserAdd } from "react-icons/ai";
 import Loading from "../components/Loading";
-import SearchCustomer from "./_components/SearchCustomer";
-import CustomerTable from "./_components/Customertable";
-import NotFound from "../not-found";
 import NoDataFound from "../components/NoDataFound";
-import { AiOutlinePlus, AiOutlineUser, AiOutlineUserAdd } from "react-icons/ai";
+import CustomerTable from "./_components/CustomerTable";
+import SearchCustomer from "./_components/SearchCustomer";
 
 const CustomersAdminPanel = () => {
   const [searchQuery, setSearchQuery] = useState("");

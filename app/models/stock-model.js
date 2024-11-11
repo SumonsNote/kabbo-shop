@@ -43,10 +43,9 @@ const stockSchema = new Schema(
     variants: [VariantSchema],
     status: {
       type: String,
-      enum: ["active", "inactive"],
-      default: "active",
+      enum: ["in-stock", "low-stock", "out-of-stock"],
+      default: "in-stock",
     },
-
   },
   { timestamps: true }
 );

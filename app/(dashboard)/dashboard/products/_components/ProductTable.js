@@ -1,8 +1,6 @@
-import React from "react";
 import ProductItem from "../../components/ProductItem";
 
 export default function ProductTable({ sortedProducts, handleSort }) {
-  console.log(sortedProducts);
   return (
     <div className=" rounded-lg shadow-sm overflow-hidden">
       <table className="min-w-full divide-y divide-gray-200">
