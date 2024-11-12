@@ -6,7 +6,7 @@ import { ProductSpecification } from "../_components/ProductSpecification";
 
 export default async function ProductDetail({ params: { id } }) {
   const product = await getProductById(id);
-
+  // console.log(product);
   return (
     <div className="container mx-auto px-4 text-gray-500 ">
       <NavLink />
