@@ -47,7 +47,7 @@ export default function StockTable({ sortConfig, sortedProducts, handleSort }) {
               onClick={() => handleSort("price")}
             >
               <div className="flex items-center">
-                Purchase Price
+                sku
                 {sortConfig.key === "price" && (
                   <span className="ml-2">
                     {sortConfig.direction === "asc" ? "↑" : "↓"}

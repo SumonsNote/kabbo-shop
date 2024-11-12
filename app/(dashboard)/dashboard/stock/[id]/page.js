@@ -1,5 +1,10 @@
+import BackButton from "../../components/ui/BackButton";
+
 const ProductStockDetails = async ({ params: { id } }) => {
-  const res = await fetch(`http://localhost:3000/api/stock/${id}`);
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_APP_URL_DEV}/api/stock/${id}`,
+    { cache: "no-store" }
+  );
   const data = await res.json();
   const { product, stock, dealer, sold_out, variants, status, sku } =
     data?.stock;
@@ -16,6 +21,7 @@ const ProductStockDetails = async ({ params: { id } }) => {
 
   return (
     <div className="w-full mx-auto p-6 bg-white dark:bg-gray-950 rounded-lg shadow-lg">
+      <BackButton />
       {/* Header Section */}
       <div className="flex justify-between items-start mb-8">
         <div>

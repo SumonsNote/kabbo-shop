@@ -22,7 +22,7 @@ const StockProductsItem = ({ stock, index }) => {
       <td className="px-6 py-4 whitespace-nowrap">
         {stock?.product?.category_name}
       </td>
-      <td className="px-6 py-4 whitespace-nowrap">{stock?.purchase_price}</td>
+      <td className="px-6 py-4 whitespace-nowrap">{stock?.sku}</td>
       <td className="px-6 py-4 whitespace-nowrap">{stock?.stock}</td>
       <td className="px-6 py-4 whitespace-nowrap">
         <span
@@ -44,7 +44,12 @@ const StockProductsItem = ({ stock, index }) => {
         >
           Details
         </Link>
-        <button className="text-blue-600 hover:text-blue-900 mr-4">Edit</button>
+        <Link
+          href={`/dashboard/stock/update/${stock?._id}`}
+          className="text-blue-600 hover:text-blue-900 mr-4"
+        >
+          Edit
+        </Link>
         <button className="text-red-600 hover:text-red-900">Delete</button>
       </td>
     </tr>
