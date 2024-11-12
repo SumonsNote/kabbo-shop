@@ -8,13 +8,13 @@ export async function GET(req, { params }) {
   console.log(id);
   await connectMongo();
   try {
-    const stock = await Stock.find({ pr0duct: id })
+    const product = await Stock.find({ product: id })
       .populate({
         path: "product",
         model: Product,
       })
       .lean();
-    return NextResponse.json({ stock }, { status: 200 });
+    return NextResponse.json({ product }, { status: 200 });
   } catch (error) {
     console.log(error);
     return NextResponse.json({ error: error.message }, { status: 500 });

@@ -54,8 +54,18 @@ export const ProductInfo = ({ product }) => {
     const selectedPricing = variant.regional_pricing.find(
       (pricing) => pricing.region.name == selectedRegion
     );
-    console.log("selectedPricing", selectedPricing.discount_price);
+
     setSelectedStorage(storageOption);
+    setSelectedPrice({
+      discount_price: selectedPricing.discount_price,
+      price: selectedPricing.price,
+    });
+  };
+  const handleRegionSelect = (variant, regionOption) => {
+    setSelectedRegion(regionOption);
+    const selectedPricing = variant.regional_pricing.find(
+      (pricing) => pricing.region.name == selectedRegion
+    );
     setSelectedPrice({
       discount_price: selectedPricing.discount_price,
       price: selectedPricing.price,
@@ -163,7 +173,7 @@ export const ProductInfo = ({ product }) => {
                       ? "bg-blue-600 text-white"
                       : ""
                   }`}
-                  onClick={() => setSelectedRegion(regionOption)}
+                  onClick={() => handleRegionSelect(variant, regionOption)}
                 >
                   {regionOption}
                 </button>
