@@ -1,16 +1,5 @@
 import mongoose, { Schema } from "mongoose";
 
-// Define sub-schema for storage
-
-const StorageSchema = new Schema({
-  storageOptions: [
-    {
-      size: { type: Number, required: true },
-      unit: { type: String, required: true, enum: ["GB", "TB"] },
-    },
-  ],
-});
-
 // Define sub-schema for region
 const RegionSchema = new Schema({
   name: { type: String, required: true },
@@ -29,7 +18,10 @@ const RegionalPricingSchema = new Schema({
 
 // Define sub-schema for variants
 const VariantSchema = new Schema({
-  storage: { type: StorageSchema, required: true },
+  storage: {
+    size: { type: Number, required: true },
+    unit: { type: String, required: true, enum: ["GB", "TB"] },
+  },
   regional_pricing: [RegionalPricingSchema],
 });
 
@@ -48,8 +40,8 @@ const stockSchema = new Schema(
     variants: [VariantSchema],
     status: {
       type: String,
-      enum: ["active", "inactive"],
-      default: "active",
+      enum: ["in-stock", "low-stock", "out-of-stock", "discontinued"],
+      default: "in-stock",
     },
   },
   { timestamps: true }

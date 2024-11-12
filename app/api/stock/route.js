@@ -19,6 +19,21 @@ export async function POST(req) {
   }
 }
 
+export async function PUT(req) {
+  await connectMongo();
+  try {
+    const stockObj = await req.json();
+    console.log(stockObj);
+    const stock = await Stock.findByIdAndUpdate(stockObj.id, stockObj);
+    return NextResponse.json(
+      { message: "Stock updated successfully", stock },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
 export async function GET(req) {
   await connectMongo();
   try {

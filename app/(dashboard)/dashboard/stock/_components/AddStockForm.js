@@ -4,20 +4,58 @@ import React, { useEffect, useState } from "react";
 import { PlusCircle, MinusCircle, Loader2 } from "lucide-react";
 import SearchableDropdown from "../../components/ui/SearchableDropdown";
 import { Trash2 } from "lucide-react";
-import { useAddStockMutation } from "@/store/slices/stockApi";
+import {
+  useAddStockMutation,
+  useUpdateStockMutation,
+} from "@/store/slices/stockApi";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import BackButton from "../../components/ui/BackButton";
 
-export default function AddStockForm() {
-  // const [isLoading, setIsLoading] = useState(false);
+export default function AddStockForm({ stock, isEdit }) {
+  const router = useRouter();
   const [addStock, { isLoading, isSuccess: addSuccess, isError: addError }] =
     useAddStockMutation();
+  const [
+    updateStock,
+    {
+      isLoading: updateLoading,
+      isSuccess: updateSuccess,
+      isError: updateError,
+    },
+  ] = useUpdateStockMutation();
   const [stockData, setStockData] = useState({
-    product: "",
-    sku: "",
-    dealer: "",
-    sold_out: 0,
-    stock: 0,
-    variants: [
+    id: stock?._id || "",
+    product: stock?.product?._id || "",
+    sku: stock?.sku || "",
+    dealer: stock?.dealer || "",
+    sold_out: stock?.sold_out || 0,
+    stock: stock?.stock || 0,
+    variants: stock?.variants?.map((variant) => ({
+      storage: {
+        size: variant.storage?.size || 0,
+        unit: variant.storage?.unit || "GB",
+      },
+      regional_pricing: variant.regional_pricing?.map((pricing) => ({
+        region: {
+          name: pricing.region?.name || "",
+          currency_code: pricing.region?.currency_code || "",
+          currency_symbol: pricing.region?.currency_symbol || "",
+        },
+        price: pricing.price || 0,
+        discount_price: pricing.discount_price || 0,
+        purchase_price: pricing.purchase_price || 0,
+        stock_quantity: pricing.stock_quantity || 0,
+      })) || [
+        {
+          region: { name: "", currency_code: "", currency_symbol: "" },
+          price: 0,
+          purchase_price: 0,
+          discount_price: 0,
+          stock_quantity: 0,
+        },
+      ],
+    })) || [
       {
         storage: { size: 0, unit: "GB" },
         regional_pricing: [
@@ -31,7 +69,7 @@ export default function AddStockForm() {
         ],
       },
     ],
-    status: "active",
+    status: stock?.status || "in-stock",
   });
   const regions = [
     { code: "SG", name: "Singapore" },
@@ -111,6 +149,8 @@ export default function AddStockForm() {
             {
               region: { name: "", currency_code: "", currency_symbol: "" },
               price: 0,
+              purchase_price: 0,
+              discount_price: 0,
               stock_quantity: 0,
             },
           ],
@@ -131,6 +171,8 @@ export default function AddStockForm() {
     newVariants[variantIndex].regional_pricing.push({
       region: { name: "", currency_code: "", currency_symbol: "" },
       price: 0,
+      purchase_price: 0,
+      discount_price: 0,
       stock_quantity: 0,
     });
     setStockData((prev) => ({ ...prev, variants: newVariants }));
@@ -145,40 +187,45 @@ export default function AddStockForm() {
   };
   useEffect(() => {
     if (addSuccess) {
-      toast.success("Brand added successfully!");
+      toast.success("Stock added successfully!");
+      router.refresh();
+      router.back();
+    } else if (updateSuccess) {
+      toast.success("Stock updated successfully!");
+      router.refresh();
+      router.back();
     }
-    // else if (updateSuccess) {
-    //   toast.success("Brand updated successfully!");
-    //   setShowForm();
-    // }
 
     if (addError) {
       toast.error(
-        `Failed to add brand: ${addError.message || "Unknown error occurred"}`
+        `Failed to add Stock: ${addError.message || "Unknown error occurred"}`
+      );
+    } else if (updateError) {
+      toast.error(
+        `Failed to update Stock: ${
+          updateError.message || "Unknown error occurred"
+        }`
       );
     }
-    // else if (updateError) {
-    //   toast.error(
-    //     `Failed to update brand: ${
-    //       updateError.message || "Unknown error occurred"
-    //     }`
-    //   );
-    // }
-  }, [addSuccess, addError]);
+  }, [addSuccess, addError, updateSuccess, updateError]);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    addStock(stockData);
+    console.log("Form submitted:", stockData);
+    isEdit ? updateStock(stockData) : addStock(stockData);
   };
   const handleChange = (option) => {
     setStockData((prev) => ({ ...prev, product: option._id }));
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-800 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-950 w-full py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-500 mb-8">
-          Add New Stock Item
-        </h1>
+        <div className="flex justify-between items-center">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-500 mb-8">
+            {isEdit ? "Edit" : "Add"} Stock Item
+          </h1>
+          <BackButton />
+        </div>
         <form
           onSubmit={handleSubmit}
           className="bg-white dark:bg-gray-900 shadow-md rounded-lg overflow-hidden"
@@ -193,16 +240,26 @@ export default function AddStockForm() {
                 >
                   Product
                 </label>
-                <SearchableDropdown
-                  value={stockData.product}
-                  onChange={handleChange}
-                  onBlur={() => console.log("Dropdown blurred")}
-                  placeholder="Search for an option"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                  containerClassName=""
-                  optionClassName=" bg-gray-100 hover:bg-gray-200"
-                  optionActiveClassName="bg-primary-500 text-white"
-                />
+                {isEdit ? (
+                  <div
+                    type="input"
+                    id="product"
+                    className="w-full px-3 py-2 border bg-slate-400 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                  >
+                    {stock.product.product_name}
+                  </div>
+                ) : (
+                  <SearchableDropdown
+                    value={stockData.product}
+                    onChange={handleChange}
+                    onBlur={() => console.log("Dropdown blurred")}
+                    placeholder="Search for an option"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                    containerClassName=""
+                    optionClassName=" bg-gray-100 hover:bg-gray-200"
+                    optionActiveClassName="bg-primary-500 text-white"
+                  />
+                )}
               </div>
               <div>
                 <label
@@ -268,13 +325,15 @@ export default function AddStockForm() {
                 <select
                   id="status"
                   name="status"
-                  value={stockData.status}
+                  defaultValue={stockData?.status}
                   onChange={handleinputChange}
                   required
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                 >
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
+                  <option value="in-stock">In Stock</option>
+                  <option value="low-stock">Low Stock</option>
+                  <option value="out-of-stock">Out of Stock</option>
+                  <option value="discontinued">Discontinued</option>
                 </select>
               </div>
             </div>
@@ -370,7 +429,7 @@ export default function AddStockForm() {
                   {variant.regional_pricing.map((pricing, priceIndex) => (
                     <div
                       key={priceIndex}
-                      className="mb-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg"
+                      className="mb-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg text-gray-500"
                     >
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                         <div className="space-y-2">
@@ -595,7 +654,14 @@ export default function AddStockForm() {
             </div>
           </div>
 
-          <div className="px-6 py-4 bg-gray-50 dark:bg-gray-900 text-right">
+          <div className="px-6 py-4 bg-gray-50 dark:bg-gray-900 text-right flex justify-end gap-5">
+            <button
+              className="px-4 py-2 flex items-center border rounded-md  bg-red-50 text-red-600 hover:text-red-800  shadow-sm  disabled:cursor-not-allowed"
+              onClick={() => router.back()}
+            >
+              <Trash2 className="w-5 h-5 mr-2" />
+              Cancel
+            </button>
             <button
               type="submit"
               disabled={isLoading}
