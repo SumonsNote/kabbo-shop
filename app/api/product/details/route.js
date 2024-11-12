@@ -1,11 +1,11 @@
 import { ProductDetail } from "@/app/models/product-details-model";
 import { Product } from "@/app/models/product-model";
-import { dbConnect } from "@/utils/mongo";
+import connectMongo from "@/services/mongo";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    await dbConnect();
+    await connectMongo();
     const reqObj = await req.json();
     const productDetail = await ProductDetail.create(reqObj);
     return NextResponse.json({ status: 201, productDetail });
@@ -16,14 +16,11 @@ export async function POST(req) {
 
 export async function GET(req) {
   try {
-    await dbConnect();
+    await connectMongo();
     const { searchParams } = new URL(req.url);
     const productId = searchParams.get("productId");
 
-    const products = await Product.find({ _id: productId }).populate({
-      path: "productDetails",
-      model: ProductDetail,
-    });
+    const products = await Product.findById(productId);
 
     return NextResponse.json({ status: 200, products });
   } catch (error) {
