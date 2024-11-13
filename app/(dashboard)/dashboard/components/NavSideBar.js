@@ -94,7 +94,7 @@ export default function NavSideBar({ setIsCollapsed, isCollapsed }) {
         isCollapsed ? "xl:w-20 w-0 hidden sm:flex px-2" : "xl:w-64 px-6"
       } 4  py-8 flex flex-col justify-between duration-300`}
     >
-      <div className="h-full">
+      <div className="h-[]">
         <div
           className="flex items-center mb-8 cursor-pointer w-[200px]"
           onClick={() => setIsCollapsed(!isCollapsed)}

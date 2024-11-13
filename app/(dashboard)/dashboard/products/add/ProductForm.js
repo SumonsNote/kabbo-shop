@@ -2,35 +2,75 @@
 
 import { useForm } from "react-hook-form";
 import CloudinaryUploader from "./ImageUpload";
+import { useEffect } from "react";
+import autofillValue, { autofillForm } from "./autofill";
 
 export default function Component() {
   const {
     register,
     handleSubmit,
+    setValue,
     reset,
     formState: { errors },
   } = useForm();
 
+  useEffect(() => {
+    // autofillForm();
+    autofillValue(setValue);
+  }, []);
   const onSubmit = (data) => {
-    reset(); // reset form after submission
+    console.log(data);
+    // reset();
   };
 
   return (
     <div className="container p-6 bg-white shadow-lg rounded-lg md:w-[40vw] lg:w-[60vw]">
       <h2 className="text-2xl font-bold text-gray-800 mb-6">Add New Product</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">Model</label>
-          <input
-            {...register("model", { required: "Model is required" })}
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Model Name"
-          />
-          {errors.model && (
-            <p className="text-red-500 text-sm">{errors.model.message}</p>
-          )}
-        </div>
+        <h3 className="text-xl font-semibold text-gray-800">Title</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="form-group">
+            <label className="block text-gray-700 font-medium">Name</label>
+            <input
+              {...register("name", { required: "Name is required" })}
+              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Product Name"
+            />
+            {errors.name && (
+              <p className="text-red-500 text-sm">{errors.name.message}</p>
+            )}
+          </div>
 
+          <div className="form-group">
+            <label className="block text-gray-700 font-medium">Model</label>
+            <input
+              {...register("model", { required: "Model is required" })}
+              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Model Name"
+            />
+            {errors.model && (
+              <p className="text-red-500 text-sm">{errors.model.message}</p>
+            )}
+          </div>
+          <div className="form-group col-span-2">
+            <label className="block text-gray-700 font-medium">
+              Description
+            </label>
+            <textarea
+              {...register("description", {
+                required: "description is required",
+              })}
+              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="description"
+              rows="4"
+            />
+            {errors.description && (
+              <p className="text-red-500 text-sm">
+                {errors.description.message}
+              </p>
+            )}
+          </div>
+        </div>
         <h3 className="text-xl font-semibold text-gray-800 mt-8">Display</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="form-group">

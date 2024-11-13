@@ -4,12 +4,12 @@ const productSchema = new Schema(
   {
     product_name: { type: String, required: true },
     status: String,
-    product_model: { type: String, unique: true },
-    colors: { type: [String], required: true },
+    product_model: { type: String, unique: true, required: true },
+    colors: { type: [String] },
     image: [
       {
-        url: { type: String, required: true },
-        colors: { type: String, required: true },
+        url: { type: String },
+        colors: { type: String },
       },
     ],
     display: { type: Object },
