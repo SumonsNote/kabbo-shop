@@ -9,11 +9,11 @@ export async function GET(req) {
     const stocks = await Stock.find().select("stock").populate({
       path: "product",
       model: Product,
-      select: "product_name is_trending",
+      select: "product_name image best_seller",
     });
 
     const filteredStocks = stocks.filter(
-      (stock) => stock.product && stock.product.is_trending === true
+      (stock) => stock.product && stock.product.best_seller === true
     );
 
     return NextResponse.json({ stocks: filteredStocks }, { status: 200 });

@@ -1,4 +1,5 @@
 import { Brand } from "@/app/models/brand-model";
+import { Product } from "@/app/models/product-model";
 import { dbConnect } from "@/utils/mongo";
 import { NextResponse } from "next/server";
 
@@ -67,7 +68,11 @@ export async function POST(req) {
 export async function GET(req) {
   try {
     await dbConnect();
-    const brands = await Brand.find();
+    const brands = await Brand.find().populate({
+      path: "brand_name",
+      model: Product,
+      select: "product_name",
+    });
     return NextResponse.json({ brands }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
