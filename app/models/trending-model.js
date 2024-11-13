@@ -11,6 +11,7 @@ const trendingSchema = new Schema(
     review_number: { type: Number, default: 0 },
     count_stock: { type: Number, required: true },
   },
+
   {
     timestamps: true,
   }

@@ -10,6 +10,8 @@ const brandSchema = new Schema(
       defaultValue: "active",
       enum: ["active", "inactive"],
     },
+
+    brand_name: [{ type: Schema.Types.ObjectId, ref: "Product" }],
   },
   { timestamps: true }
 );
