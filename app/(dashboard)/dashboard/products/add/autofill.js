@@ -1,7 +1,9 @@
 // Function to automatically fill out the form
 export const formData = {
-  name: "Test Product XYZ",
-  model: "Test Model XYZ",
+  category_name: "Smartphone",
+  brand_name: "apple",
+  product_name: "Test Product XYZ",
+  product_model: "Test Model XYZ",
   description: "Test Description ABC",
   display: {
     size: "6.75 Inch",
@@ -70,40 +72,40 @@ export const formData = {
   warranty:
     "1 Year warranty (To claim please visit the nearest TCL service center)",
 };
-export function autofillForm() {
-  // Helper function to fill form fields
-  const fillField = (name, value) => {
-    const element = document.querySelector(`[name="${name}"]`);
-    if (element) {
-      element.value = value;
-    }
-  };
+// export function autofillForm() {
+//   // Helper function to fill form fields
+//   const fillField = (name, value) => {
+//     const element = document.querySelector(`[name="${name}"]`);
+//     if (element) {
+//       element.value = value;
+//     }
+//   };
 
-  // Recursive function to handle nested objects
-  const fillNestedFields = (obj, prefix = "") => {
-    for (const [key, value] of Object.entries(obj)) {
-      const fieldName = prefix ? `${prefix}.${key}` : key;
-      if (typeof value === "object" && value !== null) {
-        fillNestedFields(value, fieldName);
-      } else {
-        fillField(fieldName, value);
-      }
-    }
-  };
+//   // Recursive function to handle nested objects
+//   const fillNestedFields = (obj, prefix = "") => {
+//     for (const [key, value] of Object.entries(obj)) {
+//       const fieldName = prefix ? `${prefix}.${key}` : key;
+//       if (typeof value === "object" && value !== null) {
+//         fillNestedFields(value, fieldName);
+//       } else {
+//         fillField(fieldName, value);
+//       }
+//     }
+//   };
 
-  // Fill all form fields
-  fillNestedFields(formData);
+//   // Fill all form fields
+//   fillNestedFields(formData);
 
-  // Handle file input
-  const inputFile = document.querySelector('input[type="file"]');
-  if (inputFile) {
-    const dataTransfer = new DataTransfer();
-    dataTransfer.items.add(new File([""], "dummy-image.png"));
-    inputFile.files = dataTransfer.files;
-  }
+//   // Handle file input
+//   const inputFile = document.querySelector('input[type="file"]');
+//   if (inputFile) {
+//     const dataTransfer = new DataTransfer();
+//     dataTransfer.items.add(new File([""], "dummy-image.png"));
+//     inputFile.files = dataTransfer.files;
+//   }
 
-  console.log("Form has been auto-filled successfully");
-}
+//   console.log("Form has been auto-filled successfully");
+// }
 
 // Call the autofill function
 // autofillForm();

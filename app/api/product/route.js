@@ -1,3 +1,4 @@
+import { Brand } from "@/app/models/brand-model";
 import { Product } from "@/app/models/product-model";
 import connectMongo from "@/services/mongo";
 import { NextResponse } from "next/server";
@@ -6,13 +7,25 @@ export async function POST(req) {
   try {
     await connectMongo();
     const productObj = await req.json();
+
     const product = await Product.create(productObj);
+
+    // Update the brand
+    // First find the brand document
+    const brand = await Brand.findOne({ title: productObj.brand_name });
+
+    // Push the product ID to the brand's products array
+    brand.product_name.push(product._id);
+
+    // Save the updated brand
+    await brand.save();
 
     return NextResponse.json(
       { product, message: "Successfully created product" },
       { status: 201 }
     );
   } catch (error) {
+    console.error(error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

@@ -3,10 +3,10 @@ import React from "react";
 export default function OSFeaturesSection({ register, errors }) {
   return (
     <div>
-      <h3 className="text-xl font-semibold text-gray-800 mt-8">OS</h3>
+      <h3 className="text-2xl font-semibold text-gray-400 mb-4 mt-8">OS</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">
             Operating System
           </label>
           <input
@@ -22,8 +22,8 @@ export default function OSFeaturesSection({ register, errors }) {
             </p>
           )}
         </div>
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">Custom UI</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">Custom UI</label>
           <input
             {...register("os.customUI", {
               required: "Custom UI details are required",
@@ -36,10 +36,12 @@ export default function OSFeaturesSection({ register, errors }) {
           )}
         </div>
       </div>
-      <h3 className="text-xl font-semibold text-gray-800 mt-8">Features</h3>
+      <h3 className="text-2xl font-semibold text-gray-400 mb-4 mt-8">
+        Features
+      </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">Fingerprint</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">Fingerprint</label>
           <input
             {...register("features.fingerprint", {
               required: "Fingerprint details are required",
@@ -53,8 +55,8 @@ export default function OSFeaturesSection({ register, errors }) {
             </p>
           )}
         </div>
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">Sensors</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">Sensors</label>
           <input
             {...register("features.sensors", {
               required: "Sensor details are required",

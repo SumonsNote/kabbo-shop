@@ -3,11 +3,15 @@ import React from "react";
 export default function CameraSection({ register, errors }) {
   return (
     <div>
-      <h3 className="text-xl font-semibold text-gray-800">Camera Section</h3>
-      <h3 className="text-xl font-semibold text-gray-800 mt-8">Rear Camera</h3>
+      <h3 className="text-2xl font-semibold text-gray-400 mb-4">
+        Camera Section
+      </h3>
+      <h3 className="text-2xl font-semibold text-gray-400 mb-4 mt-8">
+        Rear Camera
+      </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">Resolution</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">Resolution</label>
           <input
             {...register("rearCamera.resolution", {
               required: "Rear camera resolution is required",
@@ -21,8 +25,8 @@ export default function CameraSection({ register, errors }) {
             </p>
           )}
         </div>
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">Macro</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">Macro</label>
           <input
             {...register("rearCamera.macro", {
               required: "Macro camera details are required",
@@ -36,8 +40,8 @@ export default function CameraSection({ register, errors }) {
             </p>
           )}
         </div>
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">Depth</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">Depth</label>
           <input
             {...register("rearCamera.depth", {
               required: "Depth camera details are required",
@@ -51,8 +55,8 @@ export default function CameraSection({ register, errors }) {
             </p>
           )}
         </div>
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">Features</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">Features</label>
           <input
             {...register("rearCamera.features", {
               required: "Camera features are required",
@@ -66,8 +70,8 @@ export default function CameraSection({ register, errors }) {
             </p>
           )}
         </div>
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">
             Video Recording
           </label>
           <input
@@ -84,10 +88,12 @@ export default function CameraSection({ register, errors }) {
           )}
         </div>
       </div>
-      <h3 className="text-xl font-semibold text-gray-800 mt-8">Front Camera</h3>
+      <h3 className="text-2xl font-semibold text-gray-400 mb-4 mt-8">
+        Front Camera
+      </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">Resolution</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">Resolution</label>
           <input
             {...register("frontCamera.resolution", {
               required: "Front camera resolution is required",
@@ -101,8 +107,8 @@ export default function CameraSection({ register, errors }) {
             </p>
           )}
         </div>
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">Features</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">Features</label>
           <input
             {...register("frontCamera.features", {
               required: "Front camera features are required",
@@ -116,8 +122,8 @@ export default function CameraSection({ register, errors }) {
             </p>
           )}
         </div>
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">
             Video Recording
           </label>
           <input

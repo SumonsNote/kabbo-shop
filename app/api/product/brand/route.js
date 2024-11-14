@@ -67,9 +67,24 @@ export async function POST(req) {
 
 export async function GET(req) {
   try {
+    // get search parameters
+    const searchParams = req.nextUrl.searchParams;
+    const category = searchParams.get("category");
+    console.log(category);
     await dbConnect();
+    if (category) {
+      const brands = await Brand.find({
+        category: category.toLowerCase(),
+      }).populate({
+        path: "product_name",
+        model: Product,
+        select: "product_name",
+      });
+      return NextResponse.json({ brands }, { status: 200 });
+    }
+
     const brands = await Brand.find().populate({
-      path: "brand_name",
+      path: "product_name",
       model: Product,
       select: "product_name",
     });

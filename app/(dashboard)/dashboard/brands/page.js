@@ -46,6 +46,7 @@ const BrandsAdminPanel = () => {
           <AiOutlinePlus className="w-4 h-4 mr-2" />
           Add Brand
         </button>
+
         {isOpen && (
           <RelativeModal setShowForm={toggleModal} title={"Add Brand"}>
             <BrandForm setShowForm={toggleModal} />
@@ -56,7 +57,7 @@ const BrandsAdminPanel = () => {
       {/* Search */}
       <div className=" rounded-lg shadow">
         <div className="p-6">
-          <div className="relative">
+          <div className="">
             <AiOutlineSearch className="absolute top-3 left-4 text-gray-400" />
             <input
               type="text"

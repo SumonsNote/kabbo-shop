@@ -1,10 +1,10 @@
 export default function DisplaySection({ register, errors }) {
   return (
     <div>
-      <h3 className="text-xl font-semibold text-gray-800">Display</h3>
+      <h3 className="text-xl font-semibold text-gray-400 mb-2">Display</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">
             Display Size
           </label>
           <input
@@ -21,8 +21,8 @@ export default function DisplaySection({ register, errors }) {
           )}
         </div>
 
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">Type</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">Type</label>
           <input
             {...register("display.type", {
               required: "Display type is required",
@@ -37,8 +37,8 @@ export default function DisplaySection({ register, errors }) {
           )}
         </div>
 
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">Resolution</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">Resolution</label>
           <input
             {...register("display.resolution", {
               required: "Resolution is required",
@@ -53,8 +53,8 @@ export default function DisplaySection({ register, errors }) {
           )}
         </div>
 
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">
             Refresh Rate
           </label>
           <input
@@ -71,8 +71,8 @@ export default function DisplaySection({ register, errors }) {
           )}
         </div>
 
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">Brightness</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">Brightness</label>
           <input
             {...register("display.brightness", {
               required: "Brightness is required",
@@ -87,8 +87,8 @@ export default function DisplaySection({ register, errors }) {
           )}
         </div>
 
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">Features</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">Features</label>
           <input
             {...register("display.features", {
               required: "Features are required",

@@ -1,4 +1,6 @@
 import { Product } from "@/app/models/product-model";
+import connectMongo from "@/services/mongo";
+import { NextResponse } from "next/server";
 
 export async function GET(req, { params }) {
   try {

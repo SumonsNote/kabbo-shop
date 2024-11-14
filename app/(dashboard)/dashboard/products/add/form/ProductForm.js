@@ -1,5 +1,5 @@
 "use client";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 
 import BasicInfoSection from "./BasicInfoSection";
@@ -14,6 +14,8 @@ import ImagesWarrantySection from "./ImagesWarrantySection";
 import autofillValue, { formData } from "../autofill";
 import StepBar from "./StepBar";
 import SpecificationPreview from "./PreviewProduct";
+import { useFetchCategoriesQuery } from "@/store/slices/CategoryApi";
+import { toast } from "react-toastify";
 
 export default function AddProductForm() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -21,6 +23,9 @@ export default function AddProductForm() {
     register,
     handleSubmit,
     setValue,
+    watch,
+    getValues,
+    control,
     formState: { errors },
   } = useForm();
 
@@ -28,8 +33,30 @@ export default function AddProductForm() {
     autofillValue(setValue);
   }, []);
 
-  const onSubmit = (data) => {
+  const {
+    fields: imageFields,
+    append: appendImage,
+    remove: removeImage,
+  } = useFieldArray({
+    control,
+    name: "image",
+  });
+  const onSubmit = async (data) => {
     console.log(data);
+    const res = await fetch("/api/product", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (res.ok) {
+      console.log("Product added successfully!");
+      toast.success("Product added successfully!");
+    } else {
+      console.error("Failed to add product");
+      toast.error("Failed to add product");
+    }
   };
   const handlePreview = () => {
     console.log(formData);
@@ -39,7 +66,14 @@ export default function AddProductForm() {
     1: {
       id: 1,
       title: "Basic Information",
-      component: <BasicInfoSection register={register} errors={errors} />,
+      component: (
+        <BasicInfoSection
+          register={register}
+          errors={errors}
+          watch={watch}
+          getValues={getValues}
+        />
+      ),
     },
     2: {
       id: 2,
@@ -79,7 +113,16 @@ export default function AddProductForm() {
     9: {
       id: 9,
       title: "Images & Warranty",
-      component: <ImagesWarrantySection register={register} errors={errors} />,
+      component: (
+        <ImagesWarrantySection
+          register={register}
+          errors={errors}
+          imageFields={imageFields}
+          appendImage={appendImage}
+          removeImage={removeImage}
+          setValue={setValue}
+        />
+      ),
     },
   };
 
@@ -87,9 +130,9 @@ export default function AddProductForm() {
 
   return (
     <div className="flex  gap-4">
-      <div className=" p-6 bg-white shadow-lg rounded-lg w-full">
+      <div className=" p-6 bg-white dark:bg-gray-800 shadow-lg rounded-lg w-full">
         <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">Add New Product</h2>
+          <h2 className="text-2xl font-bold text-gray-500">Add New Product</h2>
           <StepBar
             currentStep={currentStep}
             setCurrentStep={setCurrentStep}
@@ -97,7 +140,7 @@ export default function AddProductForm() {
           />
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 ">
           {formSections[currentStep].component}
 
           <div className="flex justify-between mt-6">
@@ -139,7 +182,7 @@ export default function AddProductForm() {
           </div>
         </form>
       </div>
-      <SpecificationPreview />
+      {/* <SpecificationPreview /> */}
     </div>
   );
 }

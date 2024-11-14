@@ -7,7 +7,7 @@ export default function StepBar({ currentStep, formSections, setCurrentStep }) {
         {steps.map((step, i) => (
           <div key={step.id} className="flex flex-col items-center">
             <div
-              className={`w-8 h-8 rounded-full flex items-center justify-center cursor-pointer
+              className={`w-8 h-8 rounded-full flex items-center justify-center
                   ${
                     currentStep === step.id
                       ? "bg-blue-500 text-white"
@@ -19,7 +19,7 @@ export default function StepBar({ currentStep, formSections, setCurrentStep }) {
             >
               {currentStep > step.id ? "✓" : step.id}
             </div>
-            <div className="text-xs mt-1 font-medium text-gray-600">
+            <div className="text-xs mt-1 font-medium text-gray-400">
               {step.title}
             </div>
           </div>

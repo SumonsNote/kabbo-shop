@@ -3,10 +3,12 @@ import React from "react";
 export default function BatteryPhysicalSection({ register, errors }) {
   return (
     <div>
-      <h3 className="text-xl font-semibold text-gray-800 mt-8">Battery</h3>
+      <h3 className="text-2xl font-semibold text-gray-400 mb-4 mt-8">
+        Battery
+      </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">Type</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">Type</label>
           <input
             {...register("battery.type", {
               required: "Battery type is required",
@@ -20,8 +22,8 @@ export default function BatteryPhysicalSection({ register, errors }) {
             </p>
           )}
         </div>
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">
             Fast Charging
           </label>
           <input
@@ -39,12 +41,12 @@ export default function BatteryPhysicalSection({ register, errors }) {
         </div>
       </div>
 
-      <h3 className="text-xl font-semibold text-gray-800 mt-8">
+      <h3 className="text-2xl font-semibold text-gray-400 mb-4 mt-8">
         Physical Specifications
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">Dimension</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">Dimension</label>
           <input
             {...register("physicalSpecifications.dimension", {
               required: "Dimension details are required",
@@ -58,8 +60,8 @@ export default function BatteryPhysicalSection({ register, errors }) {
             </p>
           )}
         </div>
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">Weight</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">Weight</label>
           <input
             {...register("physicalSpecifications.weight", {
               required: "Weight is required",
@@ -73,8 +75,8 @@ export default function BatteryPhysicalSection({ register, errors }) {
             </p>
           )}
         </div>
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">
             Body Material
           </label>
           <input
@@ -90,8 +92,8 @@ export default function BatteryPhysicalSection({ register, errors }) {
             </p>
           )}
         </div>
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">Colors</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">Colors</label>
           <input
             {...register("physicalSpecifications.colors", {
               required: "Color options are required",

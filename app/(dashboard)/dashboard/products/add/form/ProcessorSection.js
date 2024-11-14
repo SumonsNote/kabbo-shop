@@ -3,10 +3,10 @@ import React from "react";
 export default function ProcessorSection({ register, errors }) {
   return (
     <div>
-      <h3 className="text-xl font-semibold text-gray-800">Processor</h3>
+      <h3 className="text-2xl font-semibold text-gray-400 mb-4">Processor</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">Chipset</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">Chipset</label>
           <input
             {...register("processor.chipset", {
               required: "Chipset is required",
@@ -20,8 +20,8 @@ export default function ProcessorSection({ register, errors }) {
             </p>
           )}
         </div>
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">CPU Type</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">CPU Type</label>
           <input
             {...register("processor.cpuType", {
               required: "CPU type is required",
@@ -35,8 +35,8 @@ export default function ProcessorSection({ register, errors }) {
             </p>
           )}
         </div>
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">CPU Speed</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">CPU Speed</label>
           <input
             {...register("processor.cpuSpeed", {
               required: "CPU speed is required",
@@ -50,8 +50,8 @@ export default function ProcessorSection({ register, errors }) {
             </p>
           )}
         </div>
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">GPU</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">GPU</label>
           <input
             {...register("processor.gpu", { required: "GPU is required" })}
             placeholder="PowerVR GE8320"

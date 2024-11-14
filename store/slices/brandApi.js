@@ -6,7 +6,10 @@ export const brandsApi = apiSlice.injectEndpoints({
       query: () => "/product/brand",
       providesTags: ["brands"],
     }),
-
+    fetchBrandsByCategory: builder.query({
+      query: (category) => `/product/brand?category=${category}`,
+      providesTags: ["brands"],
+    }),
     addBrand: builder.mutation({
       query: (brand) => ({
         url: "/product/brand",
@@ -31,4 +34,5 @@ export const {
   useAddBrandMutation,
   useFetchBrandsQuery,
   useUpdateBrandMutation,
+  useFetchBrandsByCategoryQuery,
 } = brandsApi;

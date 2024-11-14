@@ -3,10 +3,10 @@ import React from "react";
 export default function MemorySection({ register, errors }) {
   return (
     <div>
-      <h3 className="text-xl font-semibold text-gray-800">Memory</h3>
+      <h3 className="text-2xl font-semibold text-gray-400 mb-4">Memory</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">RAM</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">RAM</label>
           <input
             {...register("memory.ram", { required: "RAM is required" })}
             placeholder="6GB"
@@ -16,8 +16,8 @@ export default function MemorySection({ register, errors }) {
             <p className="text-red-500 text-sm">{errors.memory.ram.message}</p>
           )}
         </div>
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">
             Internal Storage
           </label>
           <input
@@ -33,8 +33,8 @@ export default function MemorySection({ register, errors }) {
             </p>
           )}
         </div>
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">
             External Storage
           </label>
           <input

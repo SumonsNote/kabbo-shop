@@ -90,50 +90,45 @@ export default function NavSideBar({ setIsCollapsed, isCollapsed }) {
 
   return (
     <div
-      className={`bg-gray-900 text-white ${
-        isCollapsed ? "xl:w-20 w-0 hidden sm:flex px-2" : "xl:w-64 px-6"
-      } 4  py-8 flex flex-col justify-between duration-300`}
+      className={`bg-gray-900 relative text-white ${
+        isCollapsed ? "xl:w-20 w-0 hidden sm:flex px-2" : "xl:w-64 px-5"
+      }  flex flex-col duration-300`}
     >
-      <div className="h-[]">
-        <div
-          className="flex items-center mb-8 cursor-pointer w-[200px]"
-          onClick={() => setIsCollapsed(!isCollapsed)}
-        >
-          <DiSmashingMagazine className="w-10 h-10 mr-3 text-sky-300" />
-          {!isCollapsed && (
-            <h1 className="text-2xl font-bold dark:text-gray-500">Ecommerce</h1>
-          )}
-        </div>
-        <nav>
-          {navItems.map(({ href, icon, label }) => (
-            <Link
-              key={href}
-              href={href}
-              className={`flex items-center py-3 px-4 rounded-md transition duration-200 dark:text-gray-500 ${
-                isActive(href)
-                  ? "bg-gray-800 dark:bg-gray-950 "
-                  : " hover:bg-gray-800 dark:hover:bg-gray-950"
+      <div className="flex items-center h-36 cursor-pointer ">
+        <DiSmashingMagazine className="w-10 h-10 mr-3 text-sky-300" />
+        {!isCollapsed && (
+          <h1 className="text-2xl font-bold dark:text-gray-500">Ecommerce</h1>
+        )}
+      </div>
+      <nav className="max-h-[60vh] overflow-y-auto ">
+        {navItems.map(({ href, icon, label }) => (
+          <Link
+            key={href}
+            href={href}
+            className={`flex items-center py-3 px-4 rounded-md transition duration-200 dark:text-gray-500 ${
+              isActive(href)
+                ? "bg-gray-800 dark:bg-gray-950 "
+                : " hover:bg-gray-800 dark:hover:bg-gray-950"
+            }`}
+          >
+            <div
+              className={`flex items-center ${
+                isCollapsed ? "justify-center" : "justify-start"
               }`}
             >
-              <div
-                className={`flex items-center ${
-                  isCollapsed ? "justify-center" : "justify-start"
-                }`}
-              >
-                {icon}
-                {!isCollapsed && <span className="ml-4">{label}</span>}
-              </div>
-            </Link>
-          ))}
-        </nav>
-      </div>
-      <div className="space-y-4">
+              {icon}
+              {!isCollapsed && <span className="ml-4">{label}</span>}
+            </div>
+          </Link>
+        ))}
+      </nav>
+      <div className="space-y-4 absolute bottom-0 left-0  p-2 h-32   bg-gray-900 w-full">
         <DarkMood isCollapsed={isCollapsed} />
         <button
           className="bg-blue-500 dark:bg-blue-900 hover:bg-blue-600 text-white dark:text-gray-400 py-3 px-4 rounded-md transition duration-200 flex items-center overflow-hidden"
           onClick={() => router.push("/logout")}
         >
-          <IoLogOut className="w-6 h-6 " />
+          <IoLogOut className="w-6 h-6" />
           {!isCollapsed && <span className="ml-4">Logout</span>}
         </button>
       </div>

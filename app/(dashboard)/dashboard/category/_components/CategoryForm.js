@@ -114,7 +114,7 @@ const CategoryForm = ({ category, isEdit, setShowForm }) => {
           type="text"
           placeholder="Apple"
           {...register("title", { required: "Title is required" })}
-          className="mt-1 h-8 px-4 w-full border border-gray-300 rounded-md shadow-sm bg-inherit placeholder:text-gray-600 dark:placeholder:text-gray-500 sm:text-sm"
+          className="mt-1 h-8 px-4 lowercase w-full border border-gray-300 rounded-md shadow-sm bg-inherit placeholder:text-gray-600 dark:placeholder:text-gray-500 sm:text-sm"
         />
         {errors.title && (
           <span className="text-red-500">{errors.title.message}</span>

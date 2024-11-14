@@ -3,12 +3,13 @@ import {
   useAddBrandMutation,
   useUpdateBrandMutation,
 } from "@/store/slices/brandApi";
-import { useFetchCategoriesQuery } from "@/store/slices/CategoryApi";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { BiCloudUpload } from "react-icons/bi";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
 const BrandForm = ({ brand, isEdit, setShowForm }) => {
@@ -16,7 +17,6 @@ const BrandForm = ({ brand, isEdit, setShowForm }) => {
     addBrand,
     { isLoading: addLoading, isSuccess: addSuccess, isError: addError },
   ] = useAddBrandMutation();
-  const { data } = useFetchCategoriesQuery();
   const [
     updateBrand,
     {
@@ -118,7 +118,7 @@ const BrandForm = ({ brand, isEdit, setShowForm }) => {
           type="text"
           placeholder="Apple"
           {...register("title", { required: "Title is required" })}
-          className="mt-1 h-8 px-4 lowercase w-full border border-gray-300 rounded-md shadow-sm bg-inherit placeholder:text-gray-600 dark:placeholder:text-gray-500 sm:text-sm"
+          className="mt-1 h-8 px-4 w-full border border-gray-300 rounded-md shadow-sm bg-inherit placeholder:text-gray-600 dark:placeholder:text-gray-500 sm:text-sm"
         />
         {errors.title && (
           <span className="text-red-500">{errors.title.message}</span>
@@ -127,33 +127,30 @@ const BrandForm = ({ brand, isEdit, setShowForm }) => {
 
       {/* Logo Upload */}
       <div>
-        <label
-          htmlFor="logo"
-          className="block text-sm font-bold text-gray-700 "
-        >
+        <label htmlFor="logo" className="block text-sm font-bold text-gray-700">
           Logo
         </label>
         <div className="flex items-center justify-center">
           <label
             htmlFor="logo-input"
-            className="relative border  overflow-hidden border-dashed border-gray-600 dark:text-gray-400 px-4 py-2 rounded-full cursor-pointer w-48 h-48 text-sm flex items-center justify-center flex-col gap-2"
+            className="relative border overflow-hidden border-dashed border-gray-600 dark:text-gray-400 px-4 py-2 rounded-md cursor-pointer w-48 h-48 text-sm flex items-center justify-center flex-col gap-2"
           >
             <BiCloudUpload className="text-3xl" /> Upload Logo
             {logoPreview && (
-              <div className="absolute top-0 left-0 right-0 bg-black rounded-full">
+              <div className="absolute top-0 left-0 right-0">
                 <Image
                   src={logoPreview}
                   alt="Logo Preview"
-                  className="object-fill w-48 h-48 rounded-full opacity-40"
+                  className="object-cover w-48 h-48"
                   width={150}
                   height={150}
                 />
                 <button
                   onClick={handleRemoveLogo}
-                  className="absolute top-20 right-[4.5rem] ring-1 rounded-full bg-red-500 hover:bg-red-600 p-1"
+                  className="absolute top-0 right-0 ring-1 rounded-full bg-red-500 hover:bg-red-600 p-1"
                   aria-label="Remove Logo"
                 >
-                  <AiFillCloseCircle className="text-4xl" />
+                  <AiFillCloseCircle />
                 </button>
               </div>
             )}
@@ -176,23 +173,13 @@ const BrandForm = ({ brand, isEdit, setShowForm }) => {
         >
           Category
         </label>
-        <select
+        <input
           id="category"
+          type="text"
+          disabled
           {...register("category")}
-          className="mt-1 h-8 px-4 w-full border border-gray-300 bg-inherit rounded-md shadow-sm sm:text-sm"
-          defaultValue={"smartphone"}
-          // disabled
-        >
-          <option value="">select category</option>
-          {data?.categories?.map((category) => (
-            <option
-              key={category._id}
-              value={category?.categoryName?.toLowerCase()}
-            >
-              {category.categoryName}
-            </option>
-          ))}
-        </select>
+          className="mt-1 capitalize h-8 px-4 w-full border-gray-300 rounded-md shadow-sm sm:text-sm"
+        />
       </div>
 
       {/* Status Select */}

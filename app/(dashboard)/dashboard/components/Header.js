@@ -6,7 +6,7 @@ import DarkMood from "./ui/DarkMood";
 
 export default function Header({ setIsCollapsed, isCollapsed }) {
   return (
-    <div className="bg-gray-900 text-white px-6 py-4 flex justify-between items-center ">
+    <div className="bg-gray-900 text-white px-6 py-4 flex justify-between items-center z-50  ">
       <button onClick={() => setIsCollapsed(!isCollapsed)}>
         {!isCollapsed ? (
           <CgMenuMotion className="w-6 h-6" />

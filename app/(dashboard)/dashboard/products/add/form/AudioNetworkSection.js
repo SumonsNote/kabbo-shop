@@ -3,10 +3,10 @@ import React from "react";
 export default function AudioNetworkSection({ register, errors }) {
   return (
     <div>
-      <h3 className="text-xl font-semibold text-gray-800 mt-8">Audio</h3>
+      <h3 className="text-2xl font-semibold text-gray-400 mb-4 mt-8">Audio</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">Speaker</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">Speaker</label>
           <input
             {...register("audio.speaker", {
               required: "Speaker details are required",
@@ -20,8 +20,8 @@ export default function AudioNetworkSection({ register, errors }) {
             </p>
           )}
         </div>
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">
             Audio Features
           </label>
           <input
@@ -39,12 +39,12 @@ export default function AudioNetworkSection({ register, errors }) {
         </div>
       </div>
 
-      <h3 className="text-xl font-semibold text-gray-800 mt-8">
+      <h3 className="text-2xl font-semibold text-gray-400 mb-4 mt-8">
         Network & Connectivity
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">SIM</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">SIM</label>
           <input
             {...register("network.sim", {
               required: "SIM details are required",
@@ -56,8 +56,8 @@ export default function AudioNetworkSection({ register, errors }) {
             <p className="text-red-500 text-sm">{errors.network.sim.message}</p>
           )}
         </div>
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">Network</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">Network</label>
           <input
             {...register("network.network", {
               required: "Network details are required",
@@ -71,8 +71,8 @@ export default function AudioNetworkSection({ register, errors }) {
             </p>
           )}
         </div>
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">Wi-Fi</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">Wi-Fi</label>
           <input
             {...register("network.wifi", {
               required: "Wi-Fi details are required",
@@ -86,8 +86,8 @@ export default function AudioNetworkSection({ register, errors }) {
             </p>
           )}
         </div>
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">Bluetooth</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">Bluetooth</label>
           <input
             {...register("network.bluetooth", {
               required: "Bluetooth details are required",
@@ -101,8 +101,8 @@ export default function AudioNetworkSection({ register, errors }) {
             </p>
           )}
         </div>
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">GPS</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">GPS</label>
           <input
             {...register("network.gps", {
               required: "GPS details are required",
@@ -114,8 +114,8 @@ export default function AudioNetworkSection({ register, errors }) {
             <p className="text-red-500 text-sm">{errors.network.gps.message}</p>
           )}
         </div>
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">NFC</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">NFC</label>
           <select
             {...register("network.nfc", {
               required: "NFC details are required",
@@ -130,8 +130,8 @@ export default function AudioNetworkSection({ register, errors }) {
             <p className="text-red-500 text-sm">{errors.network.nfc.message}</p>
           )}
         </div>
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">USB</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">USB</label>
           <input
             {...register("network.usb", {
               required: "USB details are required",
@@ -143,8 +143,8 @@ export default function AudioNetworkSection({ register, errors }) {
             <p className="text-red-500 text-sm">{errors.network.usb.message}</p>
           )}
         </div>
-        <div className="form-group">
-          <label className="block text-gray-700 font-medium">Audio Jack</label>
+        <div className="form-group text-gray-500">
+          <label className="block text-gray-500 font-medium">Audio Jack</label>
           <input
             {...register("network.audioJack", {
               required: "Audio jack details are required",

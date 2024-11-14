@@ -2,14 +2,18 @@ import mongoose, { Schema } from "mongoose";
 
 const productSchema = new Schema(
   {
-    is_new: { type: Boolean, default: false },
+    is_new: { type: Boolean, default: true },
     is_trending: { type: Boolean, default: false },
     is_offer: { type: Boolean, default: false },
     top_seller: { type: Boolean, default: false },
     best_seller: { type: Boolean, default: false },
 
     product_name: { type: String, required: true },
-    status: String,
+    status: {
+      type: String,
+      enum: ["active", "inactive"],
+      default: "active",
+    },
 
     product_model: { type: String, unique: true, required: true },
     colors: { type: String },
