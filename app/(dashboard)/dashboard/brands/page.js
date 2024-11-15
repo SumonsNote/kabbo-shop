@@ -1,13 +1,13 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useFetchBrandsQuery } from "@/store/slices/brandApi";
+import { useState } from "react";
 import { AiOutlinePlus, AiOutlineSearch } from "react-icons/ai";
-import BrandForm from "./_category/BrandForm";
-import SingeBrand from "./_category/SingeBrand";
 import Error from "../components/Error";
 import Loading from "../components/Loading";
 import NoDataFound from "../components/NoDataFound";
 import RelativeModal from "../components/RelativeModal";
-import { useFetchBrandsQuery } from "@/store/slices/brandApi";
+import BrandForm from "./_componenets/BrandForm";
+import SingeBrand from "./_componenets/SingeBrand";
 
 const BrandsAdminPanel = () => {
   const [searchQuery, setSearchQuery] = useState("");

@@ -9,6 +9,7 @@ import {
 } from "react-icons/ai";
 import { DiSmashingMagazine } from "react-icons/di";
 import {
+  FaAirbnb,
   FaDashcube,
   FaRegCircleUser,
   FaShopify,
@@ -49,6 +50,11 @@ export default function NavSideBar({ setIsCollapsed, isCollapsed }) {
       href: "/dashboard/products",
       icon: <MdOutlinePhoneIphone className="w-6 h-6" />,
       label: "Products",
+    },
+    {
+      href: "/dashboard/banners",
+      icon: <FaAirbnb className="w-6 h-6" />,
+      label: "Banners",
     },
     {
       href: "/dashboard/orders",
