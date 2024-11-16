@@ -1,5 +1,4 @@
 import React from "react";
-import CloudinaryUploader from "../ImageUpload";
 import { Upload } from "lucide-react";
 import { X } from "lucide-react";
 import UploadImage from "./UploadImage";
@@ -36,8 +35,6 @@ export default function ImagesWarrantySection({
       </div>
       <h3 className="text-2xl font-semibold text-gray-400 mt-8">Images</h3>
       <div className="  gap-4 text-gray-500">
-        {/* <CloudinaryUploader /> */}
-        {/* Images */}
         <div className="space-y-4 w-full">
           <label className="block text-sm font-medium text-gray-500">
             Images *
