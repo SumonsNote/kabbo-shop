@@ -1,15 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import Filters from "../components/Filters";
-import ProductItem from "./_components/ProductItem";
 import { useFetchProductsQuery } from "@/store/slices/productApi";
 import Loading from "../components/Loading";
-import ProductTable from "./_components/ProductTable";
 import NoDataFound from "../components/NoDataFound";
 import ProductsFilters from "./_components/ProductsFilters";
+import ProductTable from "./_components/ProductTable";
 
 const ProductDashboard = () => {
   const { data, isLoading, isError, error } = useFetchProductsQuery();

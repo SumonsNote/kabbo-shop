@@ -1,23 +1,23 @@
 "use client";
+import { useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
 
-import BasicInfoSection from "./BasicInfoSection";
-import DisplaySection from "./DisplaySection";
-import ProcessorSection from "./ProcessorSection";
-import MemorySection from "./MemorySection";
-import CameraSection from "./CameraSection";
-import AudioNetworkSection from "./AudioNetworkSection";
-import OSFeaturesSection from "./OSFeaturesSection";
-import BatteryPhysicalSection from "./BatteryPhysicalSection";
-import ImagesWarrantySection from "./ImagesWarrantySection";
-import autofillValue, { formData } from "../autofill";
-import StepBar from "./StepBar";
-import SpecificationPreview from "./PreviewProduct";
-import { useFetchCategoriesQuery } from "@/store/slices/CategoryApi";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+// import { formData } from "../autofill";
+import AudioNetworkSection from "./AudioNetworkSection";
+import BasicInfoSection from "./BasicInfoSection";
+import BatteryPhysicalSection from "./BatteryPhysicalSection";
+import CameraSection from "./CameraSection";
+import DisplaySection from "./DisplaySection";
+import ImagesWarrantySection from "./ImagesWarrantySection";
+import MemorySection from "./MemorySection";
+import OSFeaturesSection from "./OSFeaturesSection";
+import ProcessorSection from "./ProcessorSection";
+import StepBar from "./StepBar";
 
 export default function AddProductForm() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const {
     register,
@@ -29,10 +29,6 @@ export default function AddProductForm() {
     formState: { errors },
   } = useForm();
 
-  useEffect(() => {
-    autofillValue(setValue);
-  }, []);
-
   const {
     fields: imageFields,
     append: appendImage,
@@ -42,7 +38,6 @@ export default function AddProductForm() {
     name: "image",
   });
   const onSubmit = async (data) => {
-    console.log(data);
     const res = await fetch("/api/product", {
       method: "POST",
       body: JSON.stringify(data),
@@ -50,16 +45,21 @@ export default function AddProductForm() {
         "Content-Type": "application/json",
       },
     });
+    const newData = await res.json();
+    console.log(newData);
     if (res.ok) {
       console.log("Product added successfully!");
       toast.success("Product added successfully!");
+      if (newData?.product?._id) {
+        router.push(`/dashboard/products/${newData.product._id}`);
+      }
     } else {
       console.error("Failed to add product");
       toast.error("Failed to add product");
     }
   };
   const handlePreview = () => {
-    console.log(formData);
+    // console.log(formData);
   };
 
   const formSections = {

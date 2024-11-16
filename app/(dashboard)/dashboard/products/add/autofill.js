@@ -25,23 +25,25 @@ export const formData = {
     internalStorage: "256GB eMMC 5.1",
     externalStorage: "128GB eMMC 5.1",
   },
-  rearCamera: {
+
+  rear_camera: {
     resolution: "50 MP, f/1.8, 26mm (wide), 1/2.55, 0.7µm, PDAF",
     macro: "2 MP, f/2.4, (macro)",
     depth: "2 MP, f/2.4, (depth)",
     features: "LED flash, HDR, Panorama, AI scene detection, Face detection",
     recording: "1080P @30FPS",
   },
-  frontCamera: {
+  front_camera: {
     resolution: "8 MP, f/2.0, 26mm (wide), 1/4, 1.12µm",
     features: "HDR",
     recording: "1080P @30FPS",
   },
+
   audio: {
     speaker: "Dual Stereo Speaker",
     features: "Landscape Stereo Sound",
   },
-  network: {
+  network_connectivity: {
     sim: "Dual SIM (1 Nano SIM + 1 Nano SIM) + 1 TF card (3-card slot) or Single SIM + 1 TF card",
     network: "2G, 3G, 4G",
     wifi: "Wi-Fi 802.11 a/b/g/n/ac, dual-band, Wi-Fi Direct",
@@ -51,7 +53,7 @@ export const formData = {
     usb: "USB Type-C 2.0",
     audioJack: "3.5mm",
   },
-  os: {
+  operating_system: {
     operatingSystem: "Android 13",
     customUI: "TCL UI 5.0",
   },
@@ -63,13 +65,13 @@ export const formData = {
     type: "Lithium-polymer 5010 mAh (non-removable)",
     fastCharging: "18W Wired",
   },
-  physicalSpecifications: {
+  physical_specification: {
     dimension: "167.9 x 76.5 x 8.5 mm (6.61 x 3.01 x 0.33 in)",
     weight: "190 g (6.70 oz)",
     bodyMaterial: "Glass front, Plastic frame, Plastic back",
     colors: "Twilight Purple, Dark Gray",
   },
-  warranty:
+  warranty_information:
     "1 Year warranty (To claim please visit the nearest TCL service center)",
 };
 // export function autofillForm() {

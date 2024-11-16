@@ -21,14 +21,16 @@ export default function ImagesWarrantySection({
         <div className="form-group text-gray-500">
           <label className="block text-gray-500 font-medium">Warranty</label>
           <input
-            {...register("warranty", {
+            {...register("warranty_information", {
               required: "Warranty information is required",
             })}
             placeholder="1 Year warranty (To claim please visit the nearest TCL service center)"
             className="w-full p-2 border border-gray-300 rounded-md"
           />
-          {errors.warranty && (
-            <p className="text-red-500 text-sm">{errors.warranty.message}</p>
+          {errors.warranty_information && (
+            <p className="text-red-500 text-sm">
+              {errors.warranty_information.message}
+            </p>
           )}
         </div>
       </div>

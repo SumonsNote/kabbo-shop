@@ -2,11 +2,10 @@
 import { useFetchStocksQuery } from "@/store/slices/stockApi";
 import Link from "next/link";
 import { useState } from "react";
-import StockFilters from "./_components/StockFilters";
-import StockProductsItem from "./_components/StockProductsItem";
-import StockTable from "./_components/StockTable";
 import Loading from "../components/Loading";
 import NoDataFound from "../components/NoDataFound";
+import StockFilters from "./_components/StockFilters";
+import StockTable from "./_components/StockTable";
 
 const ProductDashboard = () => {
   const { data, isLoading } = useFetchStocksQuery();
