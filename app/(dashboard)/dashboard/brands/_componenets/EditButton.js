@@ -1,8 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
 
-import BrandForm from "../../brands/_category/BrandForm";
 import RelativeModal from "../../components/RelativeModal";
+import BrandForm from "./BrandForm";
 
 export default function EditButton({ brand }) {
   const [isOpen, setIsOpen] = useState(false);
