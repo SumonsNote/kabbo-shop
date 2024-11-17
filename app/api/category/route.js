@@ -9,21 +9,25 @@ export async function POST(req) {
     await dbConnect();
     const formData = await req.formData();
     const categoryName = formData.get("title");
-    console.log(formData);
-    // Ensure 'file' exists in formData
-    if (!formData.has("file")) {
+    const file = formData.get("file"); // Extract the file (Blob)
+
+    if (!file) {
       return NextResponse.json(
         { message: "File is required" },
         { status: 400 }
       );
     }
 
-    // Sending form data to Cloudinary for file upload
+    // Create a new FormData object
+    const uploadFormData = new FormData();
+    uploadFormData.append("file", file); // Append the file (Blob)
+
+    // Send the new FormData to Cloudinary
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_URL_DEV}/api/cloudinary`,
+      `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/upload`,
       {
         method: "POST",
-        body: formData,
+        body: uploadFormData, // Pass the new FormData
       }
     );
     const responseBody = await response.json();
