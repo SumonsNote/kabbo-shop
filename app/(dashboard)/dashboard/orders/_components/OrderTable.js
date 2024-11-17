@@ -102,8 +102,8 @@ export default function OrderTable({ handleSort, sortConfig, sortedOrders }) {
                 {order.payment_info.status}
               </td>
               <td
-                className={`px-6 py-4 whitespace-nowrap${getStatusStyle(
-                  order.status
+                className={`px-6 py-4 whitespace-nowrap capitalize ${getStatusStyle(
+                  order.status.toLowerCase()
                 )}`}
               >
                 {order.status}
@@ -130,11 +130,11 @@ export default function OrderTable({ handleSort, sortConfig, sortedOrders }) {
 // Status badge styling
 export const getStatusStyle = (status) => {
   const styles = {
-    Delivered: "bg-green-100 text-green-800",
-    Processing: "bg-blue-100 text-blue-800",
-    Pending: "bg-yellow-100 text-yellow-800",
-    Shipped: "bg-purple-100 text-purple-800",
-    Cancelled: "bg-red-100 text-red-800",
+    delivered: "bg-green-100 text-green-800",
+    processing: "bg-blue-100 text-blue-800",
+    pending: "bg-yellow-100 text-yellow-800",
+    shipped: "bg-purple-100 text-purple-800",
+    cancelled: "bg-red-100 text-red-800",
   };
   return styles[status] || "bg-gray-100 text-gray-800";
 };
