@@ -1,3 +1,4 @@
+import Image from "next/image";
 import BackButton from "../../components/ui/BackButton";
 
 const ProductStockDetails = async ({ params: { id } }) => {
@@ -44,15 +45,17 @@ const ProductStockDetails = async ({ params: { id } }) => {
         {product.image.map((img) => (
           <div
             key={img._id}
-            className="relative bg-gradient-to-t from-indigo-50 dark:from-pink-950 to-pink-50 dark:to-gray-900 rounded-lg overflow-hidden flex items-center justify-center "
+            className="size-72 relative bg-gradient-to-t  from-indigo-50 dark:from-pink-950 to-pink-50 dark:to-gray-900 rounded-lg overflow-hidden flex items-center justify-center "
           >
-            <img
+            <Image
+              width={250}
+              height={250}
               src={img.url}
-              alt={img.color_variant}
-              className="w-3/5 h-96 object-cover rounded-lg "
+              alt={img.colors}
+              className="object-cover rounded-lg "
             />
             <span className="absolute bottom-2 right-2 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-400 px-3 py-1 rounded-full text-sm capitalize">
-              {img.color_variant}
+              {img.colors}
             </span>
           </div>
         ))}
