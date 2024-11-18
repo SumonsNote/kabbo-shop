@@ -6,6 +6,9 @@
 ::-webkit-scrollbar {
   width: 2px;
 }
+::-webkit-scrollbar:hover {
+  width: 4px;
+}
 
 /* Track */
 ::-webkit-scrollbar-track {

@@ -6,7 +6,7 @@ export const dealApi = apiSlice.injectEndpoints({
       query: () => "/deal",
       providesTags: ["deals"],
     }),
-    adddeal: builder.mutation({
+    addDeal: builder.mutation({
       query: (deal) => ({
         url: "/deal",
         method: "POST",
@@ -14,7 +14,7 @@ export const dealApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["deals"],
     }),
-    updatedeal: builder.mutation({
+    updateDeal: builder.mutation({
       query: (deal) => ({
         url: `/deal`,
         method: "PUT",
@@ -22,7 +22,20 @@ export const dealApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["deals"],
     }),
+    deleteDeal: builder.mutation({
+      query: (id) => ({
+        url: `/deal`,
+        method: "DELETE",
+        body: id,
+      }),
+      invalidatesTags: ["deals"],
+    }),
   }),
 });
 
-export const { useFetchDealsQuery, useAddDealMutation } = dealApi;
+export const {
+  useFetchDealsQuery,
+  useAddDealMutation,
+  useUpdateDealMutation,
+  useDeleteDealMutation,
+} = dealApi;

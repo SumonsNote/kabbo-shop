@@ -25,15 +25,20 @@ const Offer = ({ openModal }) => {
       <BannerTitlte title="Offer List" />
 
       <div className="flex justify-start mt-4">
+        {/* Button for adding a new offer */}
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded dark:bg-blue-700 dark:hover:bg-blue-600"
-          onClick={openModal}
+          onClick={() => openModal(null, "offer", "add")} // Pass action type and data
         >
           Add Offer
         </button>
       </div>
 
-      <OfferTable offers={offers} />
+      {/* Render the offer table with edit functionality */}
+      <OfferTable
+        offers={offers}
+        onEdit={(offer) => openModal(offer, "offer", "edit")} // Pass offer data for editing
+      />
     </div>
   );
 };

@@ -6,7 +6,7 @@ export const offerApi = apiSlice.injectEndpoints({
       query: () => "/offer",
       providesTags: ["offers"],
     }),
-    addoffer: builder.mutation({
+    addOffer: builder.mutation({
       query: (offer) => ({
         url: "/offer",
         method: "POST",
@@ -14,7 +14,7 @@ export const offerApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["offers"],
     }),
-    updateoffer: builder.mutation({
+    updateOffer: builder.mutation({
       query: (offer) => ({
         url: `/offer`,
         method: "PUT",
@@ -25,4 +25,8 @@ export const offerApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useFetchOffersQuery, useAddOfferMutation } = offerApi;
+export const {
+  useFetchOffersQuery,
+  useAddOfferMutation,
+  useUpdateOfferMutation,
+} = offerApi;

@@ -63,7 +63,7 @@ const OfferTable = ({ offers }) => {
       {offers.map((item) => (
         <div
           key={item._id.$oid}
-          className="rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden"
+          className="rounded-md border border-gray-200 dark:border-gray-700 overflow-hidden"
         >
           {/* Countdown Section */}
           <div className="bg-gray-50 flex justify-between dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4">
@@ -108,6 +108,9 @@ const OfferTable = ({ offers }) => {
                     Main Image
                   </th>
                   <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Sub Image
+                  </th>
+                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">
                     Actions
                   </th>
                 </tr>
@@ -139,6 +142,21 @@ const OfferTable = ({ offers }) => {
                         className="h-16 w-16 object-cover rounded-md"
                       />
                     </td>
+                    <td className="px-4 py-3">
+                      <div className="max-h-24 overflow-x-auto flex flex-wrap gap-1">
+                        {offer.sub_img.map((img, index) => (
+                          <Image
+                            key={index}
+                            src={img}
+                            alt={offer.title}
+                            width={500}
+                            height={500}
+                            className="h-8 w-16 object-cover rounded-md m-1 dark:border dark:border-white"
+                          />
+                        ))}
+                      </div>
+                    </td>
+
                     <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-300 space-x-2">
                       <button className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-md dark:bg-blue-700 dark:hover:bg-blue-600">
                         Edit
