@@ -1,4 +1,4 @@
-import { useFetchDealsQuery } from "@/store/slices/DealApi";
+import { useFetchDealsQuery } from "@/store/slices/dealApi";
 import Error from "../../../error";
 import Loading from "../../../loadding";
 import BannerTitle from "../BannerTitlte";
