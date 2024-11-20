@@ -1,4 +1,4 @@
-import { useFetchDealsQuery } from "@/store/slices/DealApi";
+import { useFetchDealsQuery } from "@/store/slices/dealApi";
 import Error from "../../../error";
 import Loading from "../../../loadding";
 import BannerTitle from "../BannerTitlte";
@@ -30,7 +30,7 @@ const Deal = ({ openModal }) => {
       <div className="flex justify-start mt-6 px-4">
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded dark:bg-blue-700 dark:hover:bg-blue-600"
-          onClick={openModal}
+          onClick={() => openModal(null, "deal", "add")}
         >
           Add Deal
         </button>
@@ -38,7 +38,7 @@ const Deal = ({ openModal }) => {
 
       {/* Deal Table */}
       <div className="mt-6 px-4">
-        <DealTable deals={deals} />
+        <DealTable openModal={openModal} deals={deals} />
       </div>
     </div>
   );

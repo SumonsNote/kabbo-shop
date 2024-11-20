@@ -1,4 +1,4 @@
-import { Deal } from "@/app/models/deal-model";
+import { ExclusiveOffer } from "@/app/models/exclusive-offer-model";
 import connectMongo from "@/services/mongo";
 import { NextResponse } from "next/server";
 
@@ -6,9 +6,8 @@ export async function POST(req) {
   try {
     await connectMongo();
     const formData = await req.formData();
-    const title = formData.get("title");
     const label = formData.get("label");
-    const short_description = formData.get("short_description");
+    const title = formData.get("title");
 
     console.log(formData);
     // Ensure 'file' exists in formData
@@ -41,16 +40,15 @@ export async function POST(req) {
     const { secure_url } = responseBody;
 
     if (secure_url) {
-      const dealObj = {
+      const exclusiveObj = {
         image: secure_url,
-        title,
         label,
-        short_description,
+        title,
       };
 
-      const deal = await Deal.create(dealObj);
+      const exclusive = await ExclusiveOffer.create(exclusiveObj);
       return NextResponse.json(
-        { deal, message: "Successfully created deal" },
+        { exclusive, message: "Successfully created exclusive" },
         { status: 201 }
       );
     }
@@ -70,17 +68,16 @@ export async function PUT(req) {
     await connectMongo();
 
     const formData = await req.formData();
-    // console.log("deal route", formData);
+    // console.log("exclusive route", formData);
 
-    const dealId = formData.get("id");
-    const title = formData.get("title");
+    const exclusiveId = formData.get("id");
     const label = formData.get("label");
-    const short_description = formData.get("short_description");
+    const title = formData.get("title");
 
-    // Ensure deal ID is provided
-    if (!dealId) {
+    // Ensure exclusive ID is provided
+    if (!exclusiveId) {
       return NextResponse.json(
-        { message: "Deal ID is required" },
+        { message: "exclusive ID is required" },
         { status: 400 }
       );
     }
@@ -121,25 +118,30 @@ export async function PUT(req) {
       }
     }
 
-    // Prepare the deal object with new data
+    // Prepare the exclusive object with new data
     if (secure_url) {
-      const dealObj = {
+      const exclusiveObj = {
         image: secure_url,
-        title,
-        short_description,
         label,
+        title,
       };
 
-      // Update the existing deal in the database
-      const deal = await Deal.findByIdAndUpdate(dealId, dealObj);
+      // Update the existing exclusive in the database
+      const exclusive = await ExclusiveOffer.findByIdAndUpdate(
+        exclusiveId,
+        exclusiveObj
+      );
       return NextResponse.json(
-        { message: "Successfully updated deal", deal },
+        { message: "Successfully updated exclusive", exclusive },
         { status: 201 }
       );
     }
 
-    if (!deal) {
-      return NextResponse.json({ message: "deal not found" }, { status: 404 });
+    if (!exclusive) {
+      return NextResponse.json(
+        { message: "exclusive not found" },
+        { status: 404 }
+      );
     }
   } catch (error) {
     console.error("Error in PUT request:", error);
@@ -147,11 +149,11 @@ export async function PUT(req) {
   }
 }
 
-export async function GET(req) {
+export async function GET(req, res) {
   await connectMongo();
   try {
-    const deal = await Deal.find();
-    return NextResponse.json({ deal }, { status: 200 });
+    const exclusive = await ExclusiveOffer.find();
+    return NextResponse.json({ exclusive }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
@@ -160,12 +162,10 @@ export async function GET(req) {
 export async function DELETE(req) {
   try {
     await connectMongo();
-    const { dealId } = await req.json();
-    console.log(dealId);
-    const deal = await Deal.findByIdAndDelete(dealId);
-    return NextResponse.json({ deal }, { status: 200 });
+    const { id } = await req.json();
+    const exclusive = await ExclusiveOffer.findByIdAndDelete(id);
+    return NextResponse.json({ exclusive }, { status: 200 });
   } catch (error) {
-    console.log(error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

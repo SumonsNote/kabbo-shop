@@ -1,9 +1,9 @@
 "use client";
 
 import {
-  useAddSliderMutation,
-  useUpdateSliderMutation,
-} from "@/store/slices/SliderApi";
+  useAddDealMutation,
+  useUpdateDealMutation,
+} from "@/store/slices/dealApi";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -11,11 +11,12 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { BiCloudUpload } from "react-icons/bi";
 import { toast } from "react-toastify";
 
-const SliderForm = ({ onClose, slider, isEdit }) => {
-  const [imagePreview, setImagePreview] = useState(slider?.image);
-  const [addSlider, { isLoading, isSuccess, data }] = useAddSliderMutation();
-  const [updateSlider, { isLoading: isUpdating, isSuccess: isUpdated }] =
-    useUpdateSliderMutation();
+const DealForm = ({ onClose, deal, isEdit }) => {
+  console.log("deal form", isEdit);
+  const [imagePreview, setImagePreview] = useState(deal?.image);
+  const [addDeal, { isLoading, isSuccess, data }] = useAddDealMutation();
+  const [updateDeal, { isLoading: isUpdating, isSuccess: isUpdated }] =
+    useUpdateDealMutation();
   const {
     register,
     handleSubmit,
@@ -23,19 +24,18 @@ const SliderForm = ({ onClose, slider, isEdit }) => {
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
-      image: slider?.image || null,
-      title: slider?.title || "",
-      description: slider?.description || "",
-      regular_price: slider?.regular_price || "",
-      discount_price: slider?.discount_price || "",
+      label: deal?.label || "",
+      title: deal?.title || "",
+      short_description: deal?.short_description || "",
+      image: deal?.image || null,
     },
   });
 
   useEffect(() => {
-    if (slider) {
-      setImagePreview(slider.image);
+    if (deal) {
+      setImagePreview(deal.image);
     }
-  }, [slider]);
+  }, [deal]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -55,12 +55,11 @@ const SliderForm = ({ onClose, slider, isEdit }) => {
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
     const formData = new FormData();
+
     formData.append("title", data.title);
-    formData.append("description", data.description);
-    formData.append("regular_price", data.regular_price);
-    formData.append("discount_price", data.discount_price);
+    formData.append("short_description", data.short_description);
+    formData.append("label", data.label);
 
     if (data.image) {
       if (data.image.size > 2000000) {
@@ -69,32 +68,32 @@ const SliderForm = ({ onClose, slider, isEdit }) => {
       }
       formData.append("file", data.image);
     }
-
     if (isEdit) {
-      formData.append("id", slider._id);
-      updateSlider(formData);
+      console.log(isEdit);
+      formData.append("id", deal._id);
+      updateDeal(formData);
     } else {
-      addSlider(formData);
+      addDeal(formData);
     }
   };
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success("Slider created successfully");
+      toast.success("deal created successfully");
       onClose();
     } else if (isUpdated) {
-      toast.success("Slider updated successfully");
+      toast.success("deal updated successfully");
       onClose();
     }
   }, [isSuccess, isUpdated]);
 
   return (
     <div className="p-6 space-y-4 dark:bg-gray-900 dark:text-gray-300">
-      <h2>Add a slider</h2>
+      <h2>Add a deal</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="flex items-center justify-center">
           <label
-            htmlFor="slider-image-input"
+            htmlFor="deal-image-input"
             className="relative border overflow-hidden border-dashed border-gray-600 dark:border-gray-400 dark:text-gray-400 px-4 py-2 rounded-md cursor-pointer w-full h-32 text-sm flex items-center justify-center flex-col gap-2"
           >
             <BiCloudUpload className="text-3xl" /> Upload Banner Image
@@ -118,7 +117,7 @@ const SliderForm = ({ onClose, slider, isEdit }) => {
             )}
           </label>
           <input
-            id="slider-image-input"
+            id="deal-image-input"
             type="file"
             {...register("image")}
             className="hidden"
@@ -139,77 +138,46 @@ const SliderForm = ({ onClose, slider, isEdit }) => {
             </span>
           )}
         </div>
-
         <div className="relative">
-          <textarea
-            {...register("description", {
-              required: "Description is required",
-            })}
+          <input
+            {...register("label", { required: "Label is required" })}
+            type="text"
             className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 dark:focus:ring-blue-500"
-            rows="2"
-            placeholder="Enter banner description"
+            placeholder="Enter deal label"
           />
-          {errors.description && (
+          {errors.title && (
             <span className="absolute -bottom-6 left-0 text-red-500 text-sm">
-              {errors.description.message}
+              {errors.title.message}
             </span>
           )}
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400">
-              $
+        <div className="relative">
+          <textarea
+            {...register("short_description", {
+              required: "Short Description is required",
+            })}
+            className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 dark:focus:ring-blue-500"
+            rows="2"
+            placeholder="Enter deal short description"
+          />
+          {errors.short_description && (
+            <span className="absolute -bottom-6 left-0 text-red-500 text-sm">
+              {errors.short_description.message}
             </span>
-            <input
-              {...register("regular_price", {
-                required: "Regular price is required",
-                valueAsNumber: true,
-                min: { value: 0, message: "Price cannot be negative" },
-              })}
-              type="number"
-              className="w-full pl-8 pr-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 dark:focus:ring-blue-500"
-              placeholder="0.00"
-            />
-            {errors.regular_price && (
-              <span className="absolute -bottom-6 left-0 text-red-500 text-sm">
-                {errors.regular_price.message}
-              </span>
-            )}
-          </div>
-
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400">
-              $
-            </span>
-            <input
-              {...register("discount_price", {
-                required: "Discount price is required",
-                valueAsNumber: true,
-                min: { value: 0, message: "Price cannot be negative" },
-              })}
-              type="number"
-              className="w-full pl-8 pr-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 dark:focus:ring-blue-500"
-              placeholder="0.00"
-            />
-            {errors.discount_price && (
-              <span className="absolute -bottom-6 left-0 text-red-500 text-sm">
-                {errors.discount_price.message}
-              </span>
-            )}
-          </div>
+          )}
         </div>
 
         <button
           type="submit"
-          disabled={Object.keys(errors).length > 0 || isLoading || isUpdating}
+          disabled={Object.keys(errors).length > 0 || isLoading || isUpdated}
           className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white dark:text-gray-400 bg-blue-500"
         >
-          {isLoading || isUpdating ? "Submitting..." : "Submit"}
+          {isLoading || isUpdated ? "Submitting..." : "Submit"}
         </button>
       </form>
     </div>
   );
 };
 
-export default SliderForm;
+export default DealForm;
