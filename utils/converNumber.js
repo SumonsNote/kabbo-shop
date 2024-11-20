@@ -1,5 +1,4 @@
 export function convertToWords(number) {
-  // function convertToWordsTK(number) {
   const ones = [
     "zero",
     "one",
@@ -11,8 +10,6 @@ export function convertToWords(number) {
     "seven",
     "eight",
     "nine",
-  ];
-  const teens = [
     "ten",
     "eleven",
     "twelve",
@@ -25,6 +22,8 @@ export function convertToWords(number) {
     "nineteen",
   ];
   const tens = [
+    "",
+    "",
     "twenty",
     "thirty",
     "forty",
@@ -34,59 +33,59 @@ export function convertToWords(number) {
     "eighty",
     "ninety",
   ];
-  const bigs = ["thousand", "lac", "million", "billion", "trillion"];
+  const scales = ["", "thousand", "lakh", "crore"];
 
-  function convertGroup(number, index) {
-    // console.log(number, index);
-    if (number === 0) return "";
-
-    const hundreds = Math.floor(number / 100);
-    const tensUnits = number % 100;
-
-    let result = "";
-    if (hundreds !== 0) {
-      result += ones[hundreds] + " hundred";
-      if (tensUnits !== 0) result += " ";
-    }
-
-    if (tensUnits < 10) result += ones[tensUnits];
-    else if (tensUnits < 20) result += teens[tensUnits - 10];
-    else {
-      const tensIndex = Math.floor(tensUnits / 10) - 2;
-      result += tens[tensIndex];
-      if (tensUnits % 10 !== 0) result += "-" + ones[tensUnits % 10];
-    }
-
-    if (index > 0) result += " " + bigs[index - 1];
-    return result;
+  function convertGroup(n) {
+    if (n === 0) return "";
+    else if (n < 20) return ones[n] + " ";
+    else if (n < 100)
+      return (
+        tens[Math.floor(n / 10)] +
+        (n % 10 !== 0 ? "-" + ones[n % 10] : "") +
+        " "
+      );
+    else
+      return (
+        ones[Math.floor(n / 100)] +
+        " hundred" +
+        (n % 100 !== 0 ? " " + convertGroup(n % 100) : " ")
+      );
   }
 
-  if (number === 0) return "zero taka";
+  if (number === 0) return "zero rupees";
 
   const integerPart = Math.floor(number);
   const decimalPart = Math.round((number - integerPart) * 100);
 
   let result = "";
-  let chunkCount = 0;
-  // console.log(integerPart);
-  // Convert integer part
+  let scaleIndex = 0;
   let remainingIntegerPart = integerPart;
+
   while (remainingIntegerPart > 0) {
-    if (remainingIntegerPart % 1000 !== 0) {
-      result =
-        convertGroup(remainingIntegerPart % 1000, chunkCount) + " " + result;
+    if (scaleIndex === 0 || scaleIndex === 2) {
+      // Handle hundreds and thousands
+      const group = remainingIntegerPart % 1000;
+      if (group !== 0) {
+        result = convertGroup(group) + scales[scaleIndex] + " " + result;
+      }
+      remainingIntegerPart = Math.floor(remainingIntegerPart / 1000);
+    } else if (scaleIndex === 1 || scaleIndex === 3) {
+      // Handle lakhs and crores
+      const group = remainingIntegerPart % 100;
+      if (group !== 0) {
+        result = convertGroup(group) + scales[scaleIndex] + " " + result;
+      }
+      remainingIntegerPart = Math.floor(remainingIntegerPart / 100);
     }
-    remainingIntegerPart = Math.floor(remainingIntegerPart / 1000);
-    chunkCount++;
+    scaleIndex++;
   }
+
+  result = result.trim() + " tk";
 
   // Add decimal part
   if (decimalPart > 0) {
-    result +=
-      "taka and " +
-      (decimalPart < 10 ? "zero" + decimalPart : convertGroup(decimalPart, 0)) +
-      " poisha";
+    result += " and " + convertGroup(decimalPart).trim() + "paisa";
   }
 
-  return result.trim() + " only";
+  return result + " only";
 }

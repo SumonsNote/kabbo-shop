@@ -4,7 +4,7 @@ import { Truck } from "lucide-react";
 import React from "react";
 
 export default function OrderSummary({ order }) {
-  console.log("order", order);
+  // console.log("order", order);
   return (
     <div className="grid grid-cols-1 text-gray-500 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {/* Customer Info */}

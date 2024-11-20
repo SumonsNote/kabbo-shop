@@ -1,14 +1,25 @@
 "use client";
 import { useFetchSingleOrdersQuery } from "@/store/slices/orderApi";
-import { Calendar } from "lucide-react";
+import { Calendar, Printer } from "lucide-react";
 import Loading from "../../components/Loading";
 import OrderItem from "../_components/OrderItem";
 import OrderSummary from "../_components/OrderSummary";
 import { getStatusStyle } from "../_components/OrderTable";
+import { VoucherTemplateOrder } from "../_components/VoucherTemplate";
 
 const OrderDetails = ({ params }) => {
   const { data, isLoading } = useFetchSingleOrdersQuery(params.orderId);
   console.log(data);
+  const handlePrint = () => {
+    const printWindow = window.open("", "_blank");
+
+    if (printWindow) {
+      printWindow.document.write(VoucherTemplateOrder(data.order));
+      printWindow.document.close();
+      printWindow.print();
+    }
+  };
+
   if (isLoading) return <Loading />;
   const order = data?.order;
 
@@ -26,6 +37,13 @@ const OrderDetails = ({ params }) => {
           </p>
         </div>
         <div className="flex items-center gap-2">
+          <button
+            onClick={handlePrint}
+            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 inline-flex gap-2"
+          >
+            <Printer /> Print
+          </button>
+
           <span
             className={`${getStatusStyle(
               order?.status

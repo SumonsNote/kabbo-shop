@@ -23,7 +23,7 @@ export default function OrderItem({ order }) {
                     {" "}
                     {item.model} {item.color} {item.variant} ({item.version})
                   </h3>
-                  <p className="text-sm text-gray-500">SKU: {item?.model}</p>
+                  <p className="text-sm text-gray-500">IMEI: {item?.imei}</p>
                 </div>
               </div>
               <div className="flex items-center gap-8 px-4 py-2 rounded-lg">
