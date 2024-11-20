@@ -83,7 +83,7 @@ export default function OrderTable({ handleSort, sortConfig, sortedOrders }) {
                 {order.order_number}
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                {order?.customer?.user?.first_name}
+                {order?.customer?.customer_name}
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 {new Date(order.createdAt).toLocaleDateString("en-US", {

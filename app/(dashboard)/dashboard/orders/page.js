@@ -10,8 +10,10 @@ import NoDataFound from "../components/NoDataFound";
 import { useFetchOrdersQuery } from "../../../../store/slices/orderApi";
 
 const OrderDashboard = () => {
-  const { data, isLoading, isError, error, isSuccess } = useFetchOrdersQuery();
-  console.log(data);
+  const { data, isLoading, isError, error, isSuccess, refetch } =
+    useFetchOrdersQuery();
+  const [refresh, setRefresh] = useState(false);
+
   const { orders } = isSuccess && data;
 
   // States for search, filters, and sorting
@@ -24,6 +26,13 @@ const OrderDashboard = () => {
     direction: "desc",
   });
 
+  // Refetch data when `refresh` is true
+  useEffect(() => {
+    if (refresh) {
+      refetch();
+      setRefresh(false); // Reset refresh state
+    }
+  }, [refresh, refetch]);
   // Filter orders
   const filteredOrders =
     orders?.filter((order) => {
@@ -69,7 +78,7 @@ const OrderDashboard = () => {
   return (
     <div className="p-6 text-gray-500 w-full">
       {/* Header Section */}
-      <OrderHeader />
+      <OrderHeader refresh={refresh} setRefresh={setRefresh} />
 
       {/* Stats Cards */}
       <OrderStats orders={orders} />

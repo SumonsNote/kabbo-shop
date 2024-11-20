@@ -1,3 +1,4 @@
+import { convertToWords } from "@/utils/converNumber";
 import { Package } from "lucide-react";
 
 export default function OrderItem({ order }) {
@@ -18,13 +19,14 @@ export default function OrderItem({ order }) {
                   <Package className="w-6 h-6 text-gray-500" />
                 </div>
                 <div>
-                  <h3 className="font-medium">{item?.product?.product_name}</h3>
-                  <p className="text-sm text-gray-500">
-                    SKU: {item?.product?.product_model}
-                  </p>
+                  <h3 className="font-medium">
+                    {" "}
+                    {item.model} {item.color} {item.variant} ({item.version})
+                  </h3>
+                  <p className="text-sm text-gray-500">SKU: {item?.model}</p>
                 </div>
               </div>
-              <div className="flex items-center gap-8">
+              <div className="flex items-center gap-8 px-4 py-2 rounded-lg">
                 <div className="text-right">
                   <p className="font-medium">
                     ${Number(item.price).toFixed(2)}
@@ -59,6 +61,13 @@ export default function OrderItem({ order }) {
                   {parseInt(order?.total_amount) +
                     parseInt(order?.shipping_charge)}
                 </span>
+              </div>
+              <div className="flex justify-between font-medium text-lg uppercase">
+                In Word :{" "}
+                {convertToWords(
+                  parseInt(order?.total_amount) +
+                    parseInt(order?.shipping_charge)
+                )}
               </div>
             </div>
           </div>

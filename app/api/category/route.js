@@ -1,4 +1,3 @@
-import { Brand } from "@/app/models/brand-model";
 import { Category } from "@/app/models/category-model";
 import connectMongo from "@/services/mongo";
 import { dbConnect } from "@/utils/mongo";

@@ -8,7 +8,7 @@ import { getStatusStyle } from "../_components/OrderTable";
 
 const OrderDetails = ({ params }) => {
   const { data, isLoading } = useFetchSingleOrdersQuery(params.orderId);
-
+  console.log(data);
   if (isLoading) return <Loading />;
   const order = data?.order;
 

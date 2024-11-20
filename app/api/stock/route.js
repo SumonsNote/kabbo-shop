@@ -18,13 +18,14 @@ export async function POST(req) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
-
+// 673da13922de7ab9614b488d
 export async function PUT(req) {
   await connectMongo();
   try {
     const stockObj = await req.json();
-    console.log(stockObj);
+
     const stock = await Stock.findByIdAndUpdate(stockObj.id, stockObj);
+
     return NextResponse.json(
       { message: "Stock updated successfully", stock },
       { status: 200 }

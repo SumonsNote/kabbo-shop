@@ -6,6 +6,18 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_APP_URL_DEV}/api`,
   }),
+  tagTypes: [
+    "stocks",
+    "stock",
+    "products",
+    "product",
+    "customers",
+    "customer",
+    "orders",
+    "order",
+    "users",
+    "user",
+  ],
 
   endpoints: (builder) => ({}),
 });

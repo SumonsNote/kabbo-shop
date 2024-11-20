@@ -7,11 +7,13 @@ import { PaymentDetails } from "./PaymentDetails";
 
 import { calculateTotal } from "../../../../../utils/calculations.js";
 import { VoucherModal } from "./VoucherModal.js";
+import { useAddOrderMutation } from "@/store/slices/orderApi";
 
 const AddOrderForm = () => {
   const [showVoucher, setShowVoucher] = useState(false);
   const [orderData, setOrderData] = useState(null);
-
+  const [addOrder, { isError, isLoading, isSuccess, data }] =
+    useAddOrderMutation();
   const {
     register,
     handleSubmit,
@@ -38,16 +40,47 @@ const AddOrderForm = () => {
   }, [items, paidAmount, setValue]);
 
   const onSubmit = (data) => {
-    const orderNumber = `ORD${Date.now().toString().slice(-6)}`;
+    const shopCode = "KST";
+    const today = new Date();
+    const datePart = today.toISOString().split("T")[0].replace(/-/g, ""); // Format: YYYYMMDD
+    const timePart = today.toTimeString().split(" ")[0].replace(/:/g, ""); // Format: HHMMSS
+    const orderNumber = `ORD${datePart}${shopCode}${timePart}`;
+
     const finalData = {
-      ...data,
+      customer: {
+        customer_name: data.customer_name,
+        phone_number: data.mobile,
+        email: data.email,
+        address: data.address,
+      },
       order_number: orderNumber,
-      created_at: new Date().toISOString(),
+      items: data.items,
+      total_amount: data.total_amount,
+      shipping_details: {
+        address: data.address,
+      },
+      payment_info: {
+        method: data.payment_method,
+        amount: data.paid_amount,
+        status: "paid",
+        transaction_id: data.transaction_id,
+        change_amount: data.change_amount,
+      },
+      status: "delivered",
+      shipping_method: "in-shop",
     };
     setOrderData(finalData);
-    setShowVoucher(true);
-  };
+    addOrder(finalData);
 
+    // setShowVoucher(true);
+  };
+  useEffect(() => {
+    if (isSuccess) {
+      console.log(data);
+      setShowVoucher(true);
+    }
+  }, [isSuccess, data]);
+  console.log(data);
   return (
     <div className="mx-auto p-6 bg-gray-50 w-full">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
