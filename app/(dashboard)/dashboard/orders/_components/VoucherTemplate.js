@@ -111,10 +111,13 @@ export const VoucherTemplate = (orderData) => `
     </div>
     
     <div class="customer-info">
-      <p><strong>Customer:</strong> ${orderData.customer_name}</p>
-      <p><strong>Mobile:</strong> ${orderData.mobile || "N/A"}</p>
-      <p><strong>Email:</strong> ${orderData.email || "N/A"}</p>
-      <p><strong>Address:</strong> ${orderData.address || "N/A"}</p>
+
+      <p><strong>Customer:</strong> ${orderData.customer.customer_name}</p>
+      <p><strong>Mobile:</strong> ${
+        orderData.customer.phone_number || "N/A"
+      }</p>
+      <p><strong>Email:</strong> ${orderData.customer.email || "N/A"}</p>
+      <p><strong>Address:</strong> ${orderData.customer.address || "N/A"}</p>
     </div>
     
     <div class="divider"></div>
@@ -155,7 +158,7 @@ export const VoucherTemplate = (orderData) => `
     <div class="divider"></div>
     
     <div class="payment-info">
-      <p><strong>Payment Method:</strong> ${orderData.payment_method}</p>
+      <p><strong>Payment Method:</strong> ${orderData.payment_info.method}</p>
     </div>
     
     <div class="totals">
@@ -163,9 +166,9 @@ export const VoucherTemplate = (orderData) => `
         2
       )}</div>
       <div><strong>Paid Amount:</strong> ৳${Number(
-        orderData.paid_amount
+        orderData.payment_info.amount
       )?.toFixed(2)}</div>
-      <div><strong>Change:</strong> ৳${orderData.change_amount?.toFixed(
+      <div><strong>Change:</strong> ৳${orderData.payment_info.change_amount?.toFixed(
         2
       )}</div>
     </div>
@@ -173,7 +176,7 @@ export const VoucherTemplate = (orderData) => `
     <div class="divider"></div>
     
     <h3 style="text-transform: uppercase; text-align: center;">
-      In Words: ${convertToWords(orderData.paid_amount)}
+      In Words: ${convertToWords(orderData.payment_info.amount)}
     </h3>
     
     <div class="signature-section">

@@ -9,7 +9,8 @@ export async function GET(req) {
     const stocks = await Stock.find({}, "stock variants status").populate({
       path: "product",
       model: Product,
-      select: "image product_name product_model brand_name",
+      select:
+        "image product_name product_model brand_name warranty_information",
     });
 
     // Process the variants to get only the first one (if needed)

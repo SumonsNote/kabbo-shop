@@ -1,9 +1,12 @@
 import { PrinterIcon, DownloadIcon } from "lucide-react";
 import { VoucherTemplate } from "./VoucherTemplate";
+import { useRouter } from "next/navigation";
 
 export const VoucherModal = ({ orderData, onClose }) => {
+  const router = useRouter();
   const handlePrint = () => {
     const printWindow = window.open("", "_blank");
+    router.push("/dashboard/orders");
     if (printWindow) {
       printWindow.document.write(VoucherTemplate(orderData));
       printWindow.document.close();

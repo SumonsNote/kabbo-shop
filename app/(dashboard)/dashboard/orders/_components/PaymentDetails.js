@@ -1,5 +1,6 @@
 import { CreditCardIcon } from "lucide-react";
 import { calculateTotal } from "../../../../../utils/calculations";
+import { convertToWords } from "@/utils/converNumber";
 
 export const PaymentDetails = ({ register, paidAmount, items }) => {
   return (
@@ -54,7 +55,13 @@ export const PaymentDetails = ({ register, paidAmount, items }) => {
       </div>
 
       {/* Payment Summary */}
-      <div className="mt-6 flex justify-end">
+      <div className="mt-6 flex justify-between items-center">
+        <div className="text-left">
+          <p className="text-xl font-bold text-gray-900 capitalize">
+            In Words: {convertToWords(paidAmount)}
+          </p>
+        </div>
+
         <div className="text-right">
           <p className="text-2xl font-bold text-gray-900">
             Total: ৳{calculateTotal(items).toFixed(2)}

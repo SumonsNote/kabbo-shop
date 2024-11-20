@@ -34,9 +34,10 @@ export function convertToWords(number) {
     "eighty",
     "ninety",
   ];
-  const bigs = ["thousand", "million", "billion", "trillion"];
+  const bigs = ["thousand", "lac", "million", "billion", "trillion"];
 
   function convertGroup(number, index) {
+    // console.log(number, index);
     if (number === 0) return "";
 
     const hundreds = Math.floor(number / 100);
@@ -67,7 +68,7 @@ export function convertToWords(number) {
 
   let result = "";
   let chunkCount = 0;
-
+  // console.log(integerPart);
   // Convert integer part
   let remainingIntegerPart = integerPart;
   while (remainingIntegerPart > 0) {
