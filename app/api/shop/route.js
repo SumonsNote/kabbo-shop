@@ -28,7 +28,7 @@ export async function GET(req) {
   }
 }
 
-const transformProductData = (stockData) => {
+export const transformProductData = (stockData) => {
   // Get the first variant and its global pricing
   const defaultVariant = stockData.variants[0];
   const globalPricing =
