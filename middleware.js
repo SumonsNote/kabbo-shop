@@ -7,7 +7,6 @@ export function middleware(request) {
 
   const allCookies = request.cookies.getAll();
 
-
   // console.log(allCookies);
 
   const isLoggedIn = allCookies[2]?.value;

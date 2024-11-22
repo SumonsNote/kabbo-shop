@@ -12,7 +12,7 @@ export async function GET(req) {
       select:
         "image product_name product_model brand_name warranty_information",
     });
-
+    console.log("stocks", stocks);
     // Process the variants to get only the first one (if needed)
     // Transform the data
     const transformedStocks = stocks.map((stock) => {
@@ -20,7 +20,7 @@ export async function GET(req) {
       const stockData = stock.toObject();
       return transformProductData(stockData);
     });
-    console.log(transformedStocks);
+    // console.log(transformedStocks);
     return NextResponse.json({ products: transformedStocks }, { status: 200 });
   } catch (error) {
     console.log(error);
