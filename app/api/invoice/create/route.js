@@ -8,84 +8,86 @@ import { dbConnect } from "@/utils/mongo";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
-export async function GET(req) {
+export async function POST(req) {
   try {
     await dbConnect();
-    const header = headers();
-    const userId = header.get("id");
-    const userEmail = header.get("email");
+    // const header = headers();
+    // const userId = header.get("id");
+    // const userEmail = header.get("email");
 
-    const cartProducts = await ProductCart.find({ userId }).populate({
-      path: "productId",
-      model: Product,
-    });
+    // const cartProducts = await ProductCart.find({ userId }).populate({
+    //   path: "productId",
+    //   model: Product,
+    // });
 
-    const totalAmount = cartProducts.reduce((acc, curr) => {
-      const product = curr.productId;
+    // const totalAmount = cartProducts.reduce((acc, curr) => {
+    //   const product = curr.productId;
 
-      if (
-        product.discount &&
-        product.discount > 0 &&
-        product.discountPrice > 0
-      ) {
-        return acc + product.discountPrice * curr.qty;
-      } else {
-        return acc + product.price * curr.qty;
-      }
-    }, 0);
+    //   if (
+    //     product.discount &&
+    //     product.discount > 0 &&
+    //     product.discountPrice > 0
+    //   ) {
+    //     return acc + product.discountPrice * curr.qty;
+    //   } else {
+    //     return acc + product.price * curr.qty;
+    //   }
+    // }, 0);
 
-    const vat = totalAmount * 0.15;
-    const total = totalAmount + vat;
-    const payable = total;
-    const profile = await CustomerProfile.findOne({ userId });
-    const cusDetails = `${profile.cusName} ${profile.cusPostcode}\n${profile.cusCity}\n${profile.cusFax}, ${profile.cusState} ${profile.cusCountry}\n${profile.cusPhone}`;
-    const shipDetails = `${profile.cusName} ${profile.cusPostcode}\n${profile.cusCity}\n${profile.cusFax}, ${profile.cusState} ${profile.cusCountry}\n${profile.cusPhone}`;
+    // const vat = totalAmount * 0.15;
+    // const total = totalAmount + vat;
+    // const payable = total;
+    // const profile = await CustomerProfile.findOne({ userId });
+    // const cusDetails = `${profile.cusName} ${profile.cusPostcode}\n${profile.cusCity}\n${profile.cusFax}, ${profile.cusState} ${profile.cusCountry}\n${profile.cusPhone}`;
+    // const shipDetails = `${profile.cusName} ${profile.cusPostcode}\n${profile.cusCity}\n${profile.cusFax}, ${profile.cusState} ${profile.cusCountry}\n${profile.cusPhone}`;
 
     const tranId = Math.random()
       .toString(36)
       .substring(2, 15)
       .toLocaleUpperCase();
-    const valId = "0";
-    const deliveryStatus = "Pending";
-    const paymentStatus = "Pending";
-
-    const createInvoice = await Invoice.create({
-      total,
-      vat,
-      payable,
-      cusDetails,
-      shipDetails,
-      tranId,
-      valId,
-      deliveryStatus,
-      paymentStatus,
-      userId,
-    });
-
+    // const valId = "0";
+    // const deliveryStatus = "Pending";
+    // const paymentStatus = "Pending";
+    const data = await req.json();
+    // const createInvoice = await Invoice.create({
+    //   total,
+    //   vat,
+    //   payable,
+    //   cusDetails,
+    //   shipDetails,
+    //   tranId,
+    //   valId,
+    //   deliveryStatus,
+    //   paymentStatus,
+    //   userId,
+    // });
+    console.log(data);
+    const createInvoice = await Invoice.create(data);
     const invoiceId = createInvoice._id;
+    console.log(invoiceId);
+    // for (const element of cartProducts) {
+    //   await InvoiceProduct.create({
+    //     invoiceId,
+    //     productId: element.productId,
+    //     userId,
+    //     qty: element.qty,
+    //     salePrice: element.productId.discount
+    //       ? element.productId.discountPrice
+    //       : element.productId.price,
+    //     color: element.color,
+    //     size: element.size,
+    //   });
+    // }
 
-    for (const element of cartProducts) {
-      await InvoiceProduct.create({
-        invoiceId,
-        productId: element.productId,
-        userId,
-        qty: element.qty,
-        salePrice: element.productId.discount
-          ? element.productId.discountPrice
-          : element.productId.price,
-        color: element.color,
-        size: element.size,
-      });
-    }
-
-    await ProductCart.deleteMany({ userId });
+    // await ProductCart.deleteMany({ userId });
 
     const sslcommerzAccount = await SslcommerzAccount.findOne({});
-
+    console.log(sslcommerzAccount);
     const form = new FormData();
     form.append("store_id", sslcommerzAccount.storeId);
     form.append("store_passwd", sslcommerzAccount.storePasswd);
-    form.append("total_amount", payable);
+    // form.append("total_amount", payable);
+    form.append("total_amount", 100);
     form.append("currency", sslcommerzAccount.currency);
     form.append("tran_id", tranId);
 
@@ -134,6 +136,7 @@ export async function GET(req) {
 
     return NextResponse.json({ sslResponse }, { status: 200 });
   } catch (error) {
+    console.error(error.message);
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }
