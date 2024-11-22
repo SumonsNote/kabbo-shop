@@ -1,9 +1,9 @@
 "use client";
 
 import {
-  useAddSliderMutation,
-  useUpdateSliderMutation,
-} from "@/store/slices/SliderApi";
+  useAddWeekendMutation,
+  useUpdateWeekendMutation,
+} from "@/store/slices/weekendApi";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -11,11 +11,11 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { BiCloudUpload } from "react-icons/bi";
 import { toast } from "react-toastify";
 
-const SliderForm = ({ onClose, slider, isEdit }) => {
-  const [imagePreview, setImagePreview] = useState(slider?.image);
-  const [addSlider, { isLoading, isSuccess, data }] = useAddSliderMutation();
-  const [updateSlider, { isLoading: isUpdating, isSuccess: isUpdated }] =
-    useUpdateSliderMutation();
+const WeekendForm = ({ onClose, weekend, isEdit }) => {
+  const [imagePreview, setImagePreview] = useState(weekend?.image);
+  const [addWeekend, { isLoading, isSuccess, data }] = useAddWeekendMutation();
+  const [updateWeekend, { isLoading: isUpdating, isSuccess: isUpdated }] =
+    useUpdateWeekendMutation();
   const {
     register,
     handleSubmit,
@@ -23,19 +23,17 @@ const SliderForm = ({ onClose, slider, isEdit }) => {
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
-      image: slider?.image || null,
-      title: slider?.title || "",
-      description: slider?.description || "",
-      regular_price: slider?.regular_price || "",
-      discount_price: slider?.discount_price || "",
+      title: weekend?.title || "",
+      short_description: weekend?.short_description || "",
+      image: weekend?.image || null,
     },
   });
 
   useEffect(() => {
-    if (slider) {
-      setImagePreview(slider.image);
+    if (weekend) {
+      setImagePreview(weekend.image);
     }
-  }, [slider]);
+  }, [weekend]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -55,12 +53,10 @@ const SliderForm = ({ onClose, slider, isEdit }) => {
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
     const formData = new FormData();
+
     formData.append("title", data.title);
-    formData.append("description", data.description);
-    formData.append("regular_price", data.regular_price);
-    formData.append("discount_price", data.discount_price);
+    formData.append("short_description", data.short_description);
 
     if (data.image) {
       if (data.image.size > 2000000) {
@@ -69,35 +65,35 @@ const SliderForm = ({ onClose, slider, isEdit }) => {
       }
       formData.append("file", data.image);
     }
-
     if (isEdit) {
-      formData.append("id", slider._id);
-      updateSlider(formData);
+      console.log(isEdit);
+      formData.append("id", weekend._id);
+      updateWeekend(formData);
     } else {
-      addSlider(formData);
+      addWeekend(formData);
     }
   };
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success("Slider created successfully");
+      toast.success("Weekend created successfully");
       onClose();
     } else if (isUpdated) {
-      toast.success("Slider updated successfully");
+      toast.success("Weekend updated successfully");
       onClose();
     }
   }, [isSuccess, isUpdated]);
 
   return (
     <div className="p-6 space-y-4 dark:bg-gray-900 dark:text-gray-300">
-      <h2>Add a slider</h2>
+      <h2>Add Weekend</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="flex items-center justify-center">
           <label
-            htmlFor="slider-image-input"
+            htmlFor="weekend-image-input"
             className="relative border overflow-hidden border-dashed border-gray-600 dark:border-gray-400 dark:text-gray-400 px-4 py-2 rounded-md cursor-pointer w-full h-32 text-sm flex items-center justify-center flex-col gap-2"
           >
-            <BiCloudUpload className="text-3xl" /> Upload Banner Image
+            <BiCloudUpload className="text-3xl" /> Upload Weekend Image
             {imagePreview && (
               <div className="absolute top-0 left-0 right-0 rounded-md">
                 <Image
@@ -118,7 +114,7 @@ const SliderForm = ({ onClose, slider, isEdit }) => {
             )}
           </label>
           <input
-            id="slider-image-input"
+            id="weekend-image-input"
             type="file"
             {...register("image")}
             className="hidden"
@@ -142,62 +138,18 @@ const SliderForm = ({ onClose, slider, isEdit }) => {
 
         <div className="relative">
           <textarea
-            {...register("description", {
-              required: "Description is required",
+            {...register("short_description", {
+              required: "Short Description is required",
             })}
             className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 dark:focus:ring-blue-500"
             rows="2"
-            placeholder="Enter banner description"
+            placeholder="Enter weekend short description"
           />
-          {errors.description && (
+          {errors.short_description && (
             <span className="absolute -bottom-6 left-0 text-red-500 text-sm">
-              {errors.description.message}
+              {errors.short_description.message}
             </span>
           )}
-        </div>
-
-        <div className="grid grid-cols-2 gap-4">
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400">
-              $
-            </span>
-            <input
-              {...register("regular_price", {
-                required: "Regular price is required",
-                valueAsNumber: true,
-                min: { value: 0, message: "Price cannot be negative" },
-              })}
-              type="number"
-              className="w-full pl-8 pr-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 dark:focus:ring-blue-500"
-              placeholder="0.00"
-            />
-            {errors.regular_price && (
-              <span className="absolute -bottom-6 left-0 text-red-500 text-sm">
-                {errors.regular_price.message}
-              </span>
-            )}
-          </div>
-
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400">
-              $
-            </span>
-            <input
-              {...register("discount_price", {
-                required: "Discount price is required",
-                valueAsNumber: true,
-                min: { value: 0, message: "Price cannot be negative" },
-              })}
-              type="number"
-              className="w-full pl-8 pr-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 dark:focus:ring-blue-500"
-              placeholder="0.00"
-            />
-            {errors.discount_price && (
-              <span className="absolute -bottom-6 left-0 text-red-500 text-sm">
-                {errors.discount_price.message}
-              </span>
-            )}
-          </div>
         </div>
 
         <button
@@ -212,4 +164,4 @@ const SliderForm = ({ onClose, slider, isEdit }) => {
   );
 };
 
-export default SliderForm;
+export default WeekendForm;

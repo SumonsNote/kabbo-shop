@@ -1,46 +1,46 @@
-import { useDeleteDealMutation } from "@/store/slices/DealApi";
+import { useDeleteWeekendMutation } from "@/store/slices/weekendApi";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import DeleteConfirmationModal from "../DeleteModal";
 
-const DealTable = ({ deals, openModal }) => {
+const WeekendTable = ({ weekends, openModal }) => {
   const [
-    deleteDeal,
+    deleteWeekend,
     { isLoading: isDeleting, isSuccess: isDeleted, error, isError },
-  ] = useDeleteDealMutation();
+  ] = useDeleteWeekendMutation();
 
   const [showModal, setShowModal] = useState(false);
-  const [selectedDeal, setSelectedDeal] = useState(null);
+  const [selectedWeekend, setSelectedWeekend] = useState(null);
 
-  const handleDelete = (dealId) => {
-    deleteDeal({ dealId });
+  const handleDelete = async (weekendId) => {
+    deleteWeekend({ id: weekendId });
     setShowModal(false);
   };
 
-  const openDeleteModal = (deal) => {
-    setSelectedDeal(deal);
+  const openDeleteModal = (weekend) => {
+    setSelectedWeekend(weekend);
     setShowModal(true);
   };
 
   const closeDeleteModal = () => {
     setShowModal(false);
-    setSelectedDeal(null);
+    setSelectedWeekend(null);
   };
 
   useEffect(() => {
     if (isDeleted) {
-      toast.success("Deal deleted successfully.");
+      toast.success("Weekend deleted successfully.");
     } else if (isError) {
       toast.error(error.message);
     }
   }, [isDeleted, isError, error]);
 
-  if (!deals || deals.length === 0) {
+  if (!weekends || weekends.length === 0) {
     return (
       <div className="mt-6">
         <p className="text-gray-500 dark:text-gray-300 text-center">
-          No deals found.
+          No Weekends found.
         </p>
       </div>
     );
@@ -48,15 +48,15 @@ const DealTable = ({ deals, openModal }) => {
 
   return (
     <>
-      {showModal && (
+      {showModal && selectedWeekend && (
         <DeleteConfirmationModal
           onClose={closeDeleteModal}
-          onDelete={() => handleDelete(selectedDeal._id)}
-          item={selectedDeal}
-          type="deal"
+          onDelete={() => handleDelete(selectedWeekend._id)}
+          item={selectedWeekend}
+          type="weekend"
         />
       )}
-      <div className="mt-6 space-y-8 ">
+      <div className="mt-6 space-y-8">
         <div className="rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full table-auto">
@@ -72,46 +72,40 @@ const DealTable = ({ deals, openModal }) => {
                     Image
                   </th>
                   <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">
-                    Label
-                  </th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">
                     Actions
                   </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                {deals.map((deal) => (
+                {weekends.map((weekend) => (
                   <tr
-                    key={deal._id.$oid}
+                    key={weekend._id}
                     className="hover:bg-gray-50 dark:hover:bg-gray-800"
                   >
                     <td className="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
-                      {deal.title}
+                      {weekend.title}
                     </td>
                     <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
-                      {deal.short_description}
+                      {weekend.short_description}
                     </td>
                     <td className="px-4 py-3">
                       <Image
-                        src={deal.image}
-                        alt={deal.title}
+                        src={weekend.image}
+                        alt={weekend.title}
                         width={100}
                         height={100}
                         className="h-16 w-16 object-cover rounded-md"
                       />
                     </td>
-                    <td className="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
-                      {deal.label}
-                    </td>
                     <td className="px-4 py-3 space-x-2">
                       <button
-                        onClick={() => openModal(deal, "edit")}
+                        onClick={() => openModal(weekend, "edit")}
                         className="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-md dark:bg-blue-700 dark:hover:bg-blue-600"
                       >
                         Edit
                       </button>
                       <button
-                        onClick={() => openDeleteModal(deal)}
+                        onClick={() => openDeleteModal(weekend)}
                         className="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded-md dark:bg-red-700 dark:hover:bg-red-600"
                       >
                         Delete
@@ -128,4 +122,4 @@ const DealTable = ({ deals, openModal }) => {
   );
 };
 
-export default DealTable;
+export default WeekendTable;

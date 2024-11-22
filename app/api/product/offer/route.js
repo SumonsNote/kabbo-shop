@@ -11,12 +11,12 @@ export async function GET(req) {
     const stocks = await Stock.find().populate({
       path: "product",
       model: Product,
-      select: "product_name image best_seller brand_name warranty_information",
+      select: "product_name image is_offer brand_name warranty_information",
     });
 
     // Filter for best-seller products
     const filteredStocks = stocks.filter(
-      (stock) => stock.product && stock.product.best_seller === true
+      (stock) => stock.product && stock.product.is_offer === true
     );
 
     // Transform the filtered data

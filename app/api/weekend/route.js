@@ -1,4 +1,4 @@
-import { Deal } from "@/app/models/deal-model";
+import { WeekendOffer } from "@/app/models/weekend-offer-model";
 import connectMongo from "@/services/mongo";
 import { NextResponse } from "next/server";
 
@@ -7,7 +7,7 @@ export async function POST(req) {
     await connectMongo();
     const formData = await req.formData();
     const title = formData.get("title");
-    const label = formData.get("label");
+
     const short_description = formData.get("short_description");
 
     console.log(formData);
@@ -41,16 +41,16 @@ export async function POST(req) {
     const { secure_url } = responseBody;
 
     if (secure_url) {
-      const dealObj = {
+      const weekendObj = {
         image: secure_url,
         title,
-        label,
+
         short_description,
       };
 
-      const deal = await Deal.create(dealObj);
+      const weekend = await WeekendOffer.create(weekendObj);
       return NextResponse.json(
-        { deal, message: "Successfully created deal" },
+        { weekend, message: "Successfully created weekend" },
         { status: 201 }
       );
     }
@@ -70,17 +70,17 @@ export async function PUT(req) {
     await connectMongo();
 
     const formData = await req.formData();
-    // console.log("deal route", formData);
+    // console.log("weekend route", formData);
 
-    const dealId = formData.get("id");
+    const weekendId = formData.get("id");
     const title = formData.get("title");
-    const label = formData.get("label");
+
     const short_description = formData.get("short_description");
 
-    // Ensure deal ID is provided
-    if (!dealId) {
+    // Ensure weekend ID is provided
+    if (!weekendId) {
       return NextResponse.json(
-        { message: "Deal ID is required" },
+        { message: "Weekend ID is required" },
         { status: 400 }
       );
     }
@@ -121,25 +121,30 @@ export async function PUT(req) {
       }
     }
 
-    // Prepare the deal object with new data
+    // Prepare the weekend object with new data
     if (secure_url) {
-      const dealObj = {
+      const weekendObj = {
         image: secure_url,
         title,
         short_description,
-        label,
       };
 
-      // Update the existing deal in the database
-      const deal = await Deal.findByIdAndUpdate(dealId, dealObj);
+      // Update the existing weekend in the database
+      const weekend = await WeekendOffer.findByIdAndUpdate(
+        weekendId,
+        weekendObj
+      );
       return NextResponse.json(
-        { message: "Successfully updated deal", deal },
+        { message: "Successfully updated weekend", weekend },
         { status: 201 }
       );
     }
 
-    if (!deal) {
-      return NextResponse.json({ message: "deal not found" }, { status: 404 });
+    if (!weekend) {
+      return NextResponse.json(
+        { message: "weekend not found" },
+        { status: 404 }
+      );
     }
   } catch (error) {
     console.error("Error in PUT request:", error);
@@ -150,8 +155,8 @@ export async function PUT(req) {
 export async function GET(req) {
   await connectMongo();
   try {
-    const deal = await Deal.find();
-    return NextResponse.json({ deal }, { status: 200 });
+    const weekend = await WeekendOffer.find();
+    return NextResponse.json({ weekend }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
@@ -160,12 +165,10 @@ export async function GET(req) {
 export async function DELETE(req) {
   try {
     await connectMongo();
-    const { dealId } = await req.json();
-    console.log(dealId);
-    const deal = await Deal.findByIdAndDelete(dealId);
-    return NextResponse.json({ deal }, { status: 200 });
+    const { id } = await req.json();
+    const weekend = await WeekendOffer.findByIdAndDelete(id);
+    return NextResponse.json({ weekend }, { status: 200 });
   } catch (error) {
-    console.log(error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

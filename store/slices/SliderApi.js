@@ -6,7 +6,7 @@ export const sliderApi = apiSlice.injectEndpoints({
       query: () => "/slider",
       providesTags: ["sliders"],
     }),
-    addslider: builder.mutation({
+    addSlider: builder.mutation({
       query: (slider) => ({
         url: "/slider",
         method: "POST",
@@ -14,7 +14,7 @@ export const sliderApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["sliders"],
     }),
-    updateslider: builder.mutation({
+    updateSlider: builder.mutation({
       query: (slider) => ({
         url: `/slider`,
         method: "PUT",
@@ -22,7 +22,21 @@ export const sliderApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["sliders"],
     }),
+
+    deleteSlider: builder.mutation({
+      query: (sliderId) => ({
+        url: `/slider`,
+        method: "DELETE",
+        body: sliderId,
+      }),
+      invalidatesTags: ["sliders"],
+    }),
   }),
 });
 
-export const { useFetchSlidersQuery, useAddSliderMutation } = sliderApi;
+export const {
+  useFetchSlidersQuery,
+  useAddSliderMutation,
+  useUpdateSliderMutation,
+  useDeleteSliderMutation,
+} = sliderApi;

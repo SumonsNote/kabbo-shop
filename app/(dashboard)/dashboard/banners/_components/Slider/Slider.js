@@ -2,7 +2,7 @@ import { useFetchSlidersQuery } from "@/store/slices/SliderApi";
 import Error from "../../../error";
 import Loading from "../../../loadding";
 import BannerTitlte from "../BannerTitlte";
-import TableComponnet from "./SliderTable";
+import SliderTable from "./SliderTable";
 
 const Slider = ({ openModal }) => {
   const { data, isSuccess, isLoading, error } = useFetchSlidersQuery();
@@ -34,7 +34,7 @@ const Slider = ({ openModal }) => {
         </button>
       </div>
 
-      <TableComponnet sliders={sliders} />
+      <SliderTable sliders={sliders} openModal={openModal} />
     </div>
   );
 };
