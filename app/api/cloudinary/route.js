@@ -1,4 +1,4 @@
-import { cloudinary } from "@/lib/utils"; // your config path
+import { cloudinary } from "../../../lib/utils"; // your config path
 import { NextResponse } from "next/server";
 
 export async function POST(request) {

@@ -1,4 +1,4 @@
-import { Category } from "@/app/models/category-model";
+import { Category } from "../../models/category";
 import connectMongo from "@/services/mongo";
 import { dbConnect } from "@/utils/mongo";
 import { NextResponse } from "next/server";

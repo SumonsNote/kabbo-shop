@@ -1,8 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
 import React from "react";
-import BkashPayment from "./BkashPayment";
-// import CheckoutPopup from "../components/ssl/CheckoutPopup";
 
 export default function SSLCommerzPayment() {
   const router = useRouter();
@@ -18,18 +16,37 @@ export default function SSLCommerzPayment() {
     console.log(data);
   };
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex h-[90vh] w-full flex-col justify-evenly items-center">
       <button
         className="px-4 py-2 bg-lime-200 rounded-md"
         onClick={handleCheackout}
       >
-        buy now
+        Pay Now
       </button>
-      <BkashPayment
-        amount="100.00"
-        onSuccess={(data) => console.log("Payment successful", data)}
-        onError={(error) => console.error("Payment failed", error)}
-      />
+      <div className="">
+        <a
+          target="_blank"
+          href="https://www.sslcommerz.com/"
+          title="SSLCommerz"
+          alt="SSLCommerz"
+        >
+          <img
+            style={{ width: "1200px", height: "auto" }}
+            src="https://securepay.sslcommerz.com/public/image/SSLCommerz-Pay-With-logo-All-Size-01.png"
+          />
+        </a>
+        <a
+          target="_blank"
+          href="https://www.sslcommerz.com/"
+          title="SSLCommerz"
+          alt="SSLCommerz"
+        >
+          <img
+            style={{ width: "1200px", height: "auto" }}
+            src="https://securepay.sslcommerz.com/public/image/SSLCommerz-Pay-With-logo-All-Size-03.png"
+          />
+        </a>
+      </div>
     </div>
   );
 }
