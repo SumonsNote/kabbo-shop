@@ -1,11 +1,12 @@
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { AiOutlineSearch } from "react-icons/ai";
 import { CgMenuMotion } from "react-icons/cg";
 import { RiMenu5Line } from "react-icons/ri";
 
-export default async function Header({ setIsCollapsed, isCollapsed }) {
-  // const session = await auth();
-  // console.log(session);
+export default function Header({ setIsCollapsed, isCollapsed }) {
+  const { data: session, status } = useSession();
+  console.log(session);
   return (
     <div className="bg-gray-900 text-white px-6 py-4 flex justify-between items-center z-50  ">
       <button onClick={() => setIsCollapsed(!isCollapsed)}>
@@ -35,7 +36,9 @@ export default async function Header({ setIsCollapsed, isCollapsed }) {
             alt="User Avatar"
             className="w-8 h-8 rounded-full mr-2"
           />
-          <span className="text-gray-400">sumon Doe</span>
+          <span className="text-gray-400">
+            {session?.user?.first_name} {session?.user?.last_name}
+          </span>
         </div>
       </div>
     </div>
