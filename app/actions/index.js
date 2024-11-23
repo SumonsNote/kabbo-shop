@@ -3,7 +3,6 @@ import { signIn } from "@/auth";
 import connectMongo from "@/services/mongo";
 
 export async function login(formData) {
-  console.log(formData);
   try {
     await connectMongo();
     const response = await signIn("credentials", {

@@ -1,5 +1,6 @@
 "use client";
 import { store } from "@/store/store";
+import { SessionProvider } from "next-auth/react";
 import { useState } from "react";
 import { Provider } from "react-redux";
 import { ToastContainer } from "react-toastify";
@@ -13,27 +14,32 @@ const DashboardLayout = ({ children, params }) => {
   return (
     <>
       <ToastContainer />
-      <Provider store={store}>
-        <div className="flex h-screen relative">
-          {/* Sidebar */}
-          <NavSideBar
-            params={params}
-            setIsCollapsed={setIsCollapsed}
-            isCollapsed={isCollapsed}
-          />
+      <SessionProvider>
+        <Provider store={store}>
+          <div className="flex h-screen relative">
+            {/* Sidebar */}
+            <NavSideBar
+              params={params}
+              setIsCollapsed={setIsCollapsed}
+              isCollapsed={isCollapsed}
+            />
 
-          {/* Main Content */}
-          <div className="flex-1 relative overflow-hidden ">
-            {/* Header */}
-            <Header setIsCollapsed={setIsCollapsed} isCollapsed={isCollapsed} />
+            {/* Main Content */}
+            <div className="flex-1 relative overflow-hidden ">
+              {/* Header */}
+              <Header
+                setIsCollapsed={setIsCollapsed}
+                isCollapsed={isCollapsed}
+              />
 
-            {/* Dashboard Content */}
-            <div className="p-2 h-[93vh]  dark:bg-gray-950/95 mainContainer overflow-x-auto flex justify-center items-start min-w-full relative">
-              {children}
+              {/* Dashboard Content */}
+              <div className="p-2 h-[93vh]  dark:bg-gray-950/95 mainContainer overflow-x-auto flex justify-center items-start min-w-full relative">
+                {children}
+              </div>
             </div>
           </div>
-        </div>
-      </Provider>
+        </Provider>
+      </SessionProvider>
     </>
   );
 };

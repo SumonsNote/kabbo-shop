@@ -1,4 +1,6 @@
 "use client";
+
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -21,6 +23,7 @@ import { MdCategory, MdOutlinePhoneIphone } from "react-icons/md";
 import DarkMood from "./ui/DarkMood";
 
 export default function NavSideBar({ setIsCollapsed, isCollapsed }) {
+  const { data: session } = useSession();
   const pathname = usePathname();
   const router = useRouter();
 
@@ -45,7 +48,6 @@ export default function NavSideBar({ setIsCollapsed, isCollapsed }) {
       icon: <AiOutlineApple className="w-6 h-6" />,
       label: "Brands",
     },
-
     {
       href: "/dashboard/products",
       icon: <MdOutlinePhoneIphone className="w-6 h-6" />,
@@ -88,10 +90,9 @@ export default function NavSideBar({ setIsCollapsed, isCollapsed }) {
     },
   ];
 
-  const isActive = (path) => {
-    return path === "/dashboard"
-      ? pathname === "/dashboard"
-      : pathname.includes(path);
+  const handleSignOut = async () => {
+    await signOut({ redirect: false });
+    router.push("/dashboard-login");
   };
 
   return (
@@ -112,7 +113,11 @@ export default function NavSideBar({ setIsCollapsed, isCollapsed }) {
             key={href}
             href={href}
             className={`flex items-center py-3 px-4 rounded-md transition duration-200 dark:text-gray-500 ${
-              isActive(href)
+              (
+                href === "/dashboard"
+                  ? pathname === "/dashboard"
+                  : pathname.includes(href)
+              )
                 ? "bg-gray-800 dark:bg-gray-950 "
                 : " hover:bg-gray-800 dark:hover:bg-gray-950"
             }`}
@@ -131,8 +136,8 @@ export default function NavSideBar({ setIsCollapsed, isCollapsed }) {
       <div className="space-y-4 absolute bottom-0 left-0  p-2 h-32   bg-gray-900 w-full">
         <DarkMood isCollapsed={isCollapsed} />
         <button
+          onClick={handleSignOut}
           className="bg-blue-500 dark:bg-blue-900 hover:bg-blue-600 text-white dark:text-gray-400 py-3 px-4 rounded-md transition duration-200 flex items-center overflow-hidden"
-          onClick={() => router.push("/logout")}
         >
           <IoLogOut className="w-6 h-6" />
           {!isCollapsed && <span className="ml-4">Logout</span>}
