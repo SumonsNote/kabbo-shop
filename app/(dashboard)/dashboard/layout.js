@@ -9,7 +9,6 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "./components/Header";
 import NavSideBar from "./components/NavSideBar";
-import { store } from "../../../store/store";
 
 const DashboardLayout = ({ children, params }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
