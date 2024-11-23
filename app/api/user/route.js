@@ -1,5 +1,6 @@
 import { User } from "@/app/models/user-model";
 import connectMongo from "@/services/mongo";
+import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
@@ -11,6 +12,8 @@ export async function POST(req) {
     const firstName = formData.get("first_name");
     const lastName = formData.get("last_name");
     const email = formData.get("email");
+    const username = formData.get("username");
+    const phone = formData.get("phone");
     const password = formData.get("password");
     const status = formData.get("status");
     const role = formData.get("role");
@@ -23,12 +26,17 @@ export async function POST(req) {
       );
     }
 
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     // Create user object
     const user = await User.create({
       first_name: firstName,
       last_name: lastName,
       email,
-      password,
+      username,
+      phone,
+      password: hashedPassword,
       status,
       role,
     });
