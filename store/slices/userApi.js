@@ -11,9 +11,14 @@ export const usersApi = apiSlice.injectEndpoints({
       //   // Handle the fetched data if needed
       // },
     }),
-    // fetchUserById: builder.query({
-    //   query: (id) => `/users/${id}`,
-    // }),
+    fetchUserById: builder.query({
+      query: (username) => ({
+        url: "/user",
+
+        method: "GET",
+        providesTags: ["users"],
+      }),
+    }),
     // fetchUserByArea: builder.query({
     //   query: (area) => `/users/area/${area}`,
     // }),
@@ -28,9 +33,5 @@ export const usersApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const {
-  useFetchUsersQuery,
-  useFetchUserByIdQuery,
-  useFetchUserByAreaQuery,
-  useAddUserMutation,
-} = usersApi;
+export const { useFetchUsersQuery, useFetchUserByIdQuery, useAddUserMutation } =
+  usersApi;
