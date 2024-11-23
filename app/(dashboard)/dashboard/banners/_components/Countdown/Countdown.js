@@ -1,4 +1,4 @@
-import { useFetchCountdownsQuery } from "@/store/slices/countdownApi";
+import { useFetchCountdownsQuery } from "../../../../../../store/slices/countdownApi";
 import Error from "../../../error";
 import Loading from "../../../loadding";
 import BannerTitle from "../BannerTitlte";

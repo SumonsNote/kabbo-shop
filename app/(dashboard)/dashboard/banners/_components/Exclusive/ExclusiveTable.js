@@ -1,4 +1,4 @@
-import { useDeleteExclusiveMutation } from "@/store/slices/exclusiveApi";
+import { useDeleteExclusiveMutation } from "../../../../../../store/slices/exclusiveApi";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
