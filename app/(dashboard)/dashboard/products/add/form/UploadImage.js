@@ -90,7 +90,7 @@
 //     </div>
 //   );
 // }
-import { useUploadMutation } from "@/store/slices/uplodApi";
+import { useUploadMutation } from "../../../../../../store/slices/uplodApi";
 import Lottie from "lottie-react";
 import Image from "next/image";
 import { useEffect, useState, forwardRef, useImperativeHandle } from "react";

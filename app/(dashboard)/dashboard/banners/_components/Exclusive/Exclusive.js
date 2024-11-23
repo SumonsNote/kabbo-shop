@@ -1,4 +1,4 @@
-import { useFetchExclusivesQuery } from "@/store/slices/exclusiveApi";
+import { useFetchExclusivesQuery } from "../../../../../../store/slices/exclusiveApi";
 import Error from "../../../error";
 import Loading from "../../../loadding";
 import BannerTitle from "../BannerTitlte";

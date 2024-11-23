@@ -7,6 +7,9 @@ export const productsApi = apiSlice.injectEndpoints({
         `/product?${searchTerm ? `search=${searchTerm}` : ""}`,
       providesTags: ["products"],
     }),
+    fetchOldProducts: builder.query({
+      query: () => `/product/new`,
+    }),
     fetchSingleProducts: builder.query({
       query: (id) => `/product/${id}`,
     }),
@@ -44,4 +47,5 @@ export const {
   useFetchSingleProductsQuery,
   useUpdateProductMutation,
   useDeleteProductMutation,
+  useFetchOldProductsQuery,
 } = productsApi;

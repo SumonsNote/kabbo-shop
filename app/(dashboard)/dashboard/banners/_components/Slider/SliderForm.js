@@ -3,7 +3,7 @@
 import {
   useAddSliderMutation,
   useUpdateSliderMutation,
-} from "@/store/slices/SliderApi";
+} from "../../../../../../store/slices/SliderApi";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";

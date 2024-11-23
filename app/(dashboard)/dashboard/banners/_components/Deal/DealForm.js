@@ -3,7 +3,7 @@
 import {
   useAddDealMutation,
   useUpdateDealMutation,
-} from "@/store/slices/DealApi";
+} from "../../../../../../store/slices/DealApi";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";

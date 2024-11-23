@@ -1,6 +1,6 @@
 // ProductItem.js
 
-import { useDeleteProductMutation } from "@/store/slices/productApi";
+import { useDeleteProductMutation } from "../../../../../store/slices/productApi";
 import { LoaderCircle } from "lucide-react";
 import { Fullscreen } from "lucide-react";
 import Link from "next/link";

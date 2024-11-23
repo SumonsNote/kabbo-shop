@@ -1,6 +1,6 @@
-import { Brand } from "@/app/models/brand-model";
-import { Product } from "@/app/models/product-model";
-import connectMongo from "@/services/mongo";
+import { Brand } from "../../models/brand-model";
+import { Product } from "../../models/product-model";
+import connectMongo from "../../../services/mongo";
 import { NextResponse } from "next/server";
 
 export async function PUT(req) {

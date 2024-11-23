@@ -1,5 +1,5 @@
-import { WeekendOffer } from "@/app/models/weekend-offer-model";
-import connectMongo from "@/services/mongo";
+import { WeekendOffer } from "../../models/weekend-offer-model";
+import connectMongo from "../../../services/mongo";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {

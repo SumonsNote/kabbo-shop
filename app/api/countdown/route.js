@@ -1,5 +1,5 @@
-import { Countdown } from "@/app/models/countdown-model";
-import connectMongo from "@/services/mongo";
+import { Countdown } from "../../models/countdown-model";
+import connectMongo from "../../../services/mongo";
 import { NextResponse } from "next/server";
 
 export async function PUT(req) {
