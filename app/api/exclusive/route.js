@@ -1,5 +1,5 @@
-import { ExclusiveOffer } from "@/app/models/exclusive-offer-model";
-import connectMongo from "@/services/mongo";
+import { ExclusiveOffer } from "../../models/exclusive-offer-model";
+import connectMongo from "../../../services/mongo";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {

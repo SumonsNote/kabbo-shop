@@ -3,7 +3,7 @@
 import {
   useAddExclusiveMutation,
   useUpdateExclusiveMutation,
-} from "@/store/slices/exclusiveApi";
+} from "../../../../../../store/slices/exclusiveApi";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";

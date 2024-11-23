@@ -1,4 +1,4 @@
-import { useDeleteSliderMutation } from "@/store/slices/SliderApi";
+import { useDeleteSliderMutation } from "../../../../../../store/slices/SliderApi";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
