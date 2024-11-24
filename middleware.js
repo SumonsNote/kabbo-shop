@@ -1,49 +1,65 @@
 import { NextResponse } from "next/server";
+import { decrypt } from "@/lib/session";
+import { cookies } from "next/headers";
+import { protectedApiRoutesList } from "./lib/routesList";
 
-export function middleware(request) {
-  // updateSession(request);
-  const pathname = request.nextUrl.pathname;
-  const searchParams = request.nextUrl.searchParams;
+// Define route configurations
+const protectedRoutes = ["/dashboard", "/dashboard/user"];
+const protectedApiRoutes = protectedApiRoutesList; // Add your protected API routes here
+const publicRoutes = ["/admin-login"];
+const apiRoutes = ["/api"];
+export default async function middleware(req) {
+  const path = req.nextUrl.pathname;
+  const headers = req.headers;
 
-  const allCookies = request.cookies.getAll();
+  // Verify custom header to check origin
+  const isFromWebsite = headers.get("x-website-origin") === "true";
+  console.log(isFromWebsite);
+  const isProtectedRoute = protectedRoutes.some((route) =>
+    path.startsWith(route)
+  );
+  const isProtectedApi = protectedApiRoutes.some((route) =>
+    path.startsWith(route)
+  );
 
-  // console.log(allCookies);
+  const isPublicRoute = publicRoutes.some((route) => path.startsWith(route));
+  const isApiRoute = apiRoutes.some((route) => path.startsWith(route));
+  // Get and decrypt session
+  const cookie = (await cookies()).get("ecosoft_auth")?.value;
+  const session = await decrypt(cookie);
 
-  const isLoggedIn = allCookies[2]?.value;
-  if (isLoggedIn) {
+  // // Reject direct API hits if not coming from the website
+  // if (isApiRoute && !isFromWebsite) {
+  //   return NextResponse.json(
+  //     { message: "Unauthorized access - invalid origin" },
+  //     { status: 403 }
+  //   );
+  // }
+
+  // // Handle protected API routes
+  // if (isProtectedApi && !session?.user) {
+  //   return NextResponse.json(
+  //     { message: "Unauthorized access" },
+  //     { status: 401 }
+  //   );
+  // }
+
+  // Handle protected routes
+  if (isProtectedRoute && !session?.user) {
+    return NextResponse.redirect(new URL("/admin-login", req.nextUrl));
   }
 
-  const requestHeaders = new Headers(request.headers);
+  // Handle authenticated users on public routes
+  if (isPublicRoute && session?.user) {
+    return NextResponse.redirect(new URL("/dashboard", req.nextUrl));
+  }
 
-  const response = NextResponse.next({
-    request: {
-      headers: requestHeaders,
-    },
-  });
-
-  // Set a new response header `x-params`
-  response.headers.set(
-    "x-params",
-    JSON.stringify(extractParamsFromURL(pathname))
-  );
-  return response;
+  return NextResponse.next();
 }
 
 export const config = {
   matcher: [
-    // Skip all internal paths (_next, assets, api)
-    "/((?!api|assets|.*\\..*|_next).*)",
-    // Optional: only run on root (/) URL
-    // '/'
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.png$).*)",
+    "/api/:path*",
   ],
 };
-
-function extractParamsFromURL(url) {
-  const params = {};
-  const queryString = url.split("/");
-  if (queryString) {
-    params["lang"] = queryString[1];
-    params["id"] = queryString[queryString.length - 1];
-  }
-  return params;
-}

@@ -1,6 +1,8 @@
 "use server";
-import { signIn } from "@/auth";
+import { signIn, signOut } from "@/auth";
+import { deleteSession } from "@/lib/session";
 import connectMongo from "@/services/mongo";
+import { redirect } from "next/navigation";
 
 export async function login(formData) {
   try {
@@ -14,4 +16,10 @@ export async function login(formData) {
   } catch (error) {
     throw new Error(error);
   }
+}
+
+export async function logout() {
+  signOut();
+  deleteSession();
+  redirect("/dashboard-login");
 }

@@ -1,12 +1,12 @@
+import { User } from "lucide-react";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import { AiOutlineSearch } from "react-icons/ai";
 import { CgMenuMotion } from "react-icons/cg";
 import { RiMenu5Line } from "react-icons/ri";
 
 export default function Header({ setIsCollapsed, isCollapsed }) {
   const { data: session, status } = useSession();
-  console.log(session);
+
   return (
     <div className="bg-gray-900 text-white px-6 py-4 flex justify-between items-center z-50  ">
       <button onClick={() => setIsCollapsed(!isCollapsed)}>
@@ -28,18 +28,14 @@ export default function Header({ setIsCollapsed, isCollapsed }) {
         </div>
       </div>
       <div className="flex items-center gap-8 sm:pr-20">
-        <div className="flex items-center">
-          <Image
-            src="/profile-pic.jpg"
-            width={40}
-            height={40}
-            alt="User Avatar"
-            className="w-8 h-8 rounded-full mr-2"
-          />
-          <span className="text-gray-400">
-            {session?.user?.first_name} {session?.user?.last_name}
-          </span>
-        </div>
+        {session?.user?.id && (
+          <div className="flex items-center gap-2">
+            <User className="size-8 text-slate-200" />
+            <span className="text-gray-200">
+              {session?.user?.first_name} {session?.user?.last_name}
+            </span>
+          </div>
+        )}
       </div>
     </div>
   );

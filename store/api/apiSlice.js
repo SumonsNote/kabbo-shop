@@ -5,7 +5,11 @@ export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: `${process.env.NEXT_PUBLIC_APP_URL_DEV}/api`,
+    headers: {
+      "X-Website-Origin": "true",
+    },
   }),
+
   tagTypes: [
     "stocks",
     "stock",

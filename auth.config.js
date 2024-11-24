@@ -6,6 +6,7 @@ import google from "next-auth/providers/google";
 import { User } from "./app/models/user-model.js";
 import connectMongo from "./services/mongo.js";
 import { replaceMongoIdInObject } from "./utils/data-utils.js";
+import { createSession } from "./lib/session.js";
 
 const authConfig = {
   providers: [
@@ -18,7 +19,6 @@ const authConfig = {
       },
 
       async authorize(credentials) {
-        console.log(credentials);
         if (!credentials) return null;
         await connectMongo();
         try {
@@ -31,6 +31,7 @@ const authConfig = {
               user.password
             );
             if (isMatch) {
+              createSession(user);
               return replaceMongoIdInObject(user);
             } else {
               throw new Error("Email or password mismatch");
