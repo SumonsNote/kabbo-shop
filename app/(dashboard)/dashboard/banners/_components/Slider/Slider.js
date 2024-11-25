@@ -1,4 +1,4 @@
-import { useFetchSlidersQuery } from "@/store/slices/SliderApi";
+import { useFetchSlidersQuery } from "../../../../../../store/slices/SliderApi";
 import Error from "../../../error";
 import Loading from "../../../loadding";
 import BannerTitlte from "../BannerTitlte";

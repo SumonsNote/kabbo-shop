@@ -3,36 +3,40 @@ import React from "react";
 export default function OSFeaturesSection({ register, errors }) {
   return (
     <div>
-      <h3 className="text-2xl font-semibold text-gray-400 mb-4 mt-8">OS</h3>
+      <h3 className="text-2xl font-semibold text-gray-400 mb-4 mt-8">
+        operating_system
+      </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="form-group text-gray-500">
           <label className="block text-gray-500 font-medium">
             Operating System
           </label>
           <input
-            {...register("os.operatingSystem", {
+            {...register("operating_system.operatingSystem", {
               required: "Operating system is required",
             })}
             placeholder="Android 13"
             className="w-full p-2 border border-gray-300 rounded-md"
           />
-          {errors.os?.operatingSystem && (
+          {errors.operating_system?.operatingSystem && (
             <p className="text-red-500 text-sm">
-              {errors.os.operatingSystem.message}
+              {errors.operating_system.operatingSystem.message}
             </p>
           )}
         </div>
         <div className="form-group text-gray-500">
           <label className="block text-gray-500 font-medium">Custom UI</label>
           <input
-            {...register("os.customUI", {
+            {...register("operating_system.customUI", {
               required: "Custom UI details are required",
             })}
             placeholder="TCL UI 5.0"
             className="w-full p-2 border border-gray-300 rounded-md"
           />
-          {errors.os?.customUI && (
-            <p className="text-red-500 text-sm">{errors.os.customUI.message}</p>
+          {errors.operating_system?.customUI && (
+            <p className="text-red-500 text-sm">
+              {errors.operating_system.customUI.message}
+            </p>
           )}
         </div>
       </div>

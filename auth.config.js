@@ -3,9 +3,10 @@ import credentials from "next-auth/providers/credentials";
 import facebook from "next-auth/providers/facebook";
 import google from "next-auth/providers/google";
 
-import { replaceMongoIdInObject } from "./utils/data-utils.js";
-import connectMongo from "./services/mongo.js";
 import { User } from "./app/models/user-model.js";
+import connectMongo from "./services/mongo.js";
+import { replaceMongoIdInObject } from "./utils/data-utils.js";
+import { createSession } from "./lib/session.js";
 
 const authConfig = {
   providers: [
@@ -13,20 +14,24 @@ const authConfig = {
     facebook,
     credentials({
       credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
+        username: {},
+        password: {},
       },
+
       async authorize(credentials) {
         if (!credentials) return null;
         await connectMongo();
         try {
-          const user = await User.findOne({ email: credentials.email }).lean();
+          const user = await User.findOne({
+            username: credentials.username,
+          }).lean();
           if (user) {
-            // const isMatch = await bcrypt.compare(
-            //   credentials.password,
-            //   user.password
-            // );
-            if (true) {
+            const isMatch = await bcrypt.compare(
+              credentials.password,
+              user.password
+            );
+            if (isMatch) {
+              createSession(user);
               return replaceMongoIdInObject(user);
             } else {
               throw new Error("Email or password mismatch");

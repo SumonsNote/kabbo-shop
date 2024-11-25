@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import NumberFlow from "@number-flow/react";
 
 export default function OrderStats({ orders }) {
-  console.log(orders);
   const [stats, setStats] = useState({
     totalOrders: 0,
     pendingOrders: 0,
@@ -23,13 +22,13 @@ export default function OrderStats({ orders }) {
   function calculateOrderStats(orders) {
     const totalOrders = orders.length;
     const pendingOrders = orders.filter(
-      (order) => order.status === "Pending"
+      (order) => order.status === "pending"
     ).length;
     const completedOrders = orders.filter(
-      (order) => order.status === "Delivered"
+      (order) => order.status === "delivered"
     ).length;
     const cancelledOrders = orders.filter(
-      (order) => order.status === "Cancelled"
+      (order) => order.status === "cancelled"
     ).length;
 
     const previousMonthOrders = orders.filter(
@@ -40,7 +39,7 @@ export default function OrderStats({ orders }) {
       : 0;
 
     const pendingAttentionCount = orders.filter(
-      (order) => order.status === "Pending" && order.requiresAttention
+      (order) => order.status === "pending" && order.requiresAttention
     ).length;
     const successRate =
       totalOrders > 0 ? (completedOrders / totalOrders) * 100 : 0;

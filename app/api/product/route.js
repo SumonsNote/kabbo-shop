@@ -1,7 +1,39 @@
-import { Brand } from "@/app/models/brand-model";
-import { Product } from "@/app/models/product-model";
-import connectMongo from "@/services/mongo";
+import { Brand } from "../../models/brand-model";
+import { Product } from "../../models/product-model";
+import connectMongo from "../../../services/mongo";
 import { NextResponse } from "next/server";
+
+export async function PUT(req) {
+  try {
+    // Connect to MongoDB
+    await connectMongo();
+
+    // Parse request body
+    const productObj = await req.json();
+
+    // Validate product object (add specific validation as needed)
+    if (!productObj._id) {
+      throw new Error("Product ID is required.");
+    }
+
+    // Update product in database
+    const product = await Product.findByIdAndUpdate(
+      productObj._id,
+      productObj,
+      { new: true }
+    );
+
+    if (!product) {
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
+    }
+
+    // Return success response
+    return NextResponse.json({ product }, { status: 200 });
+  } catch (error) {
+    console.error("Error in PUT request:", error.message);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
 
 export async function POST(req) {
   try {
@@ -36,7 +68,7 @@ export async function GET(req) {
     const { searchParams } = new URL(req.url);
     const searchTerm = searchParams.get("search");
     if (!searchTerm) {
-      const products = await Product.find();
+      const products = await Product.find().sort({ createdAt: -1 });
       return NextResponse.json({ products }, { status: 200 });
     }
     const products = await Product.find({
@@ -45,7 +77,7 @@ export async function GET(req) {
         { product_model: { $regex: new RegExp(`.*${searchTerm}.*`, "i") } },
         { product_id: { $regex: new RegExp(`.*${searchTerm}.*`, "i") } },
       ],
-    });
+    }).sort({ createdAt: -1 });
     console.log(products);
     return NextResponse.json({ products }, { status: 200 });
   } catch (error) {

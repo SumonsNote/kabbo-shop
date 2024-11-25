@@ -13,60 +13,60 @@ export default function CameraSection({ register, errors }) {
         <div className="form-group text-gray-500">
           <label className="block text-gray-500 font-medium">Resolution</label>
           <input
-            {...register("rearCamera.resolution", {
+            {...register("rear_camera.resolution", {
               required: "Rear camera resolution is required",
             })}
             placeholder="50 MP, f/1.8, 26mm (wide), 1/2.55, 0.7µm, PDAF"
             className="w-full p-2 border border-gray-300 rounded-md"
           />
-          {errors.rearCamera?.resolution && (
+          {errors.rear_camera?.resolution && (
             <p className="text-red-500 text-sm">
-              {errors.rearCamera.resolution.message}
+              {errors.rear_camera.resolution.message}
             </p>
           )}
         </div>
         <div className="form-group text-gray-500">
           <label className="block text-gray-500 font-medium">Macro</label>
           <input
-            {...register("rearCamera.macro", {
+            {...register("rear_camera.macro", {
               required: "Macro camera details are required",
             })}
             placeholder="2 MP, f/2.4, (macro)"
             className="w-full p-2 border border-gray-300 rounded-md"
           />
-          {errors.rearCamera?.macro && (
+          {errors.rear_camera?.macro && (
             <p className="text-red-500 text-sm">
-              {errors.rearCamera.macro.message}
+              {errors.rear_camera.macro.message}
             </p>
           )}
         </div>
         <div className="form-group text-gray-500">
           <label className="block text-gray-500 font-medium">Depth</label>
           <input
-            {...register("rearCamera.depth", {
+            {...register("rear_camera.depth", {
               required: "Depth camera details are required",
             })}
             placeholder="2 MP, f/2.4, (depth)"
             className="w-full p-2 border border-gray-300 rounded-md"
           />
-          {errors.rearCamera?.depth && (
+          {errors.rear_camera?.depth && (
             <p className="text-red-500 text-sm">
-              {errors.rearCamera.depth.message}
+              {errors.rear_camera.depth.message}
             </p>
           )}
         </div>
         <div className="form-group text-gray-500">
           <label className="block text-gray-500 font-medium">Features</label>
           <input
-            {...register("rearCamera.features", {
+            {...register("rear_camera.features", {
               required: "Camera features are required",
             })}
             placeholder="LED flash, HDR, Panorama, AI scene detection, Face detection"
             className="w-full p-2 border border-gray-300 rounded-md"
           />
-          {errors.rearCamera?.features && (
+          {errors.rear_camera?.features && (
             <p className="text-red-500 text-sm">
-              {errors.rearCamera.features.message}
+              {errors.rear_camera.features.message}
             </p>
           )}
         </div>
@@ -75,15 +75,15 @@ export default function CameraSection({ register, errors }) {
             Video Recording
           </label>
           <input
-            {...register("rearCamera.recording", {
+            {...register("rear_camera.recording", {
               required: "Video recording details are required",
             })}
             placeholder="1080P @30FPS"
             className="w-full p-2 border border-gray-300 rounded-md"
           />
-          {errors.rearCamera?.recording && (
+          {errors.rear_camera?.recording && (
             <p className="text-red-500 text-sm">
-              {errors.rearCamera.recording.message}
+              {errors.rear_camera.recording.message}
             </p>
           )}
         </div>
@@ -95,30 +95,30 @@ export default function CameraSection({ register, errors }) {
         <div className="form-group text-gray-500">
           <label className="block text-gray-500 font-medium">Resolution</label>
           <input
-            {...register("frontCamera.resolution", {
+            {...register("front_camera.resolution", {
               required: "Front camera resolution is required",
             })}
             placeholder="8 MP, f/2.0, 26mm (wide), 1/4, 1.12µm"
             className="w-full p-2 border border-gray-300 rounded-md"
           />
-          {errors.frontCamera?.resolution && (
+          {errors.front_camera?.resolution && (
             <p className="text-red-500 text-sm">
-              {errors.frontCamera.resolution.message}
+              {errors.front_camera.resolution.message}
             </p>
           )}
         </div>
         <div className="form-group text-gray-500">
           <label className="block text-gray-500 font-medium">Features</label>
           <input
-            {...register("frontCamera.features", {
+            {...register("front_camera.features", {
               required: "Front camera features are required",
             })}
             placeholder="HDR"
             className="w-full p-2 border border-gray-300 rounded-md"
           />
-          {errors.frontCamera?.features && (
+          {errors.front_camera?.features && (
             <p className="text-red-500 text-sm">
-              {errors.frontCamera.features.message}
+              {errors.front_camera.features.message}
             </p>
           )}
         </div>
@@ -127,15 +127,15 @@ export default function CameraSection({ register, errors }) {
             Video Recording
           </label>
           <input
-            {...register("frontCamera.recording", {
+            {...register("front_camera.recording", {
               required: "Video recording details are required",
             })}
             placeholder="1080P @30FPS"
             className="w-full p-2 border border-gray-300 rounded-md"
           />
-          {errors.frontCamera?.recording && (
+          {errors.front_camera?.recording && (
             <p className="text-red-500 text-sm">
-              {errors.frontCamera.recording.message}
+              {errors.front_camera.recording.message}
             </p>
           )}
         </div>

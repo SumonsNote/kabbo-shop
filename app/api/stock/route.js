@@ -8,7 +8,8 @@ export async function POST(req) {
 
   try {
     const stockObj = await req.json();
-    const stock = await Stock.create(stockObj);
+    console.log(stockObj);
+    const stock = await Stock.create(stockObj.stockData);
     return NextResponse.json(
       { message: "Stock created successfully", stock },
       { status: 201 }
@@ -18,13 +19,14 @@ export async function POST(req) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
-
+// 673da13922de7ab9614b488d
 export async function PUT(req) {
   await connectMongo();
   try {
     const stockObj = await req.json();
-    console.log(stockObj);
+
     const stock = await Stock.findByIdAndUpdate(stockObj.id, stockObj);
+
     return NextResponse.json(
       { message: "Stock updated successfully", stock },
       { status: 200 }
@@ -37,7 +39,7 @@ export async function PUT(req) {
 export async function GET(req) {
   await connectMongo();
   try {
-    const stocks = await Stock.find().populate({
+    const stocks = await Stock.find().sort({ createdAt: -1 }).populate({
       path: "product",
       model: Product,
     });

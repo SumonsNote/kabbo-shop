@@ -3,7 +3,7 @@ import AddOrderForm from "../_components/AddOrderForm";
 
 export default function AddOrder() {
   return (
-    <div>
+    <div className="w-full">
       <AddOrderForm />
     </div>
   );

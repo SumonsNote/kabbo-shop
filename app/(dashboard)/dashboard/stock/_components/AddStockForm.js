@@ -25,7 +25,6 @@ export default function AddStockForm({ stock, isEdit }) {
     },
   ] = useUpdateStockMutation();
   const [stockData, setStockData] = useState({
-    id: stock?._id || "",
     product: stock?.product?._id || "",
     sku: stock?.sku || "",
     dealer: stock?.dealer || "",
@@ -57,10 +56,14 @@ export default function AddStockForm({ stock, isEdit }) {
       ],
     })) || [
       {
-        storage: { size: 0, unit: "GB" },
+        storage: { size: 128, unit: "GB" },
         regional_pricing: [
           {
-            region: { name: "", currency_code: "", currency_symbol: "" },
+            region: {
+              name: "global",
+              currency_code: "TK",
+              currency_symbol: "৳",
+            },
             price: 0,
             purchase_price: 0,
             discount_price: 0,
@@ -208,13 +211,21 @@ export default function AddStockForm({ stock, isEdit }) {
       );
     }
   }, [addSuccess, addError, updateSuccess, updateError]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form submitted:", stockData);
-    isEdit ? updateStock(stockData) : addStock(stockData);
+    isEdit
+      ? updateStock({
+          ...stockData,
+          id: stock._id,
+        })
+      : addStock({ stockData });
   };
+
   const handleChange = (option) => {
-    setStockData((prev) => ({ ...prev, product: option._id }));
+    console.log("Selected option:", option);
+    setStockData((prev) => ({ ...prev, product: option.product._id }));
   };
 
   return (
@@ -373,6 +384,8 @@ export default function AddStockForm({ stock, isEdit }) {
                         className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                       >
                         <option value="">Select Size</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
                         <option value="64">64</option>
                         <option value="128">128</option>
                         <option value="256">256</option>
@@ -454,6 +467,8 @@ export default function AddStockForm({ stock, isEdit }) {
                             className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                           >
                             <option value="">Select Region</option>
+                            <option value={"global"}>Global</option>
+
                             {regions
                               .sort((a, b) => a.name.localeCompare(b.name))
                               .map((region) => (
@@ -681,4 +696,20 @@ export default function AddStockForm({ stock, isEdit }) {
       </div>
     </div>
   );
+}
+
+function getTotalStock(stock) {
+  if (!stock || !stock.variants) {
+    return 0; // Return 0 if stock or variants are undefined
+  }
+
+  // Calculate total stock quantity from variants
+  return stock.variants.reduce((total, variant) => {
+    const regionalStock =
+      variant.regional_pricing?.reduce((sum, pricing) => {
+        return sum + (pricing.stock_quantity || 0); // Add regional stock quantity
+      }, 0) || 0;
+
+    return total + regionalStock; // Add to the total stock
+  }, 0);
 }

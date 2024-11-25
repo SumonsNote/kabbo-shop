@@ -44,11 +44,11 @@ export default function OrderFilterAndSearch({
           onChange={(e) => setStatusFilter(e.target.value)}
         >
           <option value="All">All Status</option>
-          <option value="Pending">Pending</option>
-          <option value="Processing">Processing</option>
-          <option value="Shipped">Shipped</option>
-          <option value="Delivered">Delivered</option>
-          <option value="Cancelled">Cancelled</option>
+          <option value="pending">Pending</option>
+          <option value="processing">Processing</option>
+          <option value="shipped">Shipped</option>
+          <option value="delivered">Delivered</option>
+          <option value="cancelled">Cancelled</option>
         </select>
 
         {/* Payment Filter */}
@@ -58,8 +58,8 @@ export default function OrderFilterAndSearch({
           onChange={(e) => setPaymentFilter(e.target.value)}
         >
           <option value="All">All Payments</option>
-          <option value="Paid">Paid</option>
-          <option value="Unpaid">Unpaid</option>
+          <option value="paid">Paid</option>
+          <option value="unpaid">Unpaid</option>
         </select>
 
         {/* Date Filter */}
@@ -69,10 +69,10 @@ export default function OrderFilterAndSearch({
           onChange={(e) => setDateFilter(e.target.value)}
         >
           <option value="All">All Time</option>
-          <option value="Today">Today</option>
-          <option value="Yesterday">Yesterday</option>
-          <option value="LastWeek">Last 7 days</option>
-          <option value="LastMonth">Last 30 days</option>
+          <option value="today">Today</option>
+          <option value="yesterday">Yesterday</option>
+          <option value="lastweek">Last 7 days</option>
+          <option value="lastmonth">Last 30 days</option>
         </select>
       </div>
     </div>

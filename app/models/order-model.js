@@ -1,5 +1,45 @@
 import mongoose, { Schema } from "mongoose";
 import { Product } from "./product-model";
+const productSchema = new mongoose.Schema(
+  {
+    color: {
+      type: String,
+      required: true,
+    },
+    imei: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    model: {
+      type: String,
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+    quantity: {
+      type: Number,
+      default: 1,
+    },
+    variant: {
+      type: String,
+      required: true,
+    },
+    version: {
+      type: String,
+      required: true,
+    },
+    warranty: {
+      type: String,
+      required: true,
+    },
+  },
+  {
+    timestamps: true, // Automatically adds `createdAt` and `updatedAt`
+  }
+);
 
 const orderSchema = new Schema(
   {
@@ -9,17 +49,7 @@ const orderSchema = new Schema(
       ref: "CustomerProfile",
       required: true,
     },
-    items: [
-      {
-        product: {
-          type: Schema.Types.ObjectId,
-          ref: Product,
-          required: true,
-        },
-        quantity: { type: Number, required: true, min: 1 },
-        price: { type: String, required: true },
-      },
-    ],
+    items: [productSchema],
     total_amount: { type: String, required: true },
     status: {
       type: String,
@@ -28,20 +58,26 @@ const orderSchema = new Schema(
     },
     shipping_details: {
       address: { type: String, required: true },
-      city: { type: String, required: true },
-      postal_code: { type: String, required: true },
-      country: { type: String, required: true },
+      city: { type: String },
+      postal_code: { type: String },
+      country: { type: String },
     },
     payment_info: {
-      method: { type: String, required: true },
-      status: { type: String, required: true },
+      method: { type: String, required: true, default: "cash" },
+      status: {
+        type: String,
+        required: true,
+        enum: ["paid", "pending", "failed"],
+        default: "paid",
+      },
+
       transaction_id: { type: String },
       amount: { type: String, required: true },
     },
     tracking_number: { type: String },
     shipping_date: { type: Date },
-    shipping_charge: { type: String, required: true },
-    shipping_method: { type: String, required: true },
+    shipping_charge: { type: String, required: true, default: "0" },
+    shipping_method: { type: String, required: true, default: "in-shop" },
     delivery_date: { type: Date },
     requires_tracking: { type: Boolean, default: false },
     requires_payment_receipt: { type: Boolean, default: false },

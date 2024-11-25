@@ -1,4 +1,6 @@
 "use client";
+
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -20,7 +22,11 @@ import { IoLogOut } from "react-icons/io5";
 import { MdCategory, MdOutlinePhoneIphone } from "react-icons/md";
 import DarkMood from "./ui/DarkMood";
 
+import { logout } from "@/app/actions";
+import Image from "next/image";
+
 export default function NavSideBar({ setIsCollapsed, isCollapsed }) {
+  const { data: session } = useSession();
   const pathname = usePathname();
   const router = useRouter();
 
@@ -45,7 +51,6 @@ export default function NavSideBar({ setIsCollapsed, isCollapsed }) {
       icon: <AiOutlineApple className="w-6 h-6" />,
       label: "Brands",
     },
-
     {
       href: "/dashboard/products",
       icon: <MdOutlinePhoneIphone className="w-6 h-6" />,
@@ -88,10 +93,10 @@ export default function NavSideBar({ setIsCollapsed, isCollapsed }) {
     },
   ];
 
-  const isActive = (path) => {
-    return path === "/dashboard"
-      ? pathname === "/dashboard"
-      : pathname.includes(path);
+  const handleSignOut = async () => {
+    // await signOut({ redirect: false });
+    // router.push("/dashboard-login");
+    await logout();
   };
 
   return (
@@ -101,9 +106,17 @@ export default function NavSideBar({ setIsCollapsed, isCollapsed }) {
       }  flex flex-col duration-300`}
     >
       <div className="flex items-center h-36 cursor-pointer ">
-        <DiSmashingMagazine className="w-10 h-10 mr-3 text-sky-300" />
+        {/* <DiSmashingMagazine className="w-10 h-10 mr-3 text-sky-300" /> */}
         {!isCollapsed && (
-          <h1 className="text-2xl font-bold dark:text-gray-500">Ecommerce</h1>
+          // <h1 className="text-2xl font-bold dark:text-gray-500">Ecommerce</h1>
+          <Image
+            width={175}
+            height={25}
+            alt="logo"
+            src={
+              "https://www.kabbomobileshop.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fkabbo%20mobile%20shop.38c0cff1.png&w=256&q=75"
+            }
+          />
         )}
       </div>
       <nav className="max-h-[60vh] overflow-y-auto ">
@@ -112,7 +125,11 @@ export default function NavSideBar({ setIsCollapsed, isCollapsed }) {
             key={href}
             href={href}
             className={`flex items-center py-3 px-4 rounded-md transition duration-200 dark:text-gray-500 ${
-              isActive(href)
+              (
+                href === "/dashboard"
+                  ? pathname === "/dashboard"
+                  : pathname.includes(href)
+              )
                 ? "bg-gray-800 dark:bg-gray-950 "
                 : " hover:bg-gray-800 dark:hover:bg-gray-950"
             }`}
@@ -130,13 +147,15 @@ export default function NavSideBar({ setIsCollapsed, isCollapsed }) {
       </nav>
       <div className="space-y-4 absolute bottom-0 left-0  p-2 h-32   bg-gray-900 w-full">
         <DarkMood isCollapsed={isCollapsed} />
-        <button
-          className="bg-blue-500 dark:bg-blue-900 hover:bg-blue-600 text-white dark:text-gray-400 py-3 px-4 rounded-md transition duration-200 flex items-center overflow-hidden"
-          onClick={() => router.push("/logout")}
-        >
-          <IoLogOut className="w-6 h-6" />
-          {!isCollapsed && <span className="ml-4">Logout</span>}
-        </button>
+        {session?.user?.id && (
+          <button
+            onClick={handleSignOut}
+            className="bg-blue-500 dark:bg-blue-900 hover:bg-blue-600 text-white dark:text-gray-400 py-3 px-4 rounded-md transition duration-200 flex items-center overflow-hidden"
+          >
+            <IoLogOut className="w-6 h-6" />
+            {!isCollapsed && <span className="ml-4">Logout</span>}
+          </button>
+        )}
       </div>
     </div>
   );

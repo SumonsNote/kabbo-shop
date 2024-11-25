@@ -1,5 +1,5 @@
 "use client";
-import { useFetchOrdersQuery } from "@/store/slices/orderApi";
+
 import { useEffect, useState } from "react";
 import OrderFilterAndSearch from "./_components/Filter";
 import OrderHeader from "./_components/Header";
@@ -7,10 +7,13 @@ import OrderStats from "./_components/Stats";
 import Loading from "../components/Loading";
 import OrderTable from "./_components/OrderTable";
 import NoDataFound from "../components/NoDataFound";
+import { useFetchOrdersQuery } from "../../../../store/slices/orderApi";
 
 const OrderDashboard = () => {
-  const { data, isLoading, isError, error, isSuccess } = useFetchOrdersQuery();
-  console.log(data);
+  const { data, isLoading, isError, error, isSuccess, refetch } =
+    useFetchOrdersQuery();
+  const [refresh, setRefresh] = useState(false);
+
   const { orders } = isSuccess && data;
 
   // States for search, filters, and sorting
@@ -23,6 +26,13 @@ const OrderDashboard = () => {
     direction: "desc",
   });
 
+  // Refetch data when `refresh` is true
+  useEffect(() => {
+    if (refresh) {
+      refetch();
+      setRefresh(false); // Reset refresh state
+    }
+  }, [refresh, refetch]);
   // Filter orders
   const filteredOrders =
     orders?.filter((order) => {
@@ -66,9 +76,9 @@ const OrderDashboard = () => {
     return <div>Error: {error.message}</div>;
   }
   return (
-    <div className="p-6 text-gray-500">
+    <div className="p-6 text-gray-500 w-full">
       {/* Header Section */}
-      <OrderHeader />
+      <OrderHeader refresh={refresh} setRefresh={setRefresh} />
 
       {/* Stats Cards */}
       <OrderStats orders={orders} />

@@ -45,6 +45,14 @@ const nextConfig = {
         protocol: "https",
         hostname: "photo.teamrabbil.com",
       },
+      {
+        protocol: "https",
+        hostname: "securepay.sslcommerz.com",
+      },
+      {
+        protocol: "https",
+        hostname: "www.kabbomobileshop.com",
+      },
     ],
   },
 };

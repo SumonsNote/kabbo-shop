@@ -1,4 +1,4 @@
-import { useDeleteWeekendMutation } from "@/store/slices/weekendApi";
+import { useDeleteWeekendMutation } from "../../../../../../store/slices/weekendApi";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";

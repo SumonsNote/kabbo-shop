@@ -32,6 +32,7 @@ const stockSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Product",
       required: true,
+      unique: true,
     },
     sku: { type: String, required: true, unique: true },
     stock: { type: Number, required: true, min: 0 },

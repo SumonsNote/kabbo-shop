@@ -8,6 +8,7 @@ export const stocksApi = apiSlice.injectEndpoints({
     }),
     fetchSingleStock: builder.query({
       query: (id) => `/stock/${id}`,
+      providesTags: ["stock"],
     }),
     addStock: builder.mutation({
       query: (stock) => ({
@@ -24,7 +25,7 @@ export const stocksApi = apiSlice.injectEndpoints({
         method: "PUT",
         body: stock,
       }),
-      invalidatesTags: ["stocks"],
+      invalidatesTags: ["stocks", "stock"],
     }),
   }),
 });

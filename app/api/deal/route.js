@@ -1,5 +1,5 @@
-import { Deal } from "@/app/models/deal-model";
-import connectMongo from "@/services/mongo";
+import { Deal } from "../..//models/deal-model";
+import connectMongo from "../../../services/mongo";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {

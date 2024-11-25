@@ -1,18 +1,29 @@
 // ProductItem.js
 
+import { useDeleteProductMutation } from "../../../../../store/slices/productApi";
+import { LoaderCircle } from "lucide-react";
+import { Fullscreen } from "lucide-react";
 import Link from "next/link";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 const ProductItem = ({ product, index }) => {
-  console.log(product);
+  const [deleteProduct, { isLoading, isSuccess }] = useDeleteProductMutation();
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Product deleted successfully");
+    }
+  }, [isSuccess]);
+
   return (
     <tr
       key={product._id}
-      className="hover:bg-gray-50 dark:hover:bg-gray-700 text-black dark:text-gray-500"
+      className="hover:bg-gray-50 dark:hover:bg-gray-700 text-black dark:text-gray-500 capitalize"
     >
       <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
 
       <td className="px-6 py-4 whitespace-nowrap">
-        <img src={product?.image[0]?.url} alt="" className="h-16 w-16" />
+        <img src={product?.image[0]?.url} alt="" className="h-16 w-16 " />
       </td>
       <td className="px-6 py-4 whitespace-nowrap">{product?.product_name}</td>
       <td className="px-6 py-4 whitespace-nowrap">{product?.brand_name}</td>
@@ -34,12 +45,23 @@ const ProductItem = ({ product, index }) => {
       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
         <Link
           href={`/dashboard/products/${product._id}`}
-          className="text-green-600 hover:text-green-500 mr-4"
+          className="text-green-600 hover:text-green-500 mr-4 inline-flex items-center gap-2"
         >
-          Details
+          <Fullscreen size={16} /> Details
         </Link>
-        <button className="text-blue-600 hover:text-blue-900 mr-4">Edit</button>
-        <button className="text-red-600 hover:text-red-900">Delete</button>
+        <button
+          className="text-red-600 hover:text-red-900"
+          onClick={() => deleteProduct(product._id)}
+        >
+          {isLoading ? (
+            <span className="flex items-center gap-2">
+              <LoaderCircle size={16} className="animate-spin" />
+              Deleting...
+            </span>
+          ) : (
+            "Delete"
+          )}
+        </button>
       </td>
     </tr>
   );

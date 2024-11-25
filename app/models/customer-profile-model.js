@@ -1,8 +1,12 @@
 import mongoose, { Schema } from "mongoose";
 
 const customerProfileSchema = new Schema({
-  user: { type: Schema.Types.ObjectId, ref: "User" },
-  order: [{ type: Schema.Types.ObjectId, ref: "Order" }],
+  customer_name: { type: String, required: true },
+  phone_number: { type: String, required: true, unique: true },
+  email: { type: String, required: true },
+  address: { type: String, required: true },
+  userId: { type: Schema.Types.ObjectId, ref: "User" },
+  orders: [{ type: Schema.Types.ObjectId, ref: "Order" }],
 });
 
 export const CustomerProfile =

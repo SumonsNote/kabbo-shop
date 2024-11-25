@@ -1,4 +1,5 @@
 import { useFetchProductsQuery } from "@/store/slices/productApi";
+import { useFetchShopProductsQuery } from "@/store/slices/shopApi";
 import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
 
@@ -14,11 +15,12 @@ const SearchableDropdown = ({
   noOptionsMessage = "No results found",
   loadingMessage = "Loading...",
   errorMessage = "Failed to fetch options",
+  image = "true",
 }) => {
   const [searchTerm, setSearchTerm] = useState(value || "");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const { data, isLoading, error } = useFetchProductsQuery(searchTerm, {
+  const { data, isLoading, error } = useFetchShopProductsQuery(searchTerm, {
     skip: !searchTerm || searchTerm.length < 2,
   });
 
@@ -64,7 +66,7 @@ const SearchableDropdown = ({
   };
 
   const handleOptionClick = (option) => {
-    setSearchTerm(option.product_name);
+    setSearchTerm(option.product.product_name);
     onChange(option);
     setIsDropdownOpen(false);
     inputRef.current?.blur();
@@ -103,18 +105,20 @@ const SearchableDropdown = ({
                 onClick={() => handleOptionClick(option)}
                 className={`p-2 cursor-pointer border-b text-black border-gray-200 hover:${optionActiveClassName} ${optionClassName}`}
               >
-                <div className=" w-fit p-2 flex">
-                  <Image
-                    src={option.image[0].url}
-                    alt={option.product_name}
-                    width={50}
-                    height={150}
-                    className="object-contain  h-16 w-16 "
-                  />
+                <div className=" w-fit p-2 flex text-xs">
+                  {image && (
+                    <Image
+                      src={option?.product?.image[0].url}
+                      alt={option?.product?.product_name}
+                      width={50}
+                      height={150}
+                      className="object-contain  h-16 w-16 "
+                    />
+                  )}
                   <div className="ml-4 text-black grid">
-                    <strong>{option.product_name}</strong>
-                    <span> {option.product_model}</span>
-                    <span>{option.brand_name}</span>
+                    <strong>{option.product?.product_name}</strong>
+                    <span> {option.product?.product_model}</span>
+                    <span>{option.product?.brand_name}</span>
                   </div>
                 </div>
               </li>

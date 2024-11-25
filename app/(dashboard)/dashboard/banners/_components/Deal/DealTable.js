@@ -1,4 +1,4 @@
-import { useDeleteDealMutation } from "@/store/slices/dealApi";
+import { useDeleteDealMutation } from "../../../../../../store/slices/DealApi";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";

@@ -48,30 +48,30 @@ export default function BatteryPhysicalSection({ register, errors }) {
         <div className="form-group text-gray-500">
           <label className="block text-gray-500 font-medium">Dimension</label>
           <input
-            {...register("physicalSpecifications.dimension", {
+            {...register("physical_specification.dimension", {
               required: "Dimension details are required",
             })}
             placeholder="167.9 x 76.5 x 8.5 mm (6.61 x 3.01 x 0.33 in)"
             className="w-full p-2 border border-gray-300 rounded-md"
           />
-          {errors.physicalSpecifications?.dimension && (
+          {errors.physical_specification?.dimension && (
             <p className="text-red-500 text-sm">
-              {errors.physicalSpecifications.dimension.message}
+              {errors.physical_specification.dimension.message}
             </p>
           )}
         </div>
         <div className="form-group text-gray-500">
           <label className="block text-gray-500 font-medium">Weight</label>
           <input
-            {...register("physicalSpecifications.weight", {
+            {...register("physical_specification.weight", {
               required: "Weight is required",
             })}
             placeholder="190 g (6.70 oz)"
             className="w-full p-2 border border-gray-300 rounded-md"
           />
-          {errors.physicalSpecifications?.weight && (
+          {errors.physical_specification?.weight && (
             <p className="text-red-500 text-sm">
-              {errors.physicalSpecifications.weight.message}
+              {errors.physical_specification.weight.message}
             </p>
           )}
         </div>
@@ -80,30 +80,30 @@ export default function BatteryPhysicalSection({ register, errors }) {
             Body Material
           </label>
           <input
-            {...register("physicalSpecifications.bodyMaterial", {
+            {...register("physical_specification.bodyMaterial", {
               required: "Body material details are required",
             })}
             placeholder="Glass front, Plastic frame, Plastic back"
             className="w-full p-2 border border-gray-300 rounded-md"
           />
-          {errors.physicalSpecifications?.bodyMaterial && (
+          {errors.physical_specification?.bodyMaterial && (
             <p className="text-red-500 text-sm">
-              {errors.physicalSpecifications.bodyMaterial.message}
+              {errors.physical_specification.bodyMaterial.message}
             </p>
           )}
         </div>
         <div className="form-group text-gray-500">
           <label className="block text-gray-500 font-medium">Colors</label>
           <input
-            {...register("physicalSpecifications.colors", {
+            {...register("physical_specification.colors", {
               required: "Color options are required",
             })}
             placeholder="Twilight Purple, Dark Gray"
             className="w-full p-2 border border-gray-300 rounded-md"
           />
-          {errors.physicalSpecifications?.colors && (
+          {errors.physical_specification?.colors && (
             <p className="text-red-500 text-sm">
-              {errors.physicalSpecifications.colors.message}
+              {errors.physical_specification.colors.message}
             </p>
           )}
         </div>

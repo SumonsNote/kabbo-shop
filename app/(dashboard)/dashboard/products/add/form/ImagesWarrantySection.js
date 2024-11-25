@@ -1,5 +1,4 @@
 import React from "react";
-import CloudinaryUploader from "../ImageUpload";
 import { Upload } from "lucide-react";
 import { X } from "lucide-react";
 import UploadImage from "./UploadImage";
@@ -21,21 +20,21 @@ export default function ImagesWarrantySection({
         <div className="form-group text-gray-500">
           <label className="block text-gray-500 font-medium">Warranty</label>
           <input
-            {...register("warranty", {
+            {...register("warranty_information", {
               required: "Warranty information is required",
             })}
             placeholder="1 Year warranty (To claim please visit the nearest TCL service center)"
             className="w-full p-2 border border-gray-300 rounded-md"
           />
-          {errors.warranty && (
-            <p className="text-red-500 text-sm">{errors.warranty.message}</p>
+          {errors.warranty_information && (
+            <p className="text-red-500 text-sm">
+              {errors.warranty_information.message}
+            </p>
           )}
         </div>
       </div>
       <h3 className="text-2xl font-semibold text-gray-400 mt-8">Images</h3>
       <div className="  gap-4 text-gray-500">
-        {/* <CloudinaryUploader /> */}
-        {/* Images */}
         <div className="space-y-4 w-full">
           <label className="block text-sm font-medium text-gray-500">
             Images *

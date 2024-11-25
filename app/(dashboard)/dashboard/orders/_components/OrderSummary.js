@@ -4,6 +4,7 @@ import { Truck } from "lucide-react";
 import React from "react";
 
 export default function OrderSummary({ order }) {
+  // console.log("order", order);
   return (
     <div className="grid grid-cols-1 text-gray-500 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {/* Customer Info */}
@@ -13,11 +14,11 @@ export default function OrderSummary({ order }) {
         </div>
         <div className="p-4">
           <div className="space-y-2">
-            <p className="font-medium">{order?.fullName}</p>
-            <p className="0">{order?.customer.user.email}</p>
+            <p className="font-medium">{order?.customer.customer_name}</p>
+            <p className="0">{order?.customer.email}</p>
             <div className="flex items-start gap-2 text-gray-500">
               <MapPin className="w-4 h-4 mt-1 flex-shrink-0" />
-              <span> {order?.fullAddress} </span>
+              <span> {order?.customer.address} </span>
             </div>
           </div>
         </div>
@@ -34,7 +35,9 @@ export default function OrderSummary({ order }) {
               <CreditCard className="w-4 h-4" />
               <span>**** **** **** {order?.payment_info?.last4 || "1234"}</span>
             </div>
-            <p className="text-gray-500">{order?.payment_info.method}</p>
+            <p className="text-gray-500 uppercase">
+              {order?.payment_info.method}
+            </p>
             <div className="flex justify-between items-center font-medium">
               <span>Amount Paid</span>
               <span>${order?.payment_info.amount}</span>
