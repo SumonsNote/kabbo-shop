@@ -107,17 +107,15 @@ export default function NavSideBar({ setIsCollapsed, isCollapsed }) {
     >
       <div className="flex items-center h-36 cursor-pointer ">
         {/* <DiSmashingMagazine className="w-10 h-10 mr-3 text-sky-300" /> */}
-        {!isCollapsed && (
-          // <h1 className="text-2xl font-bold dark:text-gray-500">Ecommerce</h1>
-          <Image
-            width={175}
-            height={25}
-            alt="logo"
-            src={
-              "https://www.kabbomobileshop.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fkabbo%20mobile%20shop.38c0cff1.png&w=256&q=75"
-            }
-          />
-        )}
+
+        <Image
+          width={175}
+          height={25}
+          alt="logo"
+          src={
+            "https://www.kabbomobileshop.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fkabbo%20mobile%20shop.38c0cff1.png&w=256&q=75"
+          }
+        />
       </div>
       <nav className="max-h-[60vh] overflow-y-auto ">
         {navItems.map(({ href, icon, label }) => (

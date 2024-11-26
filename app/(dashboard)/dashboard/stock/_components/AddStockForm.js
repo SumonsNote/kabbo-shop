@@ -214,7 +214,7 @@ export default function AddStockForm({ stock, isEdit }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", stockData);
+
     isEdit
       ? updateStock({
           ...stockData,
@@ -224,7 +224,6 @@ export default function AddStockForm({ stock, isEdit }) {
   };
 
   const handleChange = (option) => {
-    console.log("Selected option:", option);
     setStockData((prev) => ({ ...prev, product: option.product._id }));
   };
 

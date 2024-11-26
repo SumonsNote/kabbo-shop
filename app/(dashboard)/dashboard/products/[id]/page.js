@@ -1,38 +1,24 @@
-import { notFound } from "next/navigation";
+"use client";
+import { useFetchSingleProductsQuery } from "@/store/slices/productApi";
+import { notFound, useParams } from "next/navigation";
+import Loading from "../../components/Loading";
 import SingleProduct from "../_components/SingleProduct";
 
-async function getProduct(id) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_APP_URL_DEV}/api/product/${id}`,
-    {
-      cache: "no-cache",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+export default function SingleProductPage() {
+  const { id } = useParams();
 
-  if (!res.ok) {
-    if (res.status === 404) {
-      notFound();
-    }
-    throw new Error("Failed to fetch product");
-  }
+  const { data, isLoading, isError } = useFetchSingleProductsQuery(id);
 
-  const data = await res.json();
-  return data?.products;
-}
-
-export default async function SingleProductPage({ params }) {
-  const productData = await getProduct(params.id);
-
-  if (!productData) {
+  if (isError) {
     notFound();
   }
+  console.log(data);
 
+  isLoading && <Loading />;
+  // console.log(data?.stock);
   return (
     <div className="w-full">
-      <SingleProduct productData={productData} />
+      <SingleProduct productData={data?.products} />
     </div>
   );
 }

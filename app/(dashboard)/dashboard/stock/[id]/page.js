@@ -1,16 +1,20 @@
+"use client";
 import Image from "next/image";
 import BackButton from "../../components/ui/BackButton";
+import { useParams } from "next/navigation";
+import { useFetchSingleStockQuery } from "@/store/slices/stockApi";
+import Loading from "../../components/Loading";
 
-const ProductStockDetails = async ({ params: { id } }) => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_APP_URL_DEV}/api/stock/${id}`,
-    { cache: "no-store" }
-  );
-  const data = await res.json();
+const ProductStockDetails = () => {
+  const { id } = useParams();
+  const { data, isLoading } = useFetchSingleStockQuery(id);
+  console.log(data);
+  if (isLoading) {
+    return <Loading />;
+  }
   const { product, stock, dealer, sold_out, variants, status, sku } =
     data?.stock;
 
-  console.log(data);
   const getStockStatusColor = (status) => {
     const statusColors = {
       "low-stock": "bg-yellow-100 text-yellow-800",

@@ -22,7 +22,7 @@ const ProductDashboard = () => {
   // Filter products based on search term and filters
 
   const filteredProducts = products.filter((stock) => {
-    const matchesSearch = stock.product.product_name
+    const matchesSearch = stock?.product?.product_name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
     const matchesCategory =
