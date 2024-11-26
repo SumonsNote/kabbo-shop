@@ -13,6 +13,9 @@ export const productsApi = apiSlice.injectEndpoints({
     fetchSingleProducts: builder.query({
       query: (id) => `/product/${id}`,
     }),
+    fetchOldSingleProduct: builder.query({
+      query: (id) => `/product/new/${id}`,
+    }),
     addProduct: builder.mutation({
       query: (product) => ({
         url: "/product",
@@ -48,4 +51,5 @@ export const {
   useUpdateProductMutation,
   useDeleteProductMutation,
   useFetchOldProductsQuery,
+  useFetchOldSingleProductQuery,
 } = productsApi;

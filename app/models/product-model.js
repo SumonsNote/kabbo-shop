@@ -2,6 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 const productSchema = new Schema(
   {
+    stock: { type: Schema.ObjectId, ref: "Stock", required: true },
     is_new: { type: Boolean, default: true },
     is_trending: { type: Boolean, default: false },
     is_offer: { type: Boolean, default: false },

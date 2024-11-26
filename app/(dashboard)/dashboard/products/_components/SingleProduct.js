@@ -5,6 +5,7 @@ import UploadImage from "../add/form/UploadImage";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useEffect } from "react";
 
 const TabButton = ({ active, onClick, children }) => (
   <button
@@ -68,7 +69,8 @@ const SelectField = ({ label, value, onChange, options, disabled }) => (
   </div>
 );
 
-const ProductDashboard = ({ productData }) => {
+const ProductDashboard = ({ productData = {} }) => {
+  console.log(productData);
   const uploadImageRef = useRef();
   const router = useRouter();
   const handleReset = () => {
@@ -80,6 +82,11 @@ const ProductDashboard = ({ productData }) => {
   const [formData, setFormData] = useState(productData);
   const [images, setImages] = useState([]);
   const [colorText, setColorText] = useState("");
+  useEffect(() => {
+    if (productData) {
+      setFormData(productData);
+    }
+  }, [productData]);
 
   const handleNestedChange = (mainField, subField, value) => {
     setFormData((prev) => ({
