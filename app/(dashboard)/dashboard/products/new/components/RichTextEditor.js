@@ -1,8 +1,13 @@
-/* eslint-disable react/display-name */
 import React, { forwardRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 
-const CodeEditor = forwardRef(({ content, onChange }, ref) => {
+const CodeEditor = forwardRef(({ content, onChange = () => {} }, ref) => {
+  const handleEditorChange = () => {
+    // Get content using ref
+    const newContent = ref.current.getContent();
+    onChange(newContent);
+  };
+
   return (
     <div className="p-4 text-sm">
       <div>
@@ -49,11 +54,12 @@ const CodeEditor = forwardRef(({ content, onChange }, ref) => {
             content_style:
               "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
           }}
-          value={content} // Bind to content
-          onEditorChange={(newContent) => onChange(newContent)} // Trigger onChange
+          onEditorChange={handleEditorChange}
         />
       </div>
     </div>
   );
 });
+
+CodeEditor.displayName = "CodeEditor";
 export default CodeEditor;

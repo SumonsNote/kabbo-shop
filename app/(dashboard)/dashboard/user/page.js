@@ -1,9 +1,9 @@
 "use client";
 
 import { useFetchUsersQuery } from "@/store/slices/userApi";
-import { Chart as ChartJS } from "chart.js/auto";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Modal from "../banners/_components/Modal";
+import UserDashboardSkeleton from "./_components/UserDashboardSkeleton";
 import UserForm from "./_components/UserForm";
 
 export default function UserDashboard() {
@@ -11,6 +11,10 @@ export default function UserDashboard() {
   const { user: users } = isSuccess && data;
 
   const [isModalOpen, setModalOpen] = useState(false);
+
+  if (isLoading) {
+    return <UserDashboardSkeleton />;
+  }
 
   function getTimeAgo(dateString) {
     const date = new Date(dateString);
@@ -44,68 +48,6 @@ export default function UserDashboard() {
       ?.filter((user) => new Date(user.createdAt) >= TEN_DAYS_AGO)
       .map((user) => getTimeAgo(user.createdAt)).length || 0;
 
-  useEffect(() => {
-    // Initialize charts
-    const userGrowthChart = new ChartJS(
-      document.getElementById("userGrowthChart"),
-      {
-        type: "line",
-        data: {
-          labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-          datasets: [
-            {
-              label: "User Growth",
-              data: [1200, 1400, 1600, 1800, 2200, 2543],
-              borderColor: "rgb(59, 130, 246)",
-              tension: 0.1,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            title: {
-              display: true,
-              text: "User Growth Over Time",
-            },
-          },
-        },
-      }
-    );
-
-    const userActivityChart = new ChartJS(
-      document.getElementById("userActivityChart"),
-      {
-        type: "bar",
-        data: {
-          labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-          datasets: [
-            {
-              label: "Daily Active Users",
-              data: [1200, 1300, 1400, 1200, 1100, 900, 800],
-              backgroundColor: "rgb(147, 51, 234)",
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            title: {
-              display: true,
-              text: "Daily Active Users",
-            },
-          },
-        },
-      }
-    );
-
-    // Cleanup
-    return () => {
-      userGrowthChart.destroy();
-      userActivityChart.destroy();
-    };
-  }, []);
-
   return (
     <div className="bg-gray-50 dark:text-white dark:bg-gray-900 min-h-screen w-full">
       {/* Header Analytics Section */}
@@ -134,16 +76,6 @@ export default function UserDashboard() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-6">
-        {/* Charts Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <div className="bg-white dark:bg-gray-900 p-4 rounded-lg shadow">
-            <canvas id="userGrowthChart"></canvas>
-          </div>
-          <div className="bg-white dark:bg-gray-900  p-4 rounded-lg shadow">
-            <canvas id="userActivityChart"></canvas>
-          </div>
-        </div>
-
         {/* User List Section */}
         <div className="bg-white dark:bg-gray-900 rounded-lg shadow">
           <div className="px-6 py-4 border-b border-gray-200">

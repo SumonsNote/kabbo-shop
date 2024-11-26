@@ -213,3 +213,79 @@ const CategoryDashboard = () => {
 };
 
 export default CategoryDashboard;
+
+const StatCardSkeleton = () => (
+  <div className="bg-white p-6 rounded-lg shadow-md animate-pulse">
+    <div className="h-4 bg-gray-200 w-1/2 mb-2 rounded"></div>
+    <div className="h-8 bg-gray-200 w-3/4 rounded"></div>
+  </div>
+);
+
+const CategoryDashboardSkeleton = () => {
+  return (
+    <div className="min-h-screen bg-gray-100 p-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-8">
+          {/* Page Title Skeleton */}
+          <div className="h-10 bg-gray-200 w-64 mb-4 rounded animate-pulse"></div>
+
+          {/* Statistics Grid Skeleton */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            {[1, 2, 3, 4].map((item) => (
+              <StatCardSkeleton key={item} />
+            ))}
+          </div>
+
+          {/* Category Management Section Skeleton */}
+          <div className="bg-white rounded-lg shadow-md p-6">
+            {/* Header Skeleton */}
+            <div className="flex justify-between items-center mb-6">
+              <div className="h-8 bg-gray-200 w-48 rounded animate-pulse"></div>
+              <div className="flex gap-4">
+                <div className="h-10 bg-gray-200 w-64 rounded animate-pulse"></div>
+                <div className="h-10 bg-gray-200 w-32 rounded animate-pulse"></div>
+              </div>
+            </div>
+
+            {/* Table Skeleton */}
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-gray-50">
+                    {[
+                      "ID",
+                      "Name",
+                      "Status",
+                      "Items",
+                      "Revenue",
+                      "Growth",
+                      "Actions",
+                    ].map((header, index) => (
+                      <th
+                        key={index}
+                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        <div className="h-4 bg-gray-200 w-24 rounded animate-pulse"></div>
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {[1, 2, 3].map((row) => (
+                    <tr key={row} className="border-b">
+                      {[1, 2, 3, 4, 5, 6, 7].map((cell) => (
+                        <td key={cell} className="px-6 py-4 whitespace-nowrap">
+                          <div className="h-5 bg-gray-200 w-24 rounded animate-pulse"></div>
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};

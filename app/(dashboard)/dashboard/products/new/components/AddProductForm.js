@@ -4,31 +4,82 @@ import ImageUpload from "./ImageUpload";
 import CodeEditor from "./RichTextEditor";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import AutofillButton from "./ProductAutofill";
+import { useAddProductMutation } from "@/store/slices/productApi";
+import { useEffect } from "react";
+import {
+  extractTableData,
+  extractTableDataFromSimpleTable,
+} from "./extracTableData";
 
 export default function AddProductForm() {
-  const { register, handleSubmit, control, watch } = useForm();
+  const { register, handleSubmit, control, watch, setValue, reset } = useForm();
+  const [addProduct, { isLoading, isError, isSuccess }] =
+    useAddProductMutation();
   const router = useRouter();
   const codeRef = useRef();
   const onSubmit = async (data) => {
-    console.log(data);
-    // Here you would typically send the data to your backend
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_URL_DEV}/api/product/new`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      }
+    const extractedData = extractTableData(codeRef.current.getContent());
+    const extractedData2 = extractTableDataFromSimpleTable(
+      codeRef.current.getContent()
     );
-
-    if (res.ok) {
+    console.log("demo", extractedData);
+    console.log("demo2", extractedData2);
+    addProduct({
+      ...data,
+      color: data.colors.split(","),
+      specifications: codeRef.current.getContent(),
+    });
+  };
+  useEffect(() => {
+    if (isSuccess) {
       toast.success("Product added successfully!");
       router.refresh();
       router.push("/dashboard/products");
-    } else {
+    }
+    if (isError) {
       toast.error("Error adding product");
+    }
+    if (isLoading) {
+      toast.info("Updating product...");
+    }
+  }, [isSuccess, isError, isLoading]);
+
+  const handleTableData = () => {
+    if (codeRef.current) {
+      // Inserting code block into the editor
+      codeRef.current.insertContent(
+        `<table border="1" style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr>
+                <th>Key</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Size</td>
+                <td>6.67 inches</td>
+              </tr>
+              <tr>
+                <td>Type</td>
+                <td>IPS LCD</td>
+              </tr>
+              <tr>
+                <td>Resolution</td>
+                <td>720 x 1600 pixels</td>
+              </tr>
+              <tr>
+                <td>Refresh Rate</td>
+                <td>120Hz</td>
+              </tr>
+              <tr>
+                <td>Protection</td>
+                <td>Gorilla Glass</td>
+              </tr>
+            </tbody>
+          </table>`
+      );
     }
   };
   // Watch the value of "isNew"
@@ -36,8 +87,9 @@ export default function AddProductForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="grid grid-cols-3 gap-4 w-full mx-auto "
+      className="grid grid-cols-3 gap-4 w-full mx-auto relative"
     >
+      <AutofillButton setValue={setValue} />
       <div>
         <label
           htmlFor="name"
@@ -378,21 +430,38 @@ export default function AddProductForm() {
           defaultValue=""
           render={({ field }) => (
             // <RichTextEditor content={field.value} onChange={field.onChange} />
-            <CodeEditor
-              content={field.value}
-              onChange={field.onChange}
-              ref={codeRef}
-            />
+            <CodeEditor content={field.value} ref={codeRef} />
           )}
         />
       </div>
 
-      <div>
+      <div className="flex gap-4 col-span-2">
         <button
           type="submit"
           className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
           Add Product
+        </button>
+        <button
+          type="button"
+          onClick={handleTableData}
+          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-zinc-600 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+        >
+          Add Sample Table
+        </button>
+        <button
+          type="button"
+          onClick={reset}
+          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+        >
+          Reset
+        </button>
+        <button
+          type="button"
+          onClick={router.back}
+          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+        >
+          Cancel
         </button>
       </div>
     </form>

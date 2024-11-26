@@ -7,15 +7,11 @@ export const productsApi = apiSlice.injectEndpoints({
         `/product?${searchTerm ? `search=${searchTerm}` : ""}`,
       providesTags: ["products"],
     }),
-    fetchOldProducts: builder.query({
-      query: () => `/product/new`,
-    }),
+
     fetchSingleProducts: builder.query({
       query: (id) => `/product/${id}`,
     }),
-    fetchOldSingleProduct: builder.query({
-      query: (id) => `/product/new/${id}`,
-    }),
+
     addProduct: builder.mutation({
       query: (product) => ({
         url: "/product",
@@ -45,11 +41,9 @@ export const productsApi = apiSlice.injectEndpoints({
 });
 
 export const {
-  useFetchProductsQuery,
   useAddProductMutation,
+  useDeleteProductMutation,
+  useFetchProductsQuery,
   useFetchSingleProductsQuery,
   useUpdateProductMutation,
-  useDeleteProductMutation,
-  useFetchOldProductsQuery,
-  useFetchOldSingleProductQuery,
 } = productsApi;

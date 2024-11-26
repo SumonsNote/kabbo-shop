@@ -35,7 +35,7 @@ const BrandsAdminPanel = () => {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6 w-full">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h1 className="text-2xl font-bold text-gray-500 ">Brands</h1>
@@ -57,7 +57,7 @@ const BrandsAdminPanel = () => {
       {/* Search */}
       <div className=" rounded-lg shadow">
         <div className="p-6">
-          <div className="">
+          <div className="relative">
             <AiOutlineSearch className="absolute top-3 left-4 text-gray-400" />
             <input
               type="text"
