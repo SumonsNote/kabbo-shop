@@ -31,17 +31,26 @@ const AutofillButton = ({ setValue }) => {
       // Descriptive Fields
       short_description:
         "Excellent condition iPhone 14 Pro with powerful A16 Bionic chip and professional camera system. Barely used and well-maintained.",
-
-      specifications: `
-<h3>Key Specifications</h3>
-<ul>
-  <li><strong>Processor:</strong> A16 Bionic Chip</li>
-  <li><strong>Display:</strong> 6.1-inch Super Retina XDR OLED</li>
-  <li><strong>Resolution:</strong> 2556 x 1179 pixels</li>
-  <li><strong>Rear Camera:</strong> 48MP Main, 12MP Ultra Wide, 12MP Telephoto</li>
-  <li><strong>Front Camera:</strong> 12MP TrueDepth</li>
-  <li><strong>Battery:</strong> 3200 mAh with MagSafe Wireless Charging</li>
-</ul>
+      specificationsHtml: `
+<table class="data-table flex-table" style="width: 98.2633%;" cellspacing="0" cellpadding="0">
+          <thead>
+            <tr>
+            <td class="heading-row" style="width: 199.947%;" colspan="3">
+            <h2 style='margin:10px'>Display</h2>
+            </td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+            <td class="name" style="width: 24.659%;"><strong>Size</strong></td>
+            <td class="value" style="width: 75.3946%;">6.1 inches</td>
+            </tr>
+            <tr>
+            <td class="name" style="width: 24.659%;"><strong>Type</strong></td>
+            <td class="value" style="width: 75.3946%;">Super Retina XDR display<br>All‑screen OLED display</td>
+            </tr>
+          </tbody>
+          </table>
       `,
 
       // Placeholder for images (would typically be handled by ImageUpload component)

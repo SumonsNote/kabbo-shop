@@ -1,16 +1,12 @@
-import { useRef } from "react";
-import { Controller, useForm } from "react-hook-form";
-import ImageUpload from "./ImageUpload";
-import CodeEditor from "./RichTextEditor";
-import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
-import AutofillButton from "./ProductAutofill";
 import { useAddProductMutation } from "@/store/slices/productApi";
-import { useEffect } from "react";
-import {
-  extractTableData,
-  extractTableDataFromSimpleTable,
-} from "./extracTableData";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { extractTableData } from "./extracTableData";
+import ImageUpload from "./ImageUpload";
+import AutofillButton from "./ProductAutofill";
+import CodeEditor from "./RichTextEditor";
 
 export default function AddProductForm() {
   const { register, handleSubmit, control, watch, setValue, reset } = useForm();
@@ -20,15 +16,17 @@ export default function AddProductForm() {
   const codeRef = useRef();
   const onSubmit = async (data) => {
     const extractedData = extractTableData(codeRef.current.getContent());
-    const extractedData2 = extractTableDataFromSimpleTable(
-      codeRef.current.getContent()
-    );
-    console.log("demo", extractedData);
-    console.log("demo2", extractedData2);
+    console.log({
+      ...data,
+      color: data.colors.split(","),
+      specificationsHtml: codeRef.current.getContent(),
+      specifications: extractedData,
+    });
     addProduct({
       ...data,
       color: data.colors.split(","),
-      specifications: codeRef.current.getContent(),
+      specificationsHtml: codeRef.current.getContent(),
+      specifications: extractedData,
     });
   };
   useEffect(() => {
@@ -49,35 +47,24 @@ export default function AddProductForm() {
     if (codeRef.current) {
       // Inserting code block into the editor
       codeRef.current.insertContent(
-        `<table border="1" style="width: 100%; border-collapse: collapse;">
-            <thead>
-              <tr>
-                <th>Key</th>
-                <th>Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Size</td>
-                <td>6.67 inches</td>
-              </tr>
-              <tr>
-                <td>Type</td>
-                <td>IPS LCD</td>
-              </tr>
-              <tr>
-                <td>Resolution</td>
-                <td>720 x 1600 pixels</td>
-              </tr>
-              <tr>
-                <td>Refresh Rate</td>
-                <td>120Hz</td>
-              </tr>
-              <tr>
-                <td>Protection</td>
-                <td>Gorilla Glass</td>
-              </tr>
-            </tbody>
+        `<table class="data-table flex-table" style="width: 98.2633%;" cellspacing="0" cellpadding="0">
+          <thead>
+            <tr>
+            <td class="heading-row" style="width: 199.947%;" colspan="3">
+            <h2>Display</h2>
+            </td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+            <td class="name" style="width: 24.659%;"><strong>Size</strong></td>
+            <td class="value" style="width: 75.3946%;">6.1 inches</td>
+            </tr>
+            <tr>
+            <td class="name" style="width: 24.659%;"><strong>Type</strong></td>
+            <td class="value" style="width: 75.3946%;">Super Retina XDR display<br>All‑screen OLED display</td>
+            </tr>
+          </tbody>
           </table>`
       );
     }
@@ -425,7 +412,7 @@ export default function AddProductForm() {
           specifications
         </label>
         <Controller
-          name="specifications"
+          name="specificationsHtml"
           control={control}
           defaultValue=""
           render={({ field }) => (

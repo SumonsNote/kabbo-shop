@@ -16,6 +16,8 @@ import CodeEditor from "../new/components/RichTextEditor";
 import Loading from "../../loadding";
 import { useEffect } from "react";
 import BackButton from "../../components/ui/BackButton";
+import { extractTableData } from "../new/components/extracTableData";
+import ProductDetailsSkeleton from "../new/components/SingleProductLoader";
 
 export default function ProductDetailsPage() {
   const { id } = useParams();
@@ -39,7 +41,6 @@ export default function ProductDetailsPage() {
   useEffect(() => {
     isSuccess && setEditedProduct(data?.product);
   }, [isSuccess, data]);
-
   const handleInputChange = (field, value) => {
     setEditedProduct((prev) => ({
       ...prev,
@@ -50,7 +51,8 @@ export default function ProductDetailsPage() {
   const handleSave = async () => {
     updateProduct({
       ...editedProduct,
-      specifications: codeRef?.current?.getContent(),
+      specificationsHtml: codeRef?.current?.getContent(),
+      specifications: extractTableData(codeRef.current.getContent()),
     });
   };
 
@@ -68,7 +70,9 @@ export default function ProductDetailsPage() {
     }
   }, [updateError, updateSuccess, updateLoading]);
 
-  isLoading && <Loading />;
+  if (isLoading) {
+    return <ProductDetailsSkeleton />;
+  }
 
   const renderField = (label, field, type = "text") => {
     return (
@@ -138,14 +142,14 @@ export default function ProductDetailsPage() {
       <div className="grid md:grid-cols-2 gap-8">
         {/* Image Gallery */}
         <div>
-          <div className="border rounded-lg overflow-hidden mb-4">
+          <div className="border rounded-lg overflow-hidden mb-4 p-2">
             {editedProduct.images && editedProduct.images.length > 0 ? (
               <Image
                 src={editedProduct.images[activeImageIndex]}
                 alt={editedProduct.name}
                 width={600}
                 height={600}
-                className="w-full h-96 object-cover"
+                className="w-full h-96 object-contain"
               />
             ) : (
               <div className="w-full h-96 bg-gray-200 flex items-center justify-center">
@@ -169,12 +173,41 @@ export default function ProductDetailsPage() {
                     alt={`Thumbnail ${index + 1}`}
                     width={64}
                     height={64}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                   />
                 </button>
               ))}
             </div>
           )}
+
+          <div className="mt-8 bg-white shadow rounded-lg p-6">
+            <h3 className="text-xl font-semibold mb-4 text-gray-800">
+              Product Status
+            </h3>
+            {[
+              "is_new",
+              "is_trending",
+              "is_offer",
+              "top_seller",
+              "best_seller",
+            ].map((status) => (
+              <label key={status} className="flex items-center space-x-3">
+                <input
+                  type="checkbox"
+                  checked={editedProduct[status]}
+                  onChange={(e) => handleInputChange(status, e.target.checked)}
+                  disabled={!isEditMode}
+                  className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                />
+                <span className="text-gray-700">
+                  {status
+                    .split("_")
+                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(" ")}
+                </span>
+              </label>
+            ))}
+          </div>
         </div>
 
         {/* Product Details */}
@@ -252,11 +285,16 @@ export default function ProductDetailsPage() {
           Detailed Specifications
         </h3>
         {isEditMode ? (
-          <CodeEditor ref={codeRef} content={editedProduct.specifications} />
+          <CodeEditor
+            ref={codeRef}
+            content={editedProduct.specificationsHtml}
+          />
         ) : (
           <div
             className="prose max-w-none"
-            dangerouslySetInnerHTML={{ __html: editedProduct.specifications }}
+            dangerouslySetInnerHTML={{
+              __html: editedProduct.specificationsHtml,
+            }}
           />
         )}
       </div>
