@@ -1,34 +1,72 @@
-import { useRef } from "react";
-import { Controller, useForm } from "react-hook-form";
-import ImageUpload from "./ImageUpload";
-import CodeEditor from "./RichTextEditor";
-import { toast } from "react-toastify";
+import { useAddProductMutation } from "@/store/slices/productApi";
 import { useRouter } from "next/navigation";
+import { useEffect, useRef } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { extractTableData } from "./extracTableData";
+import ImageUpload from "./ImageUpload";
+import AutofillButton from "./ProductAutofill";
+import CodeEditor from "./RichTextEditor";
 
 export default function AddProductForm() {
-  const { register, handleSubmit, control, watch } = useForm();
+  const { register, handleSubmit, control, watch, setValue, reset } = useForm();
+  const [addProduct, { isLoading, isError, isSuccess }] =
+    useAddProductMutation();
   const router = useRouter();
   const codeRef = useRef();
   const onSubmit = async (data) => {
-    console.log(data);
-    // Here you would typically send the data to your backend
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_URL_DEV}/api/product/new`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      }
-    );
-
-    if (res.ok) {
+    const extractedData = extractTableData(codeRef.current.getContent());
+    console.log({
+      ...data,
+      color: data.colors.split(","),
+      specificationsHtml: codeRef.current.getContent(),
+      specifications: extractedData,
+    });
+    addProduct({
+      ...data,
+      color: data.colors.split(","),
+      specificationsHtml: codeRef.current.getContent(),
+      specifications: extractedData,
+    });
+  };
+  useEffect(() => {
+    if (isSuccess) {
       toast.success("Product added successfully!");
       router.refresh();
       router.push("/dashboard/products");
-    } else {
+    }
+    if (isError) {
       toast.error("Error adding product");
+    }
+    if (isLoading) {
+      toast.info("Updating product...");
+    }
+  }, [isSuccess, isError, isLoading]);
+
+  const handleTableData = () => {
+    if (codeRef.current) {
+      // Inserting code block into the editor
+      codeRef.current.insertContent(
+        `<table class="data-table flex-table" style="width: 98.2633%;" cellspacing="0" cellpadding="0">
+          <thead>
+            <tr>
+            <td class="heading-row" style="width: 199.947%;" colspan="3">
+            <h2>Display</h2>
+            </td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+            <td class="name" style="width: 24.659%;"><strong>Size</strong></td>
+            <td class="value" style="width: 75.3946%;">6.1 inches</td>
+            </tr>
+            <tr>
+            <td class="name" style="width: 24.659%;"><strong>Type</strong></td>
+            <td class="value" style="width: 75.3946%;">Super Retina XDR display<br>All‑screen OLED display</td>
+            </tr>
+          </tbody>
+          </table>`
+      );
     }
   };
   // Watch the value of "isNew"
@@ -36,8 +74,9 @@ export default function AddProductForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="grid grid-cols-3 gap-4 w-full mx-auto "
+      className="grid grid-cols-3 gap-4 w-full mx-auto relative"
     >
+      <AutofillButton setValue={setValue} />
       <div>
         <label
           htmlFor="name"
@@ -70,17 +109,53 @@ export default function AddProductForm() {
       </div>
       <div>
         <label
-          htmlFor="price"
+          htmlFor="purchase_price"
           className="block text-sm font-medium text-gray-700"
         >
-          Price
+          Purchase Price
         </label>
         <input
           type="number"
-          id="price"
+          id="purchase_price"
+          min={0}
+          placeholder="1200"
+          step="0.01"
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          {...register("purchase_price")}
+        />
+      </div>
+      <div>
+        <label
+          htmlFor="original_price"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Original Price
+        </label>
+        <input
+          type="number"
+          min={0}
+          id="original_price"
+          step="0.01"
           placeholder="1200"
           className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          {...register("price")}
+          {...register("original_price")}
+        />
+      </div>
+      <div>
+        <label
+          htmlFor="discount_price"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Discount Price
+        </label>
+        <input
+          min={0}
+          type="number"
+          step="0.01"
+          id="discount_price"
+          placeholder="1200"
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          {...register("discount_price")}
         />
       </div>
       <div>
@@ -373,26 +448,43 @@ export default function AddProductForm() {
           specifications
         </label>
         <Controller
-          name="specifications"
+          name="specificationsHtml"
           control={control}
           defaultValue=""
           render={({ field }) => (
             // <RichTextEditor content={field.value} onChange={field.onChange} />
-            <CodeEditor
-              content={field.value}
-              onChange={field.onChange}
-              ref={codeRef}
-            />
+            <CodeEditor content={field.value} ref={codeRef} />
           )}
         />
       </div>
 
-      <div>
+      <div className="flex gap-4 col-span-2">
         <button
           type="submit"
           className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
           Add Product
+        </button>
+        <button
+          type="button"
+          onClick={handleTableData}
+          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-zinc-600 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+        >
+          Add Sample Table
+        </button>
+        <button
+          type="button"
+          onClick={reset}
+          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+        >
+          Reset
+        </button>
+        <button
+          type="button"
+          onClick={router.back}
+          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+        >
+          Cancel
         </button>
       </div>
     </form>

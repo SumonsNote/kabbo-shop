@@ -12,7 +12,13 @@ const Countdown = ({ openModal }) => {
   if (isLoading) {
     return (
       <div className="m-auto w-full h-[50vh]">
-        <Loading />
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
+          <div className="flex justify-between items-center mb-4">
+            <div className="h-8 w-32 bg-gray-200 dark:bg-gray-700 rounded" />
+            <div className="h-10 w-24 bg-gray-200 dark:bg-gray-700 rounded" />
+          </div>
+          <div className="h-32 bg-gray-200 dark:bg-gray-700 rounded-lg" />
+        </div>
       </div>
     );
   }

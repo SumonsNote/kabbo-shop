@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import BackButton from "../components/ui/BackButton";
 import Countdown from "./_components/Countdown/Countdown";
 import CountdownForm from "./_components/Countdown/CountdownForm";
 import Deal from "./_components/Deal/Deal";
@@ -33,6 +34,7 @@ const SliderPage = () => {
 
   return (
     <div className="p-4 w-full">
+      <BackButton />
       <div className="my-2">
         {/* Pass the appropriate type to the openModal function */}
         <Slider

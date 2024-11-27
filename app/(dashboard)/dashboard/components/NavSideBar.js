@@ -66,36 +66,9 @@ export default function NavSideBar({ setIsCollapsed, isCollapsed }) {
       icon: <FaShopify className="w-6 h-6" />,
       label: "Orders",
     },
-    {
-      href: "/dashboard/stock",
-      icon: <FaStore className="w-6 h-6" />,
-      label: "Stock",
-    },
-    {
-      href: "/dashboard/customers",
-      icon: <FaRegCircleUser className="w-6 h-6" />,
-      label: "Customers",
-    },
-    {
-      href: "/dashboard/finance",
-      icon: <AiOutlineDollarCircle className="w-6 h-6" />,
-      label: "Finance",
-    },
-    {
-      href: "/dashboard/settings",
-      icon: <AiOutlineSetting className="w-6 h-6" />,
-      label: "Settings",
-    },
-    {
-      href: "/dashboard/support",
-      icon: <AiOutlineQuestionCircle className="w-6 h-6" />,
-      label: "Support",
-    },
   ];
 
   const handleSignOut = async () => {
-    // await signOut({ redirect: false });
-    // router.push("/dashboard-login");
     await logout();
   };
 
@@ -106,8 +79,6 @@ export default function NavSideBar({ setIsCollapsed, isCollapsed }) {
       }  flex flex-col duration-300`}
     >
       <div className="flex items-center h-36 cursor-pointer ">
-        {/* <DiSmashingMagazine className="w-10 h-10 mr-3 text-sky-300" /> */}
-
         <Image
           width={175}
           height={25}

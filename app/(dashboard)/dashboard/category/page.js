@@ -36,7 +36,7 @@ const CategoryAdminPanel = () => {
   }
 
   return (
-    <div className="p-6 space-y-6 bg-gray-50 dark:bg-gray-900 text-gray-500 min-h-screen">
+    <div className="p-6 space-y-6 bg-gray-50 dark:bg-gray-900 text-gray-500 min-h-screen w-full">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h1 className="text-2xl font-bold text-gray-500">Categories</h1>
