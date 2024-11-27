@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import React, { useState, useRef } from "react";
 import { useForm, Controller } from "react-hook-form";
 
@@ -54,7 +55,6 @@ const ProductAddForm = () => {
       ...data,
       images,
     };
-    console.log(formData);
   };
 
   return (
@@ -67,10 +67,12 @@ const ProductAddForm = () => {
             <div className="flex flex-wrap gap-4 mb-4">
               {images.map((image, index) => (
                 <div key={index} className="relative">
-                  <img
+                  <Image
+                    width={100}
+                    height={100}
                     src={image}
                     alt={`Upload ${index}`}
-                    className="w-32 h-32 object-cover rounded-lg"
+                    className="w-32 h-32 object-contain rounded-lg"
                   />
                   <button
                     type="button"

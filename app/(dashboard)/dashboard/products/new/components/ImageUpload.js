@@ -1,5 +1,6 @@
 import { Loader } from "lucide-react";
 import { UploadCloud, X } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -29,7 +30,7 @@ export default function ImageUpload({ onImagesChange }) {
           const data = await response.json();
           toast.success("image uploaded");
           setIsUploading(false);
-          return data.url; // Assuming the API returns the uploaded image URL
+          return data.secure_url; // Assuming the API returns the uploaded image URL
         }
 
         throw new Error("Upload failed");
@@ -81,13 +82,16 @@ export default function ImageUpload({ onImagesChange }) {
         )}
       </label>
 
-      <div className="mt-4 grid grid-cols-3 gap-4">
+      <div className="mt-4 grid grid-cols-4 gap-4">
         {previewUrls.map((url, index) => (
           <div key={index} className="relative group">
-            <img
+            <Image
+              key={index}
+              width={200}
+              height={200}
               src={url}
               alt={`Preview ${index + 1}`}
-              className="w-full h-32 object-cover rounded-md"
+              className="w-full h-32 object-contain ring-1 rounded-md"
             />
             <button
               onClick={() => removeImage(index)}

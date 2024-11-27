@@ -109,17 +109,53 @@ export default function AddProductForm() {
       </div>
       <div>
         <label
-          htmlFor="price"
+          htmlFor="purchase_price"
           className="block text-sm font-medium text-gray-700"
         >
-          Price
+          Purchase Price
         </label>
         <input
           type="number"
-          id="price"
+          id="purchase_price"
+          min={0}
+          placeholder="1200"
+          step="0.01"
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          {...register("purchase_price")}
+        />
+      </div>
+      <div>
+        <label
+          htmlFor="original_price"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Original Price
+        </label>
+        <input
+          type="number"
+          min={0}
+          id="original_price"
+          step="0.01"
           placeholder="1200"
           className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          {...register("price")}
+          {...register("original_price")}
+        />
+      </div>
+      <div>
+        <label
+          htmlFor="discount_price"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Discount Price
+        </label>
+        <input
+          min={0}
+          type="number"
+          step="0.01"
+          id="discount_price"
+          placeholder="1200"
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          {...register("discount_price")}
         />
       </div>
       <div>

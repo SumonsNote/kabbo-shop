@@ -19,7 +19,7 @@ const ProductDashboard = () => {
   const analytics = {
     totalProducts: products.length,
     totalValue: products.reduce(
-      (acc, product) => acc + Number(product.price),
+      (acc, product) => acc + Number(product.purchase_price),
       0
     ),
     lowStock: products.filter((product) => product.stock < 10).length,

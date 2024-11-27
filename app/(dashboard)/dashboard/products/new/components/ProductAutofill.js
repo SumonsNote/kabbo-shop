@@ -7,7 +7,10 @@ const AutofillButton = ({ setValue }) => {
       // Basic Product Info
       name: "iPhone 14 Pro 256GB Graphite",
       model: "iPhone 14 Pro",
-      price: 1099,
+
+      purchase_price: 999.99,
+      original_price: 1299.99,
+      discount_price: 1199.99,
       brand: "Apple",
       storage: "256GB",
       ram: "6GB",

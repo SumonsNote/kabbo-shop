@@ -214,7 +214,9 @@ export default function ProductDetailsPage() {
         <div>
           <div className="bg-white shadow rounded-lg p-6">
             <div className="flex justify-between items-center mb-4">
-              {renderField("Price", "price", "number")}
+              {renderField("Purchase Price", "purchase_price", "number")}
+              {renderField("Original Price", "original_price", "number")}
+              {renderField("Discount Price", "discount_price", "number")}
 
               <span className="bg-green-100 text-green-800 px-4 py-1 rounded-full text-md font-medium">
                 {editedProduct.isUsed ? "Used" : "New"}
