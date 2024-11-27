@@ -1,7 +1,6 @@
-import { useFetchProductsQuery } from "@/store/slices/productApi";
 import { useFetchShopProductsQuery } from "@/store/slices/shopApi";
 import Image from "next/image";
-import React, { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const SearchableDropdown = ({
   value,
@@ -66,7 +65,7 @@ const SearchableDropdown = ({
   };
 
   const handleOptionClick = (option) => {
-    setSearchTerm(option.product.product_name);
+    setSearchTerm(option.name);
     onChange(option);
     setIsDropdownOpen(false);
     inputRef.current?.blur();
@@ -106,19 +105,20 @@ const SearchableDropdown = ({
                 className={`p-2 cursor-pointer border-b text-black border-gray-200 hover:${optionActiveClassName} ${optionClassName}`}
               >
                 <div className=" w-fit p-2 flex text-xs">
-                  {image && (
+                  {option?.image && (
                     <Image
-                      src={option?.product?.image[0].url}
-                      alt={option?.product?.product_name}
+                      src={option?.image}
+                      alt={option?.name}
                       width={50}
                       height={150}
                       className="object-contain  h-16 w-16 "
                     />
                   )}
                   <div className="ml-4 text-black grid">
-                    <strong>{option.product?.product_name}</strong>
-                    <span> {option.product?.product_model}</span>
-                    <span>{option.product?.brand_name}</span>
+                    <strong>{option.title}</strong>
+                    <span className="capitalize">
+                      {option.filters[3].value}
+                    </span>
                   </div>
                 </div>
               </li>

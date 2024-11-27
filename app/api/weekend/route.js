@@ -1,6 +1,6 @@
-import { WeekendOffer } from "../../models/weekend-offer-model";
-import connectMongo from "../../../services/mongo";
 import { NextResponse } from "next/server";
+import connectMongo from "../../../services/mongo";
+import { WeekendOffer } from "../../models/weekend-offer-model";
 
 export async function POST(req) {
   try {
@@ -9,6 +9,7 @@ export async function POST(req) {
     const title = formData.get("title");
 
     const short_description = formData.get("short_description");
+    const productId = formData.get("productId");
 
     console.log(formData);
     // Ensure 'file' exists in formData
@@ -44,8 +45,8 @@ export async function POST(req) {
       const weekendObj = {
         image: secure_url,
         title,
-
         short_description,
+        productId,
       };
 
       const weekend = await WeekendOffer.create(weekendObj);

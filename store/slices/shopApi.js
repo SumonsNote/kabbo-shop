@@ -4,7 +4,7 @@ export const shopsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     fetchShopProducts: builder.query({
       query: (searchTerm) =>
-        `/shop/order?${searchTerm ? `search=${searchTerm}` : ""}`,
+        `/shop?${searchTerm ? `search=${searchTerm}` : ""}`,
       providesTags: ["products"],
     }),
   }),

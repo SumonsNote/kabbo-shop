@@ -1,34 +1,298 @@
-import { useRef } from "react";
-import { Controller, useForm } from "react-hook-form";
-import ImageUpload from "./ImageUpload";
-import CodeEditor from "./RichTextEditor";
-import { toast } from "react-toastify";
+import { useAddProductMutation } from "@/store/slices/productApi";
 import { useRouter } from "next/navigation";
+import { useEffect, useRef } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { extractTableData } from "./extracTableData";
+import ImageUpload from "./ImageUpload";
+import AutofillButton from "./ProductAutofill";
+import CodeEditor from "./RichTextEditor";
+import { useFetchBrandsQuery } from "@/store/slices/brandApi";
 
 export default function AddProductForm() {
-  const { register, handleSubmit, control, watch } = useForm();
+  const { register, handleSubmit, control, watch, setValue, reset } = useForm();
+  const { data } = useFetchBrandsQuery();
+  console.log(data);
+  const [addProduct, { isLoading, isError, isSuccess }] =
+    useAddProductMutation();
   const router = useRouter();
   const codeRef = useRef();
   const onSubmit = async (data) => {
-    console.log(data);
-    // Here you would typically send the data to your backend
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_APP_URL_DEV}/api/product/new`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      }
-    );
-
-    if (res.ok) {
+    const extractedData = extractTableData(codeRef.current.getContent());
+    console.log({
+      ...data,
+      color: data.colors.split(","),
+      specificationsHtml: codeRef.current.getContent(),
+      specifications: extractedData,
+    });
+    addProduct({
+      ...data,
+      color: data.colors.split(","),
+      specificationsHtml: codeRef.current.getContent(),
+      specifications: extractedData,
+    });
+  };
+  useEffect(() => {
+    if (isSuccess) {
       toast.success("Product added successfully!");
       router.refresh();
       router.push("/dashboard/products");
-    } else {
+    }
+    if (isError) {
       toast.error("Error adding product");
+    }
+    if (isLoading) {
+      toast.info("Updating product...");
+    }
+  }, [isSuccess, isError, isLoading]);
+
+  const handleTableData = () => {
+    if (codeRef.current) {
+      // Inserting code block into the editor
+      codeRef.current.insertContent(
+        `<!DOCTYPE html>
+<html lang="en">
+<body style="font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 10px;">
+<table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+    <thead>
+        <tr>
+            <th colspan="2" style="background-color: #f2f2f2; padding: 10px; text-align: left; font-size: 16px;">Display</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px; width: 30%;">Size</td>
+            <td style="padding: 8px;">6.1‑inch (diagonal)</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">Type</td>
+            <td style="padding: 8px;">Super Retina XDR display<br>all‑screen OLED display</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">Resolution</td>
+            <td style="padding: 8px;">2556x1179-pixel resolution at 460 ppi</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">Brightness</td>
+            <td style="padding: 8px;">1,000 nits max brightness (typical)<br>1,600 nits peak brightness (HDR)<br>2,000 nits peak brightness (outdoor)<br>1 nit minimum brightness</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">Protection</td>
+            <td style="padding: 8px;">Ceramic Shield glass (2024 gen)</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">Features</td>
+            <td style="padding: 8px;">Dynamic Island, HDR display, True Tone, Wide colour (P3), Haptic Touch, 2,000,000:1 contrast ratio, Fingerprint-resistant oleophobic coating, Support for display of multiple languages</td>
+        </tr>
+    </tbody>
+
+    <thead>
+        <tr>
+            <th colspan="2" style="background-color: #f2f2f2; padding: 10px; text-align: left; font-size: 16px;">Processor</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">Chipset</td>
+            <td style="padding: 8px;">A18 chip</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">CPU Type</td>
+            <td style="padding: 8px;">6‑core CPU with 2 performance and 4 efficiency cores<br>16‑core Neural Engine</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">GPU</td>
+            <td style="padding: 8px;">5‑core GPU</td>
+        </tr>
+    </tbody>
+
+    <thead>
+        <tr>
+            <th colspan="2" style="background-color: #f2f2f2; padding: 10px; text-align: left; font-size: 16px;">Memory</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">Internal Storage</td>
+            <td style="padding: 8px;">128GB NVMe</td>
+        </tr>
+    </tbody>
+
+    <thead>
+        <tr>
+            <th colspan="2" style="background-color: #f2f2f2; padding: 10px; text-align: left; font-size: 16px;">Rear Camera</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">Resolution</td>
+            <td style="padding: 8px;">48MP Fusion: 26mm, ƒ/1.6 aperture<br>12MP 2x Telephoto: 52mm, ƒ/1.6 aperture<br>12MP Ultra Wide: 13mm, ƒ/2.2 aperture</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">Features</td>
+            <td style="padding: 8px;">Digital zoom, Camera Control, Sapphire crystal lens cover, True Tone flash, Photonic Engine, Deep Fusion, Smart HDR 5, Portrait modes, Night mode, Spatial photos, Macro photography</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">Video Recording</td>
+            <td style="padding: 8px;">4K Dolby Vision at 24/25/30/60 fps<br>Cinematic mode up to 4K HDR<br>Action mode up to 2.8K at 60 fps<br>Spatial video recording</td>
+        </tr>
+    </tbody>
+
+    <thead>
+        <tr>
+            <th colspan="2" style="background-color: #f2f2f2; padding: 10px; text-align: left; font-size: 16px;">Front Camera</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">Resolution</td>
+            <td style="padding: 8px;">12MP camera</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">Features</td>
+            <td style="padding: 8px;">Autofocus, Retina Flash, Photonic Engine, Deep Fusion, Smart HDR 5, Portrait modes, Animoji and Memoji, Night mode</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">Video Recording</td>
+            <td style="padding: 8px;">4K Dolby Vision at 24/25/30/60 fps<br>Cinematic mode up to 4K<br>Slow-motion video</td>
+        </tr>
+    </tbody>
+
+    <thead>
+        <tr>
+            <th colspan="2" style="background-color: #f2f2f2; padding: 10px; text-align: left; font-size: 16px;">Audio</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">Speaker</td>
+            <td style="padding: 8px;">Built‑in stereo speaker</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">Audio Features</td>
+            <td style="padding: 8px;">Supports AAC, APAC, MP3, Apple Lossless, FLAC, Dolby Digital, Dolby Atmos<br>Spatial Audio playback</td>
+        </tr>
+    </tbody>
+
+    <thead>
+        <tr>
+            <th colspan="2" style="background-color: #f2f2f2; padding: 10px; text-align: left; font-size: 16px;">Network & Connectivity</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">SIM</td>
+            <td style="padding: 8px;">Dual SIM (nano-SIM and eSIM)</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">Network</td>
+            <td style="padding: 8px;">5G (sub‑6 GHz) with 4x4 MIMO<br>Gigabit LTE</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">Wi-Fi</td>
+            <td style="padding: 8px;">Wi‑Fi 7 (802.11be) with 2x2 MIMO<br>Ultra Wideband chip<br>Thread networking</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">Bluetooth</td>
+            <td style="padding: 8px;">Bluetooth 5.3</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">GPS</td>
+            <td style="padding: 8px;">GPS, GLONASS, Galileo, QZSS, BeiDou<br>Digital compass<br>iBeacon microlocation</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">NFC</td>
+            <td style="padding: 8px;">NFC with reader mode</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">USB</td>
+            <td style="padding: 8px;">USB-C connector<br>Supports charging, DisplayPort, USB 2</td>
+        </tr>
+    </tbody>
+
+    <thead>
+        <tr>
+            <th colspan="2" style="background-color: #f2f2f2; padding: 10px; text-align: left; font-size: 16px;">Operating System</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">OS</td>
+            <td style="padding: 8px;">iOS 18</td>
+        </tr>
+    </tbody>
+
+    <thead>
+        <tr>
+            <th colspan="2" style="background-color: #f2f2f2; padding: 10px; text-align: left; font-size: 16px;">Additional Features</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">Sensors</td>
+            <td style="padding: 8px;">Face ID, Barometer, High-g accelerometer, Proximity sensor, Dual ambient light sensors</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">IP Rating</td>
+            <td style="padding: 8px;">IP68 (6 metres up to 30 minutes)</td>
+        </tr>
+    </tbody>
+
+    <thead>
+        <tr>
+            <th colspan="2" style="background-color: #f2f2f2; padding: 10px; text-align: left; font-size: 16px;">Battery</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">Type</td>
+            <td style="padding: 8px;">Built-in rechargeable lithium-ion battery</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">Fast Charging</td>
+            <td style="padding: 8px;">MagSafe wireless up to 25W<br>Qi2 wireless up to 15W<br>Qi wireless up to 7.5W</td>
+        </tr>
+    </tbody>
+
+    <thead>
+        <tr>
+            <th colspan="2" style="background-color: #f2f2f2; padding: 10px; text-align: left; font-size: 16px;">Physical Specifications</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">Dimensions</td>
+            <td style="padding: 8px;">147.6 x 71.6 x 7.8 mm</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">Weight</td>
+            <td style="padding: 8px;">170 g</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">Body Material</td>
+            <td style="padding: 8px;">Glass front and back, aluminum frame</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">Colors</td>
+            <td style="padding: 8px;">Black, White, Pink, Teal, Ultramarine</td>
+        </tr>
+    </tbody>
+
+    <thead>
+        <tr>
+            <th colspan="2" style="background-color: #f2f2f2; padding: 10px; text-align: left; font-size: 16px;">Warranty</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr style="border-bottom: 1px solid #e0e0e0;">
+            <td style="padding: 8px;">Warranty Details</td>
+            <td style="padding: 8px;">BTRC Approved (One-year Apple warranty worldwide)</td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>`
+      );
     }
   };
   // Watch the value of "isNew"
@@ -36,8 +300,9 @@ export default function AddProductForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="grid grid-cols-3 gap-4 w-full mx-auto "
+      className="grid grid-cols-3 gap-4 w-full mx-auto relative"
     >
+      <AutofillButton setValue={setValue} />
       <div>
         <label
           htmlFor="name"
@@ -70,17 +335,53 @@ export default function AddProductForm() {
       </div>
       <div>
         <label
-          htmlFor="price"
+          htmlFor="purchase_price"
           className="block text-sm font-medium text-gray-700"
         >
-          Price
+          Purchase Price
         </label>
         <input
           type="number"
-          id="price"
+          id="purchase_price"
+          min={0}
+          placeholder="1200"
+          step="0.01"
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          {...register("purchase_price")}
+        />
+      </div>
+      <div>
+        <label
+          htmlFor="original_price"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Original Price
+        </label>
+        <input
+          type="number"
+          min={0}
+          id="original_price"
+          step="0.01"
           placeholder="1200"
           className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-          {...register("price")}
+          {...register("original_price")}
+        />
+      </div>
+      <div>
+        <label
+          htmlFor="discount_price"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Discount Price
+        </label>
+        <input
+          min={0}
+          type="number"
+          step="0.01"
+          id="discount_price"
+          placeholder="1200"
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          {...register("discount_price")}
         />
       </div>
       <div>
@@ -94,11 +395,18 @@ export default function AddProductForm() {
           className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           {...register("brand")}
         >
-          <option value="Apple">Apple</option>
-          <option value="Samsung">Samsung</option>
-          <option value="Google">Google</option>
-          <option value="OnePlus">OnePlus</option>
-          <option value="Xiaomi">Xiaomi</option>
+          {data?.brands.map(
+            (brand) =>
+              brand.title && (
+                <option
+                  key={brand.id}
+                  value={brand.title}
+                  className="capitalize"
+                >
+                  {brand.title}
+                </option>
+              )
+          )}
         </select>
       </div>
       <div>
@@ -373,26 +681,43 @@ export default function AddProductForm() {
           specifications
         </label>
         <Controller
-          name="specifications"
+          name="specificationsHtml"
           control={control}
           defaultValue=""
           render={({ field }) => (
             // <RichTextEditor content={field.value} onChange={field.onChange} />
-            <CodeEditor
-              content={field.value}
-              onChange={field.onChange}
-              ref={codeRef}
-            />
+            <CodeEditor content={field.value} ref={codeRef} />
           )}
         />
       </div>
 
-      <div>
+      <div className="flex gap-4 col-span-2">
         <button
           type="submit"
           className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
           Add Product
+        </button>
+        <button
+          type="button"
+          onClick={handleTableData}
+          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-zinc-600 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+        >
+          Add Sample Table
+        </button>
+        <button
+          type="button"
+          onClick={reset}
+          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+        >
+          Reset
+        </button>
+        <button
+          type="button"
+          onClick={router.back}
+          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+        >
+          Cancel
         </button>
       </div>
     </form>

@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
 const exclusiveSchema = new Schema({
+  productId: { type: Schema.Types.ObjectId, ref: "Product" },
   label: { type: String, required: true },
   title: { type: String, required: true },
   image: { type: String, required: true },

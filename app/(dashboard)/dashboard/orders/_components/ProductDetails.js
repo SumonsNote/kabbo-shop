@@ -6,7 +6,6 @@ import SearchableDropdown from "../../components/ui/SearchableDropdown";
 
 export const ProductDetails = ({ items, setValue }) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [selectedVersion, setSelectedVersion] = useState(null);
 
   const [product, setProduct] = useState({
     model: "",
@@ -24,32 +23,20 @@ export const ProductDetails = ({ items, setValue }) => {
     updatedItems.splice(index, 1);
     setValue("items", updatedItems);
   };
-  useEffect(() => {
-    if (selectedProduct) {
-      setProduct({
-        ...product,
-        model: selectedProduct.product.product_model,
-      });
-      // console.log(selectedProduct);
-      const version = selectedProduct.variants?.find((variant) => {
-        return variant.storage.size == product.variant;
-      });
-      setSelectedVersion(version?.regional_pricing);
-    }
-  }, [selectedProduct, product.variant]);
-  useEffect(() => {
-    if (selectedVersion) {
-      const price = selectedVersion?.find((obj) => {
-        return obj.region.name == product.version;
-      });
 
-      setProduct({
-        ...product,
-        price:
-          price?.discount_price !== 0 ? price?.discount_price : price?.price,
-      });
-    }
-  }, [selectedProduct, product.version]);
+  // useEffect(() => {
+  //   if (selectedVersion) {
+  //     const price = selectedProduct?.find((obj) => {
+  //       return obj.region.name == product.version;
+  //     });
+
+  //     setProduct({
+  //       ...product,
+  //       price:
+  //         price?.discount_price !== 0 ? price?.discount_price : price?.price,
+  //     });
+  //   }
+  // }, [selectedProduct, product.version]);
   const handleReset = () => {
     setProduct({
       model: "",
@@ -145,54 +132,6 @@ export const ProductDetails = ({ items, setValue }) => {
             </select>
           </div>
 
-          {/* Variant */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Variant
-            </label>
-            <select
-              name="variant"
-              onChange={handleChange}
-              value={product.variant}
-              className="w-full rounded-lg border-gray-200 p-1.5 text-sm"
-            >
-              <option value="">Select Variant</option>
-              {selectedProduct?.variants?.map((obj) => (
-                <option
-                  key={obj.storage.size}
-                  value={obj.storage.size}
-                  className="capitalize"
-                >
-                  {obj.storage.size} {obj.storage.unit}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Version */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Version
-            </label>
-            <select
-              className="w-full rounded-lg border-gray-200 p-1.5 text-sm"
-              name="version"
-              onChange={handleChange}
-              value={product.version}
-            >
-              <option value="">Select Version</option>
-              {selectedVersion?.map((obj) => (
-                <option
-                  key={obj.id}
-                  value={obj.region.name}
-                  className="capitalize"
-                >
-                  {obj.region.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
           {/* IMEI Number */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -205,21 +144,6 @@ export const ProductDetails = ({ items, setValue }) => {
               value={product.imei}
               className="w-full rounded-lg border-gray-200 p-1.5 text-sm"
               placeholder="Enter IMEI"
-            />
-          </div>
-
-          {/* Warranty Period */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Warranty Period
-            </label>
-            <input
-              type="text"
-              name="warranty"
-              onChange={handleChange}
-              value={product.warranty}
-              className="w-full rounded-lg border-gray-200 p-1.5 text-sm"
-              placeholder="Enter Warranty Period"
             />
           </div>
 

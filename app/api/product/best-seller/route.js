@@ -2,22 +2,21 @@ import { Product } from "@/app/models/product-model";
 import { Stock } from "@/app/models/stock-model";
 import connectMongo from "@/services/mongo";
 import { NextResponse } from "next/server";
-import { transformProductData } from "../../shop/route";
+
+import newProduct from "@/app/models/new-product-model";
+import { transformProductData } from "@/utils/transformProductData";
 
 export async function GET(req) {
   await connectMongo();
   try {
     // Fetch stocks and populate the product data
-    const stocks = await Stock.find().populate({
-      path: "product",
-      model: Product,
-      select: "product_name image best_seller brand_name warranty_information",
-    });
+    const stocks = await newProduct.find(
+      {},
+      "name images best_seller discount_price discount_price original_price stock brand model region storage ram warrantyStatus"
+    );
 
     // Filter for best-seller products
-    const filteredStocks = stocks.filter(
-      (stock) => stock.product && stock.product.best_seller === true
-    );
+    const filteredStocks = stocks.filter((stock) => stock.best_seller === true);
 
     // Transform the filtered data
     const transformedStocks = filteredStocks.map((stock) => {
