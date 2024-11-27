@@ -11,7 +11,7 @@ const AutofillButton = ({ setValue }) => {
       purchase_price: 999.99,
       original_price: 1299.99,
       discount_price: 1199.99,
-      brand: "Apple",
+      brand: "apple",
       storage: "256GB",
       ram: "6GB",
       colors: "Graphite, Silver, Gold, Deep Purple",

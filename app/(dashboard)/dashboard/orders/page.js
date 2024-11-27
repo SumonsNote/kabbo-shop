@@ -7,7 +7,7 @@ import OrderStats from "./_components/Stats";
 import Loading from "../components/Loading";
 import OrderTable from "./_components/OrderTable";
 import NoDataFound from "../components/NoDataFound";
-import { useFetchOrdersQuery } from "../../../../store/slices/orderApi";
+import { useFetchOrdersQuery } from "@/store/slices/orderApi";
 
 const OrderDashboard = () => {
   const { data, isLoading, isError, error, isSuccess, refetch } =

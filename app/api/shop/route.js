@@ -1,19 +1,31 @@
 import connectMongo from "@/services/mongo";
 import { NextResponse } from "next/server";
-
 import newProduct from "@/app/models/new-product-model";
 import { transformProductData } from "@/utils/transformProductData";
 
 export async function GET(req) {
   await connectMongo();
   try {
-    // Fetch stocks and populate the product data
+    const { searchParams } = new URL(req.url);
+
+    const searchQuery = searchParams.get("search");
+
+    let query = {};
+    if (searchQuery) {
+      query = {
+        $or: [
+          { name: { $regex: searchQuery, $options: "i" } },
+          { brand: { $regex: searchQuery, $options: "i" } },
+          { model: { $regex: searchQuery, $options: "i" } },
+        ],
+      };
+    }
+
     const stocks = await newProduct.find(
-      {},
+      query,
       "name images discount_price discount_price original_price stock brand model region storage ram warrantyStatus"
     );
 
-    // Transform the filtered data
     const transformedStocks = stocks.map((stock) => {
       const stockData = stock.toObject();
       return transformProductData(stockData);
