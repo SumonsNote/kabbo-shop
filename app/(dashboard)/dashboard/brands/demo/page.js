@@ -104,6 +104,8 @@ const BrandsListWithAnalytics = () => {
               <div key={brand.id} className="relative">
                 <div className="flex items-center p-4 hover:bg-gray-50 transition">
                   <Image
+                    width={80}
+                    height={80}
                     src={brand.logo}
                     alt={`${brand.name} logo`}
                     className="w-16 h-16 object-cover rounded-lg mr-4"
