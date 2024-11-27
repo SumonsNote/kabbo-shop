@@ -1,18 +1,24 @@
 "use client";
 
-import {
-  useAddWeekendMutation,
-  useUpdateWeekendMutation,
-} from "../../../../../../store/slices/weekendApi";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { BiCloudUpload } from "react-icons/bi";
 import { toast } from "react-toastify";
+import {
+  useAddWeekendMutation,
+  useUpdateWeekendMutation,
+} from "../../../../../../store/slices/weekendApi";
+import SearchableDropdown from "../../../components/ui/SearchableDropdown";
 
 const WeekendForm = ({ onClose, weekend, isEdit }) => {
   const [imagePreview, setImagePreview] = useState(weekend?.image);
+  const [products, setProducts] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(
+    weekend?.product || ""
+  );
+
   const [addWeekend, { isLoading, isSuccess, data }] = useAddWeekendMutation();
   const [updateWeekend, { isLoading: isUpdating, isSuccess: isUpdated }] =
     useUpdateWeekendMutation();
@@ -35,6 +41,22 @@ const WeekendForm = ({ onClose, weekend, isEdit }) => {
     }
   }, [weekend]);
 
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_APP_URL_DEV}/api/product`
+        );
+        const productData = await response.json();
+        setProducts(productData?.products);
+      } catch (error) {
+        toast.error("Failed to fetch products");
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file.size > 2000000) {
@@ -53,10 +75,16 @@ const WeekendForm = ({ onClose, weekend, isEdit }) => {
   };
 
   const onSubmit = async (data) => {
+    if (!selectedProduct) {
+      toast.error("Please select a product.");
+      return;
+    }
+
     const formData = new FormData();
 
     formData.append("title", data.title);
     formData.append("short_description", data.short_description);
+    formData.append("productId", selectedProduct.id);
 
     if (data.image) {
       if (data.image.size > 2000000) {
@@ -65,8 +93,8 @@ const WeekendForm = ({ onClose, weekend, isEdit }) => {
       }
       formData.append("file", data.image);
     }
+
     if (isEdit) {
-      console.log(isEdit);
       formData.append("id", weekend._id);
       updateWeekend(formData);
     } else {
@@ -86,7 +114,7 @@ const WeekendForm = ({ onClose, weekend, isEdit }) => {
 
   return (
     <div className="p-6 space-y-4 dark:bg-gray-900 dark:text-gray-300">
-      <h2>Add Weekend</h2>
+      <h2>{isEdit ? "Edit Weekend" : "Add Weekend"}</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="flex items-center justify-center">
           <label
@@ -120,6 +148,27 @@ const WeekendForm = ({ onClose, weekend, isEdit }) => {
             className="hidden"
             onChange={handleImageChange}
           />
+        </div>
+
+        {/* Product Selection */}
+        <div className="relative">
+          <SearchableDropdown
+            value={selectedProduct}
+            onChange={(value) => setSelectedProduct(value)}
+            options={products.map((product) => ({
+              value: product._id,
+              label: product.name,
+            }))}
+            placeholder="Search for a product"
+            className="w-full px-3 py-2 border text-gray-500 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+            optionClassName="bg-gray-100 hover:bg-gray-200"
+            optionActiveClassName="bg-primary-500 text-white"
+          />
+          {errors.product && (
+            <span className="absolute -bottom-6 left-0 text-red-500 text-sm">
+              Product is required
+            </span>
+          )}
         </div>
 
         <div className="relative">

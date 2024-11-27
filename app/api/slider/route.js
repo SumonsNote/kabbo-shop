@@ -1,6 +1,6 @@
-import { Slider } from "../../models/slider-model";
-import connectMongo from "../../../services/mongo";
 import { NextResponse } from "next/server";
+import connectMongo from "../../../services/mongo";
+import { Slider } from "../../models/slider-model";
 
 export async function POST(req) {
   try {

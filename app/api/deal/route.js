@@ -1,6 +1,6 @@
-import { Deal } from "../..//models/deal-model";
-import connectMongo from "../../../services/mongo";
 import { NextResponse } from "next/server";
+import connectMongo from "../../../services/mongo";
+import { Deal } from "../..//models/deal-model";
 
 export async function POST(req) {
   try {
@@ -9,6 +9,7 @@ export async function POST(req) {
     const title = formData.get("title");
     const label = formData.get("label");
     const short_description = formData.get("short_description");
+    const productId = formData.get("productId");
 
     console.log(formData);
     // Ensure 'file' exists in formData
@@ -46,6 +47,7 @@ export async function POST(req) {
         title,
         label,
         short_description,
+        productId,
       };
 
       const deal = await Deal.create(dealObj);

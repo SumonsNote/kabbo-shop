@@ -30,5 +30,6 @@ export function transformProductData(product) {
       },
     ],
     url: `/product/${product._id}`,
+    id: product._id,
   };
 }

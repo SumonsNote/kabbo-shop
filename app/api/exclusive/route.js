@@ -1,6 +1,6 @@
-import { ExclusiveOffer } from "../../models/exclusive-offer-model";
-import connectMongo from "../../../services/mongo";
 import { NextResponse } from "next/server";
+import connectMongo from "../../../services/mongo";
+import { ExclusiveOffer } from "../../models/exclusive-offer-model";
 
 export async function POST(req) {
   try {
@@ -8,6 +8,7 @@ export async function POST(req) {
     const formData = await req.formData();
     const label = formData.get("label");
     const title = formData.get("title");
+    const productId = formData.get("productId");
 
     console.log(formData);
     // Ensure 'file' exists in formData
@@ -44,6 +45,7 @@ export async function POST(req) {
         image: secure_url,
         label,
         title,
+        productId,
       };
 
       const exclusive = await ExclusiveOffer.create(exclusiveObj);

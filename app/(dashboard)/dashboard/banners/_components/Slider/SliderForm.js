@@ -1,21 +1,27 @@
 "use client";
 
-import {
-  useAddSliderMutation,
-  useUpdateSliderMutation,
-} from "../../../../../../store/slices/SliderApi";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { BiCloudUpload } from "react-icons/bi";
 import { toast } from "react-toastify";
+import {
+  useAddSliderMutation,
+  useUpdateSliderMutation,
+} from "../../../../../../store/slices/SliderApi";
+import SearchableDropdown from "../../../components/ui/SearchableDropdown";
 
 const SliderForm = ({ onClose, slider, isEdit }) => {
   const [imagePreview, setImagePreview] = useState(slider?.image);
+  const [products, setProducts] = useState([]);
+
+  const [selectedProduct, setSelectedProduct] = useState(slider?.product || "");
+
   const [addSlider, { isLoading, isSuccess, data }] = useAddSliderMutation();
   const [updateSlider, { isLoading: isUpdating, isSuccess: isUpdated }] =
     useUpdateSliderMutation();
+
   const {
     register,
     handleSubmit,
@@ -37,6 +43,22 @@ const SliderForm = ({ onClose, slider, isEdit }) => {
     }
   }, [slider]);
 
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_APP_URL_DEV}/api/product`
+        );
+        const productData = await response.json();
+        setProducts(productData?.products);
+      } catch (error) {
+        toast.error("Failed to fetch products");
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file.size > 2000000) {
@@ -55,12 +77,17 @@ const SliderForm = ({ onClose, slider, isEdit }) => {
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
+    if (!selectedProduct) {
+      toast.error("Please select a product.");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("description", data.description);
     formData.append("regular_price", data.regular_price);
     formData.append("discount_price", data.discount_price);
+    formData.append("productId", selectedProduct.id);
 
     if (data.image) {
       if (data.image.size > 2000000) {
@@ -90,8 +117,9 @@ const SliderForm = ({ onClose, slider, isEdit }) => {
 
   return (
     <div className="p-6 space-y-4 dark:bg-gray-900 dark:text-gray-300">
-      <h2>Add a slider</h2>
+      <h2>{isEdit ? "Edit Slider" : "Add a Slider"}</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        {/* Image Upload Section */}
         <div className="flex items-center justify-center">
           <label
             htmlFor="slider-image-input"
@@ -124,6 +152,27 @@ const SliderForm = ({ onClose, slider, isEdit }) => {
             className="hidden"
             onChange={handleImageChange}
           />
+        </div>
+
+        {/* Product Selection */}
+        <div className="relative">
+          <SearchableDropdown
+            value={selectedProduct}
+            onChange={(value) => setSelectedProduct(value)}
+            options={products.map((product) => ({
+              value: product._id,
+              label: product.name,
+            }))}
+            placeholder="Search for a product"
+            className="w-full px-3 py-2 border text-gray-500 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+            optionClassName="bg-gray-100 hover:bg-gray-200"
+            optionActiveClassName="bg-primary-500 text-white"
+          />
+          {errors.product && (
+            <span className="absolute -bottom-6 left-0 text-red-500 text-sm">
+              Product is required
+            </span>
+          )}
         </div>
 
         <div className="relative">

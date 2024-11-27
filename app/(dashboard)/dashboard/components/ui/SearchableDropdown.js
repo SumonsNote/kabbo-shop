@@ -1,7 +1,6 @@
-import { useFetchProductsQuery } from "@/store/slices/productApi";
 import { useFetchShopProductsQuery } from "@/store/slices/shopApi";
 import Image from "next/image";
-import React, { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const SearchableDropdown = ({
   value,
